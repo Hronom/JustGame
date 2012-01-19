@@ -94,7 +94,17 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="Listener.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MainClass.cpp" />
+    <ClCompile Include="MainListener.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="GameObject.h" />
+    <ClInclude Include="Listener.h" />
+    <ClInclude Include="MainClass.h" />
+    <ClInclude Include="MainListener.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
