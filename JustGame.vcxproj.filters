@@ -1,48 +1,84 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    <Filter Include="Listeners">
+      <UniqueIdentifier>{48d6e27c-a5fa-4126-8c0f-7968cb81df24}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    <Filter Include="Interfaces">
+      <UniqueIdentifier>{9257a4f9-b293-4daa-991c-51ad9940b64d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    <Filter Include="Managers">
+      <UniqueIdentifier>{c3c5e532-6662-4ad4-bc0f-11b4944fd91c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameStates">
+      <UniqueIdentifier>{abff0ec1-5877-4cfe-96a2-9daa063c6221}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="GameFrameListener.cpp">
+      <Filter>Listeners</Filter>
     </ClCompile>
-    <ClCompile Include="MainClass.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="GameKeyListener.cpp">
+      <Filter>Listeners</Filter>
+    </ClCompile>
+    <ClCompile Include="GameMouseListener.cpp">
+      <Filter>Listeners</Filter>
+    </ClCompile>
+    <ClCompile Include="GameWindowEventListener.cpp">
+      <Filter>Listeners</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="MainClass.cpp" />
+    <ClCompile Include="StateManager.cpp">
+      <Filter>Managers</Filter>
     </ClCompile>
     <ClCompile Include="MainListener.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Interfaces</Filter>
     </ClCompile>
-    <ClCompile Include="GameObject.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="State.cpp">
+      <Filter>Interfaces</Filter>
     </ClCompile>
-    <ClCompile Include="Listener.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="ObjectsManager.cpp">
+      <Filter>Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="MainMenuState.cpp">
+      <Filter>GameStates</Filter>
+    </ClCompile>
+    <ClCompile Include="GUIManager.cpp">
+      <Filter>Managers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="MainClass.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="GameWindowEventListener.h">
+      <Filter>Listeners</Filter>
+    </ClInclude>
+    <ClInclude Include="GameFrameListener.h">
+      <Filter>Listeners</Filter>
+    </ClInclude>
+    <ClInclude Include="GameKeyListener.h">
+      <Filter>Listeners</Filter>
+    </ClInclude>
+    <ClInclude Include="GameMouseListener.h">
+      <Filter>Listeners</Filter>
+    </ClInclude>
+    <ClInclude Include="MainClass.h" />
+    <ClInclude Include="StateManager.h">
+      <Filter>Managers</Filter>
     </ClInclude>
     <ClInclude Include="MainListener.h">
-      <Filter>Header Files</Filter>
+      <Filter>Interfaces</Filter>
     </ClInclude>
-    <ClInclude Include="GameObject.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="ObjectsManager.h">
+      <Filter>Managers</Filter>
     </ClInclude>
-    <ClInclude Include="Listener.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="MainMenuState.h">
+      <Filter>GameStates</Filter>
+    </ClInclude>
+    <ClInclude Include="GUIManager.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="State.h">
+      <Filter>Interfaces</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

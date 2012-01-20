@@ -3,7 +3,7 @@
 int WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR strCmdLine, INT)
 {
 	MainClass xMainClass;
-	xMainClass.start();
+	xMainClass.run();
 
 	return 0;
 }

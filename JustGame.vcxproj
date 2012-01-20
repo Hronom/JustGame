@@ -94,17 +94,31 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="GameObject.cpp" />
-    <ClCompile Include="Listener.cpp" />
+    <ClCompile Include="GameFrameListener.cpp" />
+    <ClCompile Include="GameKeyListener.cpp" />
+    <ClCompile Include="GameWindowEventListener.cpp" />
+    <ClCompile Include="GUIManager.cpp" />
+    <ClCompile Include="MainListener.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainClass.cpp" />
-    <ClCompile Include="MainListener.cpp" />
+    <ClCompile Include="GameMouseListener.cpp" />
+    <ClCompile Include="MainMenuState.cpp" />
+    <ClCompile Include="ObjectsManager.cpp" />
+    <ClCompile Include="State.cpp" />
+    <ClCompile Include="StateManager.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GameObject.h" />
-    <ClInclude Include="Listener.h" />
-    <ClInclude Include="MainClass.h" />
+    <ClInclude Include="GameFrameListener.h" />
+    <ClInclude Include="GameKeyListener.h" />
+    <ClInclude Include="GameWindowEventListener.h" />
+    <ClInclude Include="GUIManager.h" />
     <ClInclude Include="MainListener.h" />
+    <ClInclude Include="MainClass.h" />
+    <ClInclude Include="GameMouseListener.h" />
+    <ClInclude Include="MainMenuState.h" />
+    <ClInclude Include="ObjectsManager.h" />
+    <ClInclude Include="State.h" />
+    <ClInclude Include="StateManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

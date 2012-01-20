@@ -1,13 +1,16 @@
 #pragma once
 
-#include "Ogre.h"
-#include "OgreFrameListener.h"
+#include <OgreFrameListener.h>
 #include <OIS/OIS.h>
 
-class MainListener
+class State
 {
 public:
-	MainListener();
+	State();
+	virtual ~State();
+
+	virtual void enter() = 0;
+	virtual void exit() = 0;
 
 	virtual void needUpdate(const Ogre::FrameEvent& evt) = 0;
 	virtual	void mouseMoved(const OIS::MouseEvent& e) = 0;

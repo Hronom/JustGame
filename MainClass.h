@@ -1,42 +1,56 @@
 #ifndef MAINCLASS_H
 #define MAINCLASS_H
 
-#include <OgreRoot.h>
-#include <OISEvents.h>
-#include <OISInputManager.h>
-#include <OISKeyboard.h>
-#include <OISMouse.h>
+#include <Ogre.h>
+#include <OgreEntity.h>
+#include <OgreSceneManager.h>
+#include <OgreRenderWindow.h>
+#include <OgreException.h>
+#include <OgreConfigFile.h>
+#include <OgreCamera.h>
+#include <OgreViewport.h>
+#include <OIS\OIS.h>
 
-#include "MainListener.h"
+#include "StateManager.h"
+#include "GameWindowEventListener.h"
+#include "GameFrameListener.h"
+#include "GameMouseListener.h"
+#include "GameKeyListener.h"
 
 class MainClass
 {
 private:
-	Ogre::Root* mRoot;
 	Ogre::String mOgreCfg;
 	Ogre::String mPluginsCfg;
 	Ogre::String mResourcesCfg;
 	Ogre::String mLogFileName;
 
-	Ogre::RenderWindow* mWindow;
+	Ogre::Root *mRoot;
+	Ogre::RenderWindow *mRenderWindow;
+	Ogre::SceneManager *mSceneManager;
 
-	Ogre::SceneManager* mSceneManager;
+	OIS::InputManager *mInputManager;
+	OIS::Keyboard *mKeyboard;
+	OIS::Mouse *mMouse;
 
-	// OIS Input devices
-	OIS::InputManager* mInputManager;
-
-	MainListener *mMainListener;
+	StateManager *mStateManager;
+	GameWindowEventListener *mGameWindowEventListener;
+	GameFrameListener *mGameFrameListener;
+	GameMouseListener *mGameMouseListener;
+	GameKeyListener *mGameKeyListener;
 
 public:
 	MainClass();
 	virtual ~MainClass();
-	bool start();
+	bool run();
 
 private:
-	bool initRoot();
-	void initResources();
-	void initScene();
+	bool initConfig();
+	void createWindow();
+	void loadResources();
+	void createScene();
 	void initOIS();
+	void initListeners();
 };
 
 #endif
