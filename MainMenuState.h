@@ -1,11 +1,20 @@
-#pragma once
+#ifndef MAINMENUSTATE_H
+#define MAINMENUSTATE_H
 
-#include "State.h"
+#include <MyGUI.h>
+#include <OIS\OIS.h>
 
-class MainMenuState: public State
+#include "iState.h"
+#include "GUIManager.h"
+#include "iCore.h"
+
+class MainMenuState: public iState
 {
+private:
+	iCore *mCore;
+	GUIManager *mGUIManager;
 public:
-	MainMenuState();
+	MainMenuState(iCore *xCore, GUIManager *xGUIManager);
 	~MainMenuState();
 
 	virtual void enter();
@@ -17,5 +26,9 @@ public:
 	virtual void mouseReleased(const OIS::MouseEvent& e, OIS::MouseButtonID id);
 	virtual	void keyPressed(const OIS::KeyEvent& e);
 	virtual void keyReleased(const OIS::KeyEvent& e);
+
+	virtual void buttonClick(MyGUI::WidgetPtr xSender);
 };
+
+#endif
 

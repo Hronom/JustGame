@@ -1,19 +1,23 @@
-#pragma once
+#ifndef GAMEWINDOWEVENTLISTENER_H
+#define GAMEWINDOWEVENTLISTENER_H
+
 
 #include <Ogre.h>
 #include <OISMouse.h>
-#include "MainListener.h"
+#include "iMainListener.h"
 
 class GameWindowEventListener: public Ogre::WindowEventListener
 {
 private:
-	MainListener *mListener;
+	iMainListener *mListener;
 	OIS::Mouse* mMouse;
 
 public:
-	GameWindowEventListener(MainListener *xListener, OIS::Mouse* xMouse);
+	GameWindowEventListener(iMainListener *xListener, OIS::Mouse* xMouse);
 
 	virtual void windowResized(Ogre::RenderWindow* xRenderWindow);
 	virtual void windowClosed(Ogre::RenderWindow* xRenderWindow);
 };
+
+#endif
 

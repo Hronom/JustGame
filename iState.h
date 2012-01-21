@@ -1,13 +1,18 @@
-#pragma once
+#ifndef ISTATE_H
+#define ISTATE_H
 
-#include "Ogre.h"
-#include "OgreFrameListener.h"
+#include <OgreFrameListener.h>
 #include <OIS/OIS.h>
+#include <MyGUI.h>
 
-class MainListener
+class iState
 {
 public:
-	MainListener();
+	iState() {};
+	virtual ~iState() {};
+
+	virtual void enter() = 0;
+	virtual void exit() = 0;
 
 	virtual void needUpdate(const Ogre::FrameEvent& evt) = 0;
 	virtual	void mouseMoved(const OIS::MouseEvent& e) = 0;
@@ -15,5 +20,9 @@ public:
 	virtual void mouseReleased(const OIS::MouseEvent& e, OIS::MouseButtonID id) = 0;
 	virtual	void keyPressed(const OIS::KeyEvent& e) = 0;
 	virtual void keyReleased(const OIS::KeyEvent& e) = 0;
+
+	virtual void buttonClick(MyGUI::WidgetPtr xSender) = 0;
 };
+
+#endif
 

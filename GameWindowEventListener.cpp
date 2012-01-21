@@ -1,6 +1,6 @@
 #include "GameWindowEventListener.h"
 
-GameWindowEventListener::GameWindowEventListener(MainListener *xListener, OIS::Mouse* xMouse)
+GameWindowEventListener::GameWindowEventListener(iMainListener *xListener, OIS::Mouse* xMouse)
 {
 	mListener = xListener;
 

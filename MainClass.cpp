@@ -18,6 +18,13 @@ MainClass::~MainClass()
 	//----------------------------------------------------
 	// 9 удаление
 	//----------------------------------------------------
+	mMyGUI->shutdown();
+	delete mMyGUI;
+	mMyGUI = 0;   
+	mPlatform->shutdown();
+	delete mPlatform;
+	mPlatform = 0;
+
 	Ogre::WindowEventUtilities::removeWindowEventListener(mRenderWindow, mGameWindowEventListener);
 
 	//OIS
@@ -32,28 +39,29 @@ MainClass::~MainClass()
 
 	//Слушатели
 	delete mGameKeyListener;
+	mGameKeyListener = 0;
 	delete mGameMouseListener; 
+	mGameMouseListener = 0;
 	delete mGameFrameListener;
+	mGameFrameListener = 0;
 	delete mGameWindowEventListener;
+	mGameWindowEventListener = 0;
 
 	//Огр
 	delete mRoot;
+	mRoot = 0;
 }
 
 bool MainClass::run()
 {
 	if(initConfig() == false) return false;
-	
 	createWindow();
-	
 	loadResources();
-	
 	createScene();
-	
+	initMyGUI();
 	initOIS();
+	mMainManager = new MainManager(mMyGUI, mSceneManager);
 
-	mStateManager = new StateManager();
-	
 	Ogre::ManualObject *manual = new Ogre::ManualObject("Manual");
 
 	manual->begin("BaseWhiteNoLighting", Ogre::RenderOperation::OT_LINE_STRIP);
@@ -81,7 +89,6 @@ bool MainClass::run()
 
 	initListeners();
 
-
 	//----------------------------------------------------
 	// 8 старт рендера
 	//----------------------------------------------------
@@ -100,7 +107,7 @@ bool MainClass::initConfig()
 		delete mRoot;
 		return false;
 	}
-	
+
 	return true;
 }
 
@@ -172,6 +179,14 @@ void MainClass::createScene()
 	xCamera->setAspectRatio(Ogre::Real(xViewport->getActualWidth()) / Ogre::Real(xViewport->getActualHeight()));
 }
 
+void MainClass::initMyGUI()
+{
+	mPlatform = new MyGUI::OgrePlatform();
+	mPlatform->initialise(mRenderWindow, mSceneManager); // mWindow is Ogre::RenderWindow*, mSceneManager is Ogre::SceneManager*
+	mMyGUI = new MyGUI::Gui();
+	mMyGUI->initialise();
+}
+
 void MainClass::initOIS()
 {
 	//---------------------------------------------------- 
@@ -203,15 +218,15 @@ void MainClass::initOIS()
 void MainClass::initListeners()
 {
 	//Создаём слушателей
-	mGameWindowEventListener = new GameWindowEventListener(mStateManager, mMouse);
+	mGameWindowEventListener = new GameWindowEventListener(mMainManager, mMouse);
 	Ogre::WindowEventUtilities::addWindowEventListener(mRenderWindow, mGameWindowEventListener);
 
-	mGameFrameListener = new GameFrameListener(mStateManager, mKeyboard, mMouse);
+	mGameFrameListener = new GameFrameListener(mMainManager, mKeyboard, mMouse);
 	mRoot->addFrameListener(mGameFrameListener); 
 
-	mGameMouseListener = new GameMouseListener(mStateManager);
+	mGameMouseListener = new GameMouseListener(mMainManager);
 	mMouse->setEventCallback(mGameMouseListener);
 
-	mGameKeyListener = new GameKeyListener(mStateManager);
+	mGameKeyListener = new GameKeyListener(mMainManager);
 	mKeyboard->setEventCallback(mGameKeyListener);
 }

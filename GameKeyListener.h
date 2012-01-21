@@ -1,16 +1,19 @@
-#pragma once
+#ifndef GAMEKEYLISTENER_H
+#define GAMEKEYLISTENER_H
 
 #include <OIS/OIS.h>
-#include "MainListener.h"
+#include "iMainListener.h"
 
 class GameKeyListener : public OIS::KeyListener 
 { 
 private:
-	MainListener *mListener;
+	iMainListener *mListener;
 
 public: 
-	GameKeyListener(MainListener *xListener);
+	GameKeyListener(iMainListener *xListener);
 
 	bool keyPressed(const OIS::KeyEvent& e);
 	bool keyReleased(const OIS::KeyEvent& e);
 };
+
+#endif

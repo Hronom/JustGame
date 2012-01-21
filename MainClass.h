@@ -11,7 +11,10 @@
 #include <OgreViewport.h>
 #include <OIS\OIS.h>
 
-#include "StateManager.h"
+#include "MyGUI.h"
+#include "MyGUI_OgrePlatform.h"
+
+#include "MainManager.h"
 #include "GameWindowEventListener.h"
 #include "GameFrameListener.h"
 #include "GameMouseListener.h"
@@ -33,7 +36,10 @@ private:
 	OIS::Keyboard *mKeyboard;
 	OIS::Mouse *mMouse;
 
-	StateManager *mStateManager;
+	MyGUI::OgrePlatform *mPlatform;
+	MyGUI::Gui *mMyGUI;
+
+	MainManager *mMainManager;
 	GameWindowEventListener *mGameWindowEventListener;
 	GameFrameListener *mGameFrameListener;
 	GameMouseListener *mGameMouseListener;
@@ -49,6 +55,7 @@ private:
 	void createWindow();
 	void loadResources();
 	void createScene();
+	void initMyGUI();
 	void initOIS();
 	void initListeners();
 };

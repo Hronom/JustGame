@@ -1,18 +1,20 @@
-#pragma once
+#ifndef STATESMANAGER_H
+#define STATESMANAGER_H
 
-#include "MainListener.h"
+#include "iState.h"
+#include "GUIManager.h"
+#include "iCore.h"
 
-class StateManager: public MainListener
+class StateManager
 {
+private:
+	iState *mCurrentState;
+
 public:
-	StateManager();
+	StateManager(iCore *xCore, GUIManager *xGUIManager);
 	~StateManager();
 
-	virtual void needUpdate(const Ogre::FrameEvent& evt);
-	virtual	void mouseMoved(const OIS::MouseEvent& e);
-	virtual void mousePressed(const OIS::MouseEvent& e, OIS::MouseButtonID id);
-	virtual void mouseReleased(const OIS::MouseEvent& e, OIS::MouseButtonID id);
-	virtual	void keyPressed(const OIS::KeyEvent& e);
-	virtual void keyReleased(const OIS::KeyEvent& e);
 };
+
+#endif
 

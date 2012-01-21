@@ -1,7 +1,9 @@
 #include "MainMenuState.h"
 
-MainMenuState::MainMenuState()
+MainMenuState::MainMenuState(iCore *xCore, GUIManager *xGUIManager)
 {
+	mCore = xCore;
+	mGUIManager = xGUIManager;
 }
 
 MainMenuState::~MainMenuState()
@@ -10,6 +12,8 @@ MainMenuState::~MainMenuState()
 
 void MainMenuState::enter()
 {
+	mGUIManager->loadLayout("sample.layout");
+	mGUIManager->addButtonDelegate("MyFirstButton", this);
 }
 
 void MainMenuState::exit()
@@ -38,4 +42,9 @@ void MainMenuState::keyPressed(const OIS::KeyEvent& e)
 
 void MainMenuState::keyReleased(const OIS::KeyEvent& e)
 {
+}
+
+void MainMenuState::buttonClick(MyGUI::WidgetPtr xSender)
+{
+	mCore->needShutdown();
 }

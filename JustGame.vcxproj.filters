@@ -32,12 +32,6 @@
     <ClCompile Include="StateManager.cpp">
       <Filter>Managers</Filter>
     </ClCompile>
-    <ClCompile Include="MainListener.cpp">
-      <Filter>Interfaces</Filter>
-    </ClCompile>
-    <ClCompile Include="State.cpp">
-      <Filter>Interfaces</Filter>
-    </ClCompile>
     <ClCompile Include="ObjectsManager.cpp">
       <Filter>Managers</Filter>
     </ClCompile>
@@ -45,6 +39,9 @@
       <Filter>GameStates</Filter>
     </ClCompile>
     <ClCompile Include="GUIManager.cpp">
+      <Filter>Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="MainManager.cpp">
       <Filter>Managers</Filter>
     </ClCompile>
   </ItemGroup>
@@ -65,9 +62,6 @@
     <ClInclude Include="StateManager.h">
       <Filter>Managers</Filter>
     </ClInclude>
-    <ClInclude Include="MainListener.h">
-      <Filter>Interfaces</Filter>
-    </ClInclude>
     <ClInclude Include="ObjectsManager.h">
       <Filter>Managers</Filter>
     </ClInclude>
@@ -77,7 +71,16 @@
     <ClInclude Include="GUIManager.h">
       <Filter>Managers</Filter>
     </ClInclude>
-    <ClInclude Include="State.h">
+    <ClInclude Include="MainManager.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="iState.h">
+      <Filter>Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="iMainListener.h">
+      <Filter>Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="iCore.h">
       <Filter>Interfaces</Filter>
     </ClInclude>
   </ItemGroup>

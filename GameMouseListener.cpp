@@ -1,6 +1,6 @@
 #include "GameMouseListener.h"
 
-GameMouseListener::GameMouseListener(MainListener *xListener)
+GameMouseListener::GameMouseListener(iMainListener *xListener)
 {
 	mListener = xListener;
 }

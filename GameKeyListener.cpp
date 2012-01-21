@@ -1,7 +1,7 @@
 #include "GameKeyListener.h"
 
 
-GameKeyListener::GameKeyListener(MainListener *xListener)
+GameKeyListener::GameKeyListener(iMainListener *xListener)
 {
 	mListener = xListener;
 }

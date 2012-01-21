@@ -1,6 +1,6 @@
 #include "GameFrameListener.h"
 
-GameFrameListener::GameFrameListener(MainListener *xListener, OIS::Keyboard* xKeyboard, OIS::Mouse* xMouse) 
+GameFrameListener::GameFrameListener(iMainListener *xListener, OIS::Keyboard* xKeyboard, OIS::Mouse* xMouse) 
 { 
 	mListener = xListener;
 
@@ -16,9 +16,7 @@ bool GameFrameListener::frameStarted(const  Ogre::FrameEvent& evt)
 	if(mKeyboard->isKeyDown(OIS::KC_ESCAPE)) 
 		return false; 
 
-	mListener->needUpdate(evt);
-
-	return true; 
+	return mListener->needUpdate(evt);
 }
 
 bool GameFrameListener::frameEnded(const  Ogre::FrameEvent& evt) 
