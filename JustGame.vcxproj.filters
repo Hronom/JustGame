@@ -13,6 +13,9 @@
     <Filter Include="GameStates">
       <UniqueIdentifier>{abff0ec1-5877-4cfe-96a2-9daa063c6221}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Objects">
+      <UniqueIdentifier>{1dc583d0-4cf7-493b-bc77-f876651f1243}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameFrameListener.cpp">
@@ -43,6 +46,12 @@
     </ClCompile>
     <ClCompile Include="MainManager.cpp">
       <Filter>Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayGameState.cpp">
+      <Filter>GameStates</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Objects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -82,6 +91,15 @@
     </ClInclude>
     <ClInclude Include="iCore.h">
       <Filter>Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayGameState.h">
+      <Filter>GameStates</Filter>
+    </ClInclude>
+    <ClInclude Include="iGameObject.h">
+      <Filter>Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Objects</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

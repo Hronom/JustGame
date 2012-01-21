@@ -104,6 +104,8 @@
     <ClCompile Include="MainManager.cpp" />
     <ClCompile Include="MainMenuState.cpp" />
     <ClCompile Include="ObjectsManager.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayGameState.cpp" />
     <ClCompile Include="StateManager.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -112,6 +114,7 @@
     <ClInclude Include="GameKeyListener.h" />
     <ClInclude Include="GameWindowEventListener.h" />
     <ClInclude Include="GUIManager.h" />
+    <ClInclude Include="iGameObject.h" />
     <ClInclude Include="iMainListener.h" />
     <ClInclude Include="MainClass.h" />
     <ClInclude Include="GameMouseListener.h" />
@@ -119,6 +122,8 @@
     <ClInclude Include="MainMenuState.h" />
     <ClInclude Include="ObjectsManager.h" />
     <ClInclude Include="iState.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayGameState.h" />
     <ClInclude Include="StateManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

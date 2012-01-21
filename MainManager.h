@@ -29,7 +29,24 @@ public:
 	virtual	void keyPressed(const OIS::KeyEvent& e);
 	virtual void keyReleased(const OIS::KeyEvent& e);
 
+	//-------------------------------------------------------------
+	// iCore
+	//-------------------------------------------------------------
+	virtual void needSwitchToStateId(int xStateId);
 	virtual void needShutdown();
+
+	virtual void loadGUILayout(std::string xLayoutName);
+	virtual void unloadGUILayout();
+	virtual void addButtonDelegate(std::string xButtonName, iState *xState);
+
+	virtual void addPlayer(Ogre::Vector3 xPos);
+	virtual void addEnemy(Ogre::Vector3 xPos);
+
+	virtual void movePlayerUp();
+	virtual void movePlayerDown();
+	virtual void movePlayerLeft();
+	virtual void movePlayerRight();
+	virtual void playerShoot();
 };
 
 #endif

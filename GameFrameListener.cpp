@@ -13,9 +13,6 @@ bool GameFrameListener::frameStarted(const  Ogre::FrameEvent& evt)
 	mKeyboard->capture();
 	mMouse->capture();
 
-	if(mKeyboard->isKeyDown(OIS::KC_ESCAPE)) 
-		return false; 
-
 	return mListener->needUpdate(evt);
 }
 

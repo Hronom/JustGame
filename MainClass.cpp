@@ -18,6 +18,9 @@ MainClass::~MainClass()
 	//----------------------------------------------------
 	// 9 удаление
 	//----------------------------------------------------
+	delete mMainManager;
+	mMainManager = 0;
+
 	mMyGUI->shutdown();
 	delete mMyGUI;
 	mMyGUI = 0;   
@@ -61,32 +64,6 @@ bool MainClass::run()
 	initMyGUI();
 	initOIS();
 	mMainManager = new MainManager(mMyGUI, mSceneManager);
-
-	Ogre::ManualObject *manual = new Ogre::ManualObject("Manual");
-
-	manual->begin("BaseWhiteNoLighting", Ogre::RenderOperation::OT_LINE_STRIP);
-
-	manual->position(Ogre::Vector3(0,10,0));
-	manual->position(Ogre::Vector3(10,0,0));
-	manual->position(Ogre::Vector3(0,0,0));
-	manual->position(Ogre::Vector3(0,10,0));
-
-	manual->end();
-
-	manual->convertToMesh("ManualMesh");
-
-	Ogre::Entity* myEntity = mSceneManager->createEntity("EntityOutline", "ManualMesh");
-
-
-
-	//Ogre::Entity* ogreHead = mSceneManager->createEntity("Head", "ogrehead.mesh");
-
-	Ogre::SceneNode* headNode = mSceneManager->getRootSceneNode()->createChildSceneNode();
-	headNode->attachObject(myEntity);
-
-	// Set ambient light
-	mSceneManager->setAmbientLight(Ogre::ColourValue(0.5, 0.5, 0.5));
-
 	initListeners();
 
 	//----------------------------------------------------
@@ -177,6 +154,9 @@ void MainClass::createScene()
 	xViewport->setBackgroundColour(Ogre::ColourValue(0,0,0));
 
 	xCamera->setAspectRatio(Ogre::Real(xViewport->getActualWidth()) / Ogre::Real(xViewport->getActualHeight()));
+
+	// Set ambient light
+	mSceneManager->setAmbientLight(Ogre::ColourValue(0.5, 0.5, 0.5));
 }
 
 void MainClass::initMyGUI()

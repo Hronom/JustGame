@@ -11,6 +11,8 @@ class GUIManager
 {
 private:
 	MyGUI::Gui *mMyGUI;
+	MyGUI::VectorWidgetPtr mCurrentLayoutWidgets;
+
 public:
 	GUIManager(MyGUI::Gui *xMyGUI);
 	~GUIManager();
@@ -22,6 +24,7 @@ public:
 	void GUIManager::keyReleased( const OIS::KeyEvent &arg );
 
 	void loadLayout(std::string xLayoutName);
+	void unloadLayout();
 	void addButtonDelegate(std::string xButtonName, iState *xState);
 };
 

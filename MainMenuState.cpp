@@ -1,9 +1,8 @@
 #include "MainMenuState.h"
 
-MainMenuState::MainMenuState(iCore *xCore, GUIManager *xGUIManager)
+MainMenuState::MainMenuState(iCore *xCore)
 {
 	mCore = xCore;
-	mGUIManager = xGUIManager;
 }
 
 MainMenuState::~MainMenuState()
@@ -12,12 +11,14 @@ MainMenuState::~MainMenuState()
 
 void MainMenuState::enter()
 {
-	mGUIManager->loadLayout("sample.layout");
-	mGUIManager->addButtonDelegate("MyFirstButton", this);
+	mCore->loadGUILayout("MainMenu.layout");
+	mCore->addButtonDelegate("NewGameButton", this);
+	mCore->addButtonDelegate("ExitButton", this);
 }
 
 void MainMenuState::exit()
 {
+	mCore->unloadGUILayout();
 }
 
 void MainMenuState::needUpdate(const Ogre::FrameEvent& evt)
@@ -38,6 +39,7 @@ void MainMenuState::mouseReleased(const OIS::MouseEvent& e, OIS::MouseButtonID i
 
 void MainMenuState::keyPressed(const OIS::KeyEvent& e)
 {
+	if(e.key == OIS::KC_ESCAPE) mCore->needShutdown(); 
 }
 
 void MainMenuState::keyReleased(const OIS::KeyEvent& e)
@@ -46,5 +48,15 @@ void MainMenuState::keyReleased(const OIS::KeyEvent& e)
 
 void MainMenuState::buttonClick(MyGUI::WidgetPtr xSender)
 {
-	mCore->needShutdown();
+	if(xSender->getUserString("ButtonType") == "NewGame")
+	{
+		mCore->needSwitchToStateId(1);
+		return;
+	}
+
+	if(xSender->getUserString("ButtonType") == "Exit")
+	{
+		mCore->needShutdown();
+		return;
+	}
 }

@@ -1,20 +1,21 @@
-#ifndef MAINMENUSTATE_H
-#define MAINMENUSTATE_H
+#ifndef PLAYGAMESTATE_H
+#define PLAYGAMESTATE_H
 
+#include <Ogre.h>
 #include <MyGUI.h>
 #include <OIS\OIS.h>
 
-#include "iState.h"
 #include "iCore.h"
+#include "iState.h"
 
-class MainMenuState: public iState
+class PlayGameState: public iState
 {
 private:
 	iCore *mCore;
 
 public:
-	MainMenuState(iCore *xCore);
-	~MainMenuState();
+	PlayGameState(iCore *xCore);
+	~PlayGameState();
 
 	virtual void enter();
 	virtual void exit();
