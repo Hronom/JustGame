@@ -20,37 +20,19 @@ void ObjectsManager::needUpdate(const Ogre::FrameEvent& evt)
 		mGameObjects[i]->update(evt);
 }
 
-void ObjectsManager::addPlayer(Ogre::Vector3 xPos)
+iControlled* ObjectsManager::addPlayer(Ogre::Vector2 xPos)
 {
 	mPlayer = new Player(mSceneManager, xPos);
 	mGameObjects.push_back(mPlayer);
+
+	return mPlayer;
 }
 
-void ObjectsManager::addEnemy(Ogre::Vector3 xPos)
+void ObjectsManager::addEnemy(Ogre::Vector2 xPos)
 {
 }
 
-void ObjectsManager::movePlayerUp()
+void ObjectsManager::addBullet(Ogre::Vector2 xPos, Ogre::Vector2 xDestination)
 {
-	mPlayer->movePlayerUp();
-}
 
-void ObjectsManager::movePlayerDown()
-{
-	mPlayer->movePlayerDown();
-}
-
-void ObjectsManager::movePlayerLeft()
-{
-	mPlayer->movePlayerLeft();
-}
-
-void ObjectsManager::movePlayerRight()
-{
-	mPlayer->movePlayerRight();
-}
-
-void ObjectsManager::playerShoot()
-{
-	mPlayer->playerShoot();
 }

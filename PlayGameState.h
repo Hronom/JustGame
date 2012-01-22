@@ -2,6 +2,7 @@
 #define PLAYGAMESTATE_H
 
 #include <Ogre.h>
+#include <OGRE\OgreRay.h>
 #include <MyGUI.h>
 #include <OIS\OIS.h>
 
@@ -12,6 +13,7 @@ class PlayGameState: public iState
 {
 private:
 	iCore *mCore;
+	iControlled *mControlledPlayer;
 
 public:
 	PlayGameState(iCore *xCore);

@@ -11,6 +11,7 @@ public:
 
 	virtual void update(const Ogre::FrameEvent& evt) = 0;
 
+	virtual std::string getName() = 0;
 	virtual Ogre::Vector3 getCurrentPos() = 0;
 	virtual void acceptCurrentPos() = 0;
 	virtual void rejectCurrentPos() = 0;

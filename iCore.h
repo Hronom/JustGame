@@ -2,7 +2,10 @@
 #define ICORE_H
 
 #include "iState.h"
-#include <Ogre.h>
+#include "iControlled.h"
+
+#include <OGRE\OgreSceneManager.h>
+#include <OGRE\OgreCamera.h>
 
 class iCore
 {
@@ -17,14 +20,12 @@ public:
 	virtual void unloadGUILayout() = 0;
 	virtual void addButtonDelegate(std::string xButtonName, iState *xState) = 0;
 
-	virtual void addPlayer(Ogre::Vector3 xPos) = 0;
-	virtual void addEnemy(Ogre::Vector3 xPos) = 0;
+	virtual iControlled* addPlayer(Ogre::Vector2 xPos) = 0;
+	virtual void addEnemy(Ogre::Vector2 xPos) = 0;
+	virtual void addBullet(Ogre::Vector2 xPos, Ogre::Vector2 xDestination) = 0;
 
-	virtual void movePlayerUp() = 0;
-	virtual void movePlayerDown() = 0;
-	virtual void movePlayerLeft() = 0;
-	virtual void movePlayerRight() = 0;
-	virtual void playerShoot() = 0;
+	virtual Ogre::SceneManager* getSceneManager() = 0;
+	virtual Ogre::Camera* getCamera() = 0;
 };
 
 #endif

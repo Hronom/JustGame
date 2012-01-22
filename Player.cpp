@@ -1,13 +1,18 @@
 #include "Player.h"
 
-Player::Player(Ogre::SceneManager *xSceneManager, Ogre::Vector3 xPos)
+Player::Player(Ogre::SceneManager *xSceneManager, Ogre::Vector2 xPos)
 {
+	mMoveDirection = Ogre::Vector3::ZERO;
+	mMoveSpeed = 35.0f;
+
+	mLookAt = Ogre::Vector2::ZERO;
+
 	Ogre::ManualObject *xManualObject = new Ogre::ManualObject("Manual");
 	xManualObject->begin("BaseWhiteNoLighting", Ogre::RenderOperation::OT_LINE_STRIP);
-	xManualObject->position(Ogre::Vector3(0,10,0));
-	xManualObject->position(Ogre::Vector3(10,0,0));
-	xManualObject->position(Ogre::Vector3(0,0,0));
-	xManualObject->position(Ogre::Vector3(0,10,0));
+	xManualObject->position(Ogre::Vector3(0,-5,0));
+	xManualObject->position(Ogre::Vector3(0,5,0));
+	xManualObject->position(Ogre::Vector3(13,0,0));
+	xManualObject->position(Ogre::Vector3(0,-5,0));
 	xManualObject->end();
 
 	xManualObject->convertToMesh("PlayerMesh");
@@ -16,14 +21,7 @@ Player::Player(Ogre::SceneManager *xSceneManager, Ogre::Vector3 xPos)
 
 	mPlayerNode = xSceneManager->getRootSceneNode()->createChildSceneNode();
 	mPlayerNode->attachObject(xPlayerEntity);	
-	mPlayerNode->setPosition(xPos);
-
-
-
-
-
-
-	mDirection = Ogre::Vector3::ZERO;
+	mPlayerNode->setPosition(Ogre::Vector3(xPos.x, xPos.y, 0));
 }
 
 Player::~Player()
@@ -32,12 +30,30 @@ Player::~Player()
 
 void Player::update(const Ogre::FrameEvent& evt)
 {
-	Ogre::Real mWalkSpeed = 35.0f;
+	Ogre::Real xMove = mMoveSpeed * evt.timeSinceLastFrame;
+	mPlayerNode->translate(mMoveDirection * xMove, Ogre::Node::TS_LOCAL);
+
+	Ogre::Vector3 xDirection = Ogre::Vector3(mLookAt.x, mLookAt.y, 0) - mPlayerNode->getPosition();
 	
+	Ogre::Vector3 xSrc = mPlayerNode->getOrientation() * Ogre::Vector3::UNIT_X;
+	Ogre::Quaternion xQuat = xSrc.getRotationTo(xDirection);
+	mPlayerNode->rotate(xQuat);
 
-	Ogre::Real move = mWalkSpeed * evt.timeSinceLastFrame;
+	/*Ogre::Vector3 xSrc = mPlayerNode->getOrientation() * Ogre::Vector3::UNIT_X;
+	if ((1.0f + xSrc.dotProduct(xDirection)) < 0.0001f) 
+	{
+		mPlayerNode->yaw(Ogre::Degree(180));
+	}
+	else
+	{
+		Ogre::Quaternion xQuat = xSrc.getRotationTo(xDirection);
+		mPlayerNode->rotate(xQuat);
+	}*/
+}
 
-	mPlayerNode->translate(mDirection * move);
+std::string Player::getName()
+{
+	return "lol"; 
 }
 
 Ogre::Vector3 Player::getCurrentPos()
@@ -58,23 +74,43 @@ Ogre::Quaternion Player::getCurrentOrientation()
 	return mPlayerNode->getOrientation();
 }
 
-void Player::movePlayerUp()
+void Player::moveUp(bool doMove)
 {
-	mDirection = Ogre::Vector3(1,0,0);
+	if(doMove == true)
+		mMoveDirection += Ogre::Vector3(1,0,0);
+	else 
+		mMoveDirection -= Ogre::Vector3(1,0,0);
 }
 
-void Player::movePlayerDown()
+void Player::moveDown(bool doMove)
 {
+	if(doMove == true)
+		mMoveDirection -= Ogre::Vector3(1,0,0);
+	else 
+		mMoveDirection += Ogre::Vector3(1,0,0);
 }
 
-void Player::movePlayerLeft()
+void Player::moveRight(bool doMove)
 {
+	if(doMove == true)
+		mMoveDirection -= Ogre::Vector3(0,1,0);
+	else 
+		mMoveDirection += Ogre::Vector3(0,1,0);
 }
 
-void Player::movePlayerRight()
+void Player::moveLeft(bool doMove)
 {
+	if(doMove == true)
+		mMoveDirection += Ogre::Vector3(0,1,0);
+	else 
+		mMoveDirection -= Ogre::Vector3(0,1,0);
 }
 
-void Player::playerShoot()
+void Player::rotateTo(Ogre::Vector2 xDot)
+{
+	mLookAt = xDot;
+}
+
+void Player::shoot()
 {
 }

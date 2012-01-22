@@ -3,7 +3,6 @@
 #include "MainMenuState.h"
 #include "PlayGameState.h"
 
-
 StateManager::StateManager(iCore *xCore)
 {
 	mStatesMap[0] = new MainMenuState(xCore);
@@ -13,7 +12,6 @@ StateManager::StateManager(iCore *xCore)
 
 	mCurrentState->enter();
 }
-
 
 StateManager::~StateManager()
 {

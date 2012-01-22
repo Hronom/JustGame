@@ -31,6 +31,7 @@ private:
 	Ogre::Root *mRoot;
 	Ogre::RenderWindow *mRenderWindow;
 	Ogre::SceneManager *mSceneManager;
+	Ogre::Camera* mCamera; 
 
 	OIS::InputManager *mInputManager;
 	OIS::Keyboard *mKeyboard;

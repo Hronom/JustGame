@@ -1,12 +1,15 @@
 #include "MainManager.h"
 
-MainManager::MainManager(MyGUI::Gui *xMyGUI, Ogre::SceneManager *xSceneManager)
+MainManager::MainManager(MyGUI::Gui *xMyGUI, Ogre::SceneManager *xSceneManager, Ogre::Camera* xCamera)
 {
 	mNeedShutdown = false;
 
 	mGUIManager = new GUIManager(xMyGUI);
 	mObjectsManager = new ObjectsManager(this, xSceneManager);
 	mStateManager = new StateManager(this);
+
+	mSceneManager = xSceneManager;
+	mCamera = xCamera;
 }
 
 
@@ -85,37 +88,25 @@ void MainManager::addButtonDelegate(std::string xButtonName, iState *xState)
 	mGUIManager->addButtonDelegate(xButtonName, xState);
 }
 
-void MainManager::addPlayer(Ogre::Vector3 xPos)
+iControlled* MainManager::addPlayer(Ogre::Vector2 xPos)
 {
-	mObjectsManager->addPlayer(xPos);
+	return mObjectsManager->addPlayer(xPos);
 }
 
-void MainManager::addEnemy(Ogre::Vector3 xPos)
+void MainManager::addEnemy(Ogre::Vector2 xPos)
 {
 }
 
-void MainManager::movePlayerUp()
+void MainManager::addBullet(Ogre::Vector2 xPos, Ogre::Vector2 xDestination)
 {
-	mObjectsManager->movePlayerUp();
 }
 
-void MainManager::movePlayerDown()
+Ogre::SceneManager* MainManager::getSceneManager()
 {
-	mObjectsManager->movePlayerDown();
+	return mSceneManager;
 }
 
-void MainManager::movePlayerLeft()
+Ogre::Camera* MainManager::getCamera()
 {
-	mObjectsManager->movePlayerLeft();
+	return mCamera;
 }
-
-void MainManager::movePlayerRight()
-{
-	mObjectsManager->movePlayerRight();
-}
-
-void MainManager::playerShoot()
-{
-	mObjectsManager->playerShoot();
-}
-

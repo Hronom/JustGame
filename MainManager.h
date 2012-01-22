@@ -6,6 +6,7 @@
 #include "ObjectsManager.h"
 #include "StateManager.h"
 #include "iCore.h"
+#include "iControlled.h"
 
 #include <MyGUI.h>
 #include <OgreSceneManager.h>
@@ -18,8 +19,11 @@ private:
 	ObjectsManager *mObjectsManager;
 	StateManager *mStateManager;
 
+	Ogre::SceneManager *mSceneManager;
+	Ogre::Camera *mCamera;
+
 public:
-	MainManager(MyGUI::Gui *xMyGUI, Ogre::SceneManager *xSceneManager);
+	MainManager(MyGUI::Gui *xMyGUI, Ogre::SceneManager *xSceneManager, Ogre::Camera* xCamera);
 	~MainManager();
 
 	virtual bool needUpdate(const Ogre::FrameEvent& evt);
@@ -39,14 +43,12 @@ public:
 	virtual void unloadGUILayout();
 	virtual void addButtonDelegate(std::string xButtonName, iState *xState);
 
-	virtual void addPlayer(Ogre::Vector3 xPos);
-	virtual void addEnemy(Ogre::Vector3 xPos);
+	virtual iControlled* addPlayer(Ogre::Vector2 xPos);
+	virtual void addEnemy(Ogre::Vector2 xPos);
+	virtual void addBullet(Ogre::Vector2 xPos, Ogre::Vector2 xDestination);
 
-	virtual void movePlayerUp();
-	virtual void movePlayerDown();
-	virtual void movePlayerLeft();
-	virtual void movePlayerRight();
-	virtual void playerShoot();
+	virtual Ogre::SceneManager* getSceneManager();
+	virtual Ogre::Camera* getCamera();
 };
 
 #endif

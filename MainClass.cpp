@@ -63,7 +63,7 @@ bool MainClass::run()
 	createScene();
 	initMyGUI();
 	initOIS();
-	mMainManager = new MainManager(mMyGUI, mSceneManager);
+	mMainManager = new MainManager(mMyGUI, mSceneManager, mCamera);
 	initListeners();
 
 	//----------------------------------------------------
@@ -142,18 +142,18 @@ void MainClass::createScene()
 	//----------------------------------------------------- 
 	// 5 Создание камеры
 	//----------------------------------------------------- 
-	Ogre::Camera* xCamera = mSceneManager->createCamera("MainCamera"); 
-	xCamera->setPosition(Ogre::Vector3(0,0,80));
-	xCamera->lookAt(Ogre::Vector3(0,0,0));
-	xCamera->setNearClipDistance(5);
+	mCamera = mSceneManager->createCamera("MainCamera"); 
+	mCamera->setPosition(Ogre::Vector3(0,0,100));
+	mCamera->lookAt(Ogre::Vector3(0,0,0));
+	mCamera->setNearClipDistance(5);
 
 	//----------------------------------------------------- 
 	// 6 Создание вьюпорта
 	//----------------------------------------------------- 
-	Ogre::Viewport* xViewport = mRenderWindow->addViewport(xCamera);
+	Ogre::Viewport* xViewport = mRenderWindow->addViewport(mCamera);
 	xViewport->setBackgroundColour(Ogre::ColourValue(0,0,0));
 
-	xCamera->setAspectRatio(Ogre::Real(xViewport->getActualWidth()) / Ogre::Real(xViewport->getActualHeight()));
+	mCamera->setAspectRatio(Ogre::Real(xViewport->getActualWidth()) / Ogre::Real(xViewport->getActualHeight()));
 
 	// Set ambient light
 	mSceneManager->setAmbientLight(Ogre::ColourValue(0.5, 0.5, 0.5));

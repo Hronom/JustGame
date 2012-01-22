@@ -5,6 +5,7 @@
 
 #include "iCore.h"
 #include "iGameObject.h"
+#include "iControlled.h"
 #include "Player.h"
 //#include "Enemy.h"
 
@@ -24,14 +25,9 @@ public:
 
 	virtual void needUpdate(const Ogre::FrameEvent& evt);
 
-	void addPlayer(Ogre::Vector3 xPos);
-	void addEnemy(Ogre::Vector3 xPos);
-
-	void movePlayerUp();
-	void movePlayerDown();
-	void movePlayerLeft();
-	void movePlayerRight();
-	void playerShoot();
+	iControlled* addPlayer(Ogre::Vector2 xPos);
+	void addEnemy(Ogre::Vector2 xPos);
+	void addBullet(Ogre::Vector2 xPos, Ogre::Vector2 xDestination) ;
 };
 
 #endif
