@@ -2,16 +2,20 @@
 #define OBJECTSMANAGER_H
 
 #include <OGRE\OgreSceneManager.h>
+#include <sstream>
 
 #include "iCore.h"
 #include "iGameObject.h"
 #include "iControlled.h"
 #include "Player.h"
 //#include "Enemy.h"
+#include "Bullet.h"
+
 
 class ObjectsManager
 {
 private:
+	int mBulletsCount;
 	Ogre::SceneManager *mSceneManager;
 
 	iCore *mCore;

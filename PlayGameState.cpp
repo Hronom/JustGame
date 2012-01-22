@@ -34,10 +34,12 @@ void PlayGameState::mouseMoved(const OIS::MouseEvent& e)
 
 void PlayGameState::mousePressed(const OIS::MouseEvent& e, OIS::MouseButtonID id)
 {
+	if(id == OIS::MB_Left) mControlledPlayer->shoot(true);
 }
 
 void PlayGameState::mouseReleased(const OIS::MouseEvent& e, OIS::MouseButtonID id)
 {
+	if(id == OIS::MB_Left) mControlledPlayer->shoot(false);
 }
 
 void PlayGameState::keyPressed(const OIS::KeyEvent& e)

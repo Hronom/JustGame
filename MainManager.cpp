@@ -99,6 +99,7 @@ void MainManager::addEnemy(Ogre::Vector2 xPos)
 
 void MainManager::addBullet(Ogre::Vector2 xPos, Ogre::Vector2 xDestination)
 {
+	mObjectsManager->addBullet(xPos, xDestination);
 }
 
 Ogre::SceneManager* MainManager::getSceneManager()

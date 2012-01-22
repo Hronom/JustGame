@@ -1,12 +1,12 @@
-#ifndef PLAYER_H
-#define PLAYER_H
+#ifndef ENEMY_H
+#define ENEMY_H
 
 #include <Ogre.h>
+#include "iCore.h"
 #include "iGameObject.h"
 #include "iControlled.h"
-#include "iCore.h"
 
-class Player: public iGameObject, public iControlled
+class Enemy: public iGameObject, public iControlled
 {
 private:
 	iCore *mCore;
@@ -16,19 +16,14 @@ private:
 
 	Ogre::Vector2 mLookAt;
 
-	bool isCanShoot;
-	Ogre::Real mShootDelay;
-	Ogre::Real mTimeAfterLastShoot;
-
 public:
-	Player(iCore *xCore, Ogre::Vector2 xPos);
-	~Player();
+	Enemy(iCore *xCore, std::string xEnemyName, Ogre::Vector2 xPos);
+	~Enemy();
 
 	//-----------------------------------------------------
 	// iGameObject
 	//-----------------------------------------------------
 	virtual void update(const Ogre::FrameEvent& evt);
-
 	virtual std::string getName();
 	virtual Ogre::Vector3 getCurrentPos();
 	virtual void acceptCurrentPos();

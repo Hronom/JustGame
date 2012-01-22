@@ -16,7 +16,7 @@ public:
 
 	virtual void rotateTo(Ogre::Vector2 xDot) = 0;
 
-	virtual void shoot() = 0;
+	virtual void shoot(bool doShoot) = 0;
 };
 
 #endif

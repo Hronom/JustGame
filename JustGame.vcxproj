@@ -94,6 +94,8 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Bullet.cpp" />
+    <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="GameFrameListener.cpp" />
     <ClCompile Include="GameKeyListener.cpp" />
     <ClCompile Include="GameWindowEventListener.cpp" />
@@ -109,6 +111,8 @@
     <ClCompile Include="StateManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Bullet.h" />
+    <ClInclude Include="Enemy.h" />
     <ClInclude Include="iControlled.h" />
     <ClInclude Include="iCore.h" />
     <ClInclude Include="GameFrameListener.h" />

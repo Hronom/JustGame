@@ -1,12 +1,14 @@
-#ifndef PLAYER_H
-#define PLAYER_H
+#ifndef BULLET_H
+#define BULLET_H
 
-#include <Ogre.h>
 #include "iGameObject.h"
 #include "iControlled.h"
+
+#include <Ogre.h>
+#include <string>
 #include "iCore.h"
 
-class Player: public iGameObject, public iControlled
+class Bullet: public iGameObject, public iControlled
 {
 private:
 	iCore *mCore;
@@ -16,13 +18,9 @@ private:
 
 	Ogre::Vector2 mLookAt;
 
-	bool isCanShoot;
-	Ogre::Real mShootDelay;
-	Ogre::Real mTimeAfterLastShoot;
-
 public:
-	Player(iCore *xCore, Ogre::Vector2 xPos);
-	~Player();
+	Bullet(iCore *xCore, std::string xBulletName, Ogre::Vector2 xPos, Ogre::Vector2 xDestination);
+	~Bullet();
 
 	//-----------------------------------------------------
 	// iGameObject
@@ -49,3 +47,4 @@ public:
 };
 
 #endif
+
