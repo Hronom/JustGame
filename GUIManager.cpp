@@ -40,7 +40,7 @@ void GUIManager::keyReleased( const OIS::KeyEvent &arg )
 	//MyGUI::InputManager::getInstance().injectKeyRelease(MyGUI::KeyCode::Enum(arg.key));
 }
 
-void GUIManager::loadLayout(std::string xLayoutName)
+void GUIManager::loadLayout(Ogre::String xLayoutName)
 {
 	unloadLayout();
 	mCurrentLayoutWidgets = MyGUI::LayoutManager::getInstance().loadLayout(xLayoutName);
@@ -55,7 +55,7 @@ void GUIManager::unloadLayout()
 	}
 }
 
-void GUIManager::addButtonDelegate(std::string xButtonName, iState *xState)
+void GUIManager::addButtonDelegate(Ogre::String xButtonName, iState *xState)
 {
 	MyGUI::ButtonPtr xButton = mMyGUI->findWidget<MyGUI::Button>(xButtonName);
 	xButton->eventMouseButtonClick += MyGUI::newDelegate(xState, &iState::buttonClick);

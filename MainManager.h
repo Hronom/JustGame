@@ -1,15 +1,15 @@
 #ifndef MAINMANAGER_H
 #define MAINMANAGER_H
 
+#include <MyGUI.h>
+#include <OgreSceneManager.h>
+
+#include "iCore.h"
 #include "iMainListener.h"
 #include "GUIManager.h"
 #include "ObjectsManager.h"
 #include "StateManager.h"
-#include "iCore.h"
-#include "iControlled.h"
-
-#include <MyGUI.h>
-#include <OgreSceneManager.h>
+#include "GameObject.h"
 
 class MainManager: public iMainListener, public iCore
 {
@@ -39,13 +39,13 @@ public:
 	virtual void needSwitchToStateId(int xStateId);
 	virtual void needShutdown();
 
-	virtual void loadGUILayout(std::string xLayoutName);
+	virtual void loadGUILayout(Ogre::String xLayoutName);
 	virtual void unloadGUILayout();
-	virtual void addButtonDelegate(std::string xButtonName, iState *xState);
+	virtual void addButtonDelegate(Ogre::String xButtonName, iState *xState);
 
-	virtual iControlled* addPlayer(Ogre::Vector2 xPos);
-	virtual void addEnemy(Ogre::Vector2 xPos);
-	virtual void addBullet(Ogre::Vector2 xPos, Ogre::Vector2 xDestination);
+	virtual GameObject* addPlayer(Ogre::Vector2 xPos);
+	virtual GameObject* addEnemy(Ogre::Vector2 xPos);
+	virtual GameObject* addBullet(Ogre::Vector2 xPos, Ogre::Vector2 xDestination);
 
 	virtual Ogre::SceneManager* getSceneManager();
 	virtual Ogre::Camera* getCamera();

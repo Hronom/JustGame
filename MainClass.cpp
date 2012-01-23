@@ -179,7 +179,7 @@ void MainClass::initOIS()
 	//говорим OIS какое окно надо отслеживать
 	mRenderWindow->getCustomAttribute("WINDOW", &windowHnd);
 	windowHndStr << windowHnd;
-	xParamList.insert(std::make_pair(std::string("WINDOW"), windowHndStr.str()));
+	xParamList.insert(std::make_pair(Ogre::String("WINDOW"), windowHndStr.str()));
 
 	//Настройка менеджера, клавы и мыши для захвата
 	mInputManager = OIS::InputManager::createInputSystem(xParamList);

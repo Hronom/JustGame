@@ -73,7 +73,7 @@ void MainManager::needShutdown()
 	mNeedShutdown = true;
 }
 
-void MainManager::loadGUILayout(std::string xLayoutName)
+void MainManager::loadGUILayout(Ogre::String xLayoutName)
 {
 	mGUIManager->loadLayout(xLayoutName);
 }
@@ -83,23 +83,24 @@ void MainManager::unloadGUILayout()
 	mGUIManager->unloadLayout();
 }
 
-void MainManager::addButtonDelegate(std::string xButtonName, iState *xState)
+void MainManager::addButtonDelegate(Ogre::String xButtonName, iState *xState)
 {
 	mGUIManager->addButtonDelegate(xButtonName, xState);
 }
 
-iControlled* MainManager::addPlayer(Ogre::Vector2 xPos)
+GameObject* MainManager::addPlayer(Ogre::Vector2 xPos)
 {
 	return mObjectsManager->addPlayer(xPos);
 }
 
-void MainManager::addEnemy(Ogre::Vector2 xPos)
+GameObject* MainManager::addEnemy(Ogre::Vector2 xPos)
 {
+	return mObjectsManager->addEnemy(xPos);
 }
 
-void MainManager::addBullet(Ogre::Vector2 xPos, Ogre::Vector2 xDestination)
+GameObject* MainManager::addBullet(Ogre::Vector2 xPos, Ogre::Vector2 xDestination)
 {
-	mObjectsManager->addBullet(xPos, xDestination);
+	return mObjectsManager->addBullet(xPos, xDestination);
 }
 
 Ogre::SceneManager* MainManager::getSceneManager()

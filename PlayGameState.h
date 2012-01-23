@@ -8,12 +8,15 @@
 
 #include "iCore.h"
 #include "iState.h"
+#include "GameObject.h"
 
 class PlayGameState: public iState
 {
 private:
 	iCore *mCore;
-	iControlled *mControlledPlayer;
+	GameObject *mPlayer;
+
+	std::vector<GameObject*> mEnemys;
 
 public:
 	PlayGameState(iCore *xCore);

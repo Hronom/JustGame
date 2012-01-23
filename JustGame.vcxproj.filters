@@ -59,6 +59,9 @@
     <ClCompile Include="Enemy.cpp">
       <Filter>Objects</Filter>
     </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameWindowEventListener.h">
@@ -101,19 +104,16 @@
     <ClInclude Include="PlayGameState.h">
       <Filter>GameStates</Filter>
     </ClInclude>
-    <ClInclude Include="iGameObject.h">
-      <Filter>Interfaces</Filter>
-    </ClInclude>
     <ClInclude Include="Player.h">
       <Filter>Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="iControlled.h">
-      <Filter>Interfaces</Filter>
     </ClInclude>
     <ClInclude Include="Bullet.h">
       <Filter>Objects</Filter>
     </ClInclude>
     <ClInclude Include="Enemy.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
       <Filter>Objects</Filter>
     </ClInclude>
   </ItemGroup>

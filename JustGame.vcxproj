@@ -98,6 +98,7 @@
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="GameFrameListener.cpp" />
     <ClCompile Include="GameKeyListener.cpp" />
+    <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameWindowEventListener.cpp" />
     <ClCompile Include="GUIManager.cpp" />
     <ClCompile Include="main.cpp" />
@@ -113,13 +114,12 @@
   <ItemGroup>
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="Enemy.h" />
-    <ClInclude Include="iControlled.h" />
+    <ClInclude Include="GameObject.h" />
     <ClInclude Include="iCore.h" />
     <ClInclude Include="GameFrameListener.h" />
     <ClInclude Include="GameKeyListener.h" />
     <ClInclude Include="GameWindowEventListener.h" />
     <ClInclude Include="GUIManager.h" />
-    <ClInclude Include="iGameObject.h" />
     <ClInclude Include="iMainListener.h" />
     <ClInclude Include="MainClass.h" />
     <ClInclude Include="GameMouseListener.h" />

@@ -23,9 +23,9 @@ public:
 	void GUIManager::keyPressed( const OIS::KeyEvent &arg );
 	void GUIManager::keyReleased( const OIS::KeyEvent &arg );
 
-	void loadLayout(std::string xLayoutName);
+	void loadLayout(Ogre::String xLayoutName);
 	void unloadLayout();
-	void addButtonDelegate(std::string xButtonName, iState *xState);
+	void addButtonDelegate(Ogre::String xButtonName, iState *xState);
 };
 
 #endif
