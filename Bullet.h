@@ -9,7 +9,7 @@
 class Bullet: public GameObject
 {
 public:
-	Bullet(iCore *xCore, Ogre::String xObjectName, Ogre::Vector2 xPos, Ogre::Vector2 xDestination);
+	Bullet(iCore *xCore, iGameObjectsListener *xGameObjectsListener, Ogre::String xObjectName, Ogre::Vector2 xPos, Ogre::Vector2 xDestination);
 	~Bullet();
 
 	virtual void update(const Ogre::FrameEvent& evt);

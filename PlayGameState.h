@@ -2,21 +2,29 @@
 #define PLAYGAMESTATE_H
 
 #include <Ogre.h>
-#include <OGRE\OgreRay.h>
 #include <MyGUI.h>
 #include <OIS\OIS.h>
 
 #include "iCore.h"
 #include "iState.h"
+#include "iGameObjectsListener.h"
 #include "GameObject.h"
+#include "Player.h"
+#include "Enemy.h"
+#include "Bullet.h"
 
-class PlayGameState: public iState
+class PlayGameState: public iState, public iGameObjectsListener
 {
 private:
 	iCore *mCore;
+
 	GameObject *mPlayer;
 
-	std::vector<GameObject*> mEnemys;
+	int mEnemyCount;
+	int mBulletsCount;
+
+	std::vector<GameObject*> mUnits;
+	std::vector<GameObject*> mBullets;
 
 public:
 	PlayGameState(iCore *xCore);
@@ -31,8 +39,11 @@ public:
 	virtual void mouseReleased(const OIS::MouseEvent& e, OIS::MouseButtonID id);
 	virtual	void keyPressed(const OIS::KeyEvent& e);
 	virtual void keyReleased(const OIS::KeyEvent& e);
-
 	virtual void buttonClick(MyGUI::WidgetPtr xSender);
+
+	void setPlayer(Ogre::Vector2 xPos);
+	void addEnemy(Ogre::Vector2 xPos);
+	virtual void addBullet(Ogre::Vector2 xPos, Ogre::Vector2 xDestination);
 };
 
 #endif

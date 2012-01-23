@@ -5,7 +5,6 @@ MainManager::MainManager(MyGUI::Gui *xMyGUI, Ogre::SceneManager *xSceneManager, 
 	mNeedShutdown = false;
 
 	mGUIManager = new GUIManager(xMyGUI);
-	mObjectsManager = new ObjectsManager(this, xSceneManager);
 	mStateManager = new StateManager(this);
 
 	mSceneManager = xSceneManager;
@@ -17,16 +16,13 @@ MainManager::~MainManager()
 {
 	delete mStateManager;
 	mStateManager = 0;
-	delete mObjectsManager;
-	mObjectsManager = 0;
 	delete mGUIManager;
-	mGUIManager = 0;	
+	mGUIManager = 0;
 }
 
 bool MainManager::needUpdate(const Ogre::FrameEvent& evt)
 {
 	mStateManager->needUpdate(evt);
-	mObjectsManager->needUpdate(evt);
 	return !mNeedShutdown;
 }
 
@@ -86,21 +82,6 @@ void MainManager::unloadGUILayout()
 void MainManager::addButtonDelegate(Ogre::String xButtonName, iState *xState)
 {
 	mGUIManager->addButtonDelegate(xButtonName, xState);
-}
-
-GameObject* MainManager::addPlayer(Ogre::Vector2 xPos)
-{
-	return mObjectsManager->addPlayer(xPos);
-}
-
-GameObject* MainManager::addEnemy(Ogre::Vector2 xPos)
-{
-	return mObjectsManager->addEnemy(xPos);
-}
-
-GameObject* MainManager::addBullet(Ogre::Vector2 xPos, Ogre::Vector2 xDestination)
-{
-	return mObjectsManager->addBullet(xPos, xDestination);
 }
 
 Ogre::SceneManager* MainManager::getSceneManager()

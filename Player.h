@@ -8,7 +8,7 @@
 class Player: public GameObject
 {
 public:
-	Player(iCore *xCore, Ogre::String xObjectName, Ogre::Vector2 xPos);
+	Player(iCore *xCore, iGameObjectsListener *xGameObjectsListener, Ogre::String xObjectName, Ogre::Vector2 xPos);
 	~Player();
 };
 

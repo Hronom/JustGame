@@ -20,10 +20,6 @@ public:
 	virtual void unloadGUILayout() = 0;
 	virtual void addButtonDelegate(Ogre::String xButtonName, iState *xState) = 0;
 
-	virtual GameObject* addPlayer(Ogre::Vector2 xPos) = 0;
-	virtual GameObject* addEnemy(Ogre::Vector2 xPos) = 0;
-	virtual GameObject* addBullet(Ogre::Vector2 xPos, Ogre::Vector2 xDestination) = 0;
-
 	virtual Ogre::SceneManager* getSceneManager() = 0;
 	virtual Ogre::Camera* getCamera() = 0;
 };

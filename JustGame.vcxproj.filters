@@ -35,9 +35,6 @@
     <ClCompile Include="StateManager.cpp">
       <Filter>Managers</Filter>
     </ClCompile>
-    <ClCompile Include="ObjectsManager.cpp">
-      <Filter>Managers</Filter>
-    </ClCompile>
     <ClCompile Include="MainMenuState.cpp">
       <Filter>GameStates</Filter>
     </ClCompile>
@@ -80,9 +77,6 @@
     <ClInclude Include="StateManager.h">
       <Filter>Managers</Filter>
     </ClInclude>
-    <ClInclude Include="ObjectsManager.h">
-      <Filter>Managers</Filter>
-    </ClInclude>
     <ClInclude Include="MainMenuState.h">
       <Filter>GameStates</Filter>
     </ClInclude>
@@ -115,6 +109,9 @@
     </ClInclude>
     <ClInclude Include="GameObject.h">
       <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="iGameObjectsListener.h">
+      <Filter>Interfaces</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -3,6 +3,9 @@
 PlayGameState::PlayGameState(iCore *xCore)
 {
 	mCore = xCore;
+
+	mEnemyCount = 0;
+	mBulletsCount = 0;
 }
 
 PlayGameState::~PlayGameState()
@@ -11,15 +14,11 @@ PlayGameState::~PlayGameState()
 
 void PlayGameState::enter()
 {
-	mPlayer = mCore->addPlayer(Ogre::Vector2(0,0));
+	setPlayer(Ogre::Vector2(0,0));
 
-	GameObject *xEnemy;
-	xEnemy = mCore->addEnemy(Ogre::Vector2( ((rand()%30)+1), ((rand()%30)+1)));
-	mEnemys.push_back(xEnemy);
-	xEnemy = mCore->addEnemy(Ogre::Vector2( ((rand()%30)+1), ((rand()%30)+1)));
-	mEnemys.push_back(xEnemy);
-	xEnemy = mCore->addEnemy(Ogre::Vector2( ((rand()%30)+1), ((rand()%30)+1)));
-	mEnemys.push_back(xEnemy);
+	addEnemy(Ogre::Vector2(((rand()%50)+1), ((rand()%50)+1)));
+	addEnemy(Ogre::Vector2(((rand()%50)+1), ((rand()%50)+1)));
+	addEnemy(Ogre::Vector2(((rand()%50)+1), ((rand()%50)+1)));
 }
 
 void PlayGameState::exit()
@@ -28,19 +27,40 @@ void PlayGameState::exit()
 
 void PlayGameState::needUpdate(const Ogre::FrameEvent& evt)
 {
-	for(int i=0; i<mEnemys.size(); i++)
-	{
-		mEnemys[i]->rotateTo(mPlayer->getCurrentPos());
+	// Обновление игрока
+	mPlayer->update(evt);
 
-		if(mPlayer->getCurrentPos().distance(mEnemys[i]->getCurrentPos()) > 33.3f) 
+	// Установка нового положения камеры
+	Ogre::Vector2 xPlayerPos;
+	xPlayerPos = mPlayer->getCurrentPos();
+
+	Ogre::Vector3 xNewCameraPos;
+	xNewCameraPos = mCore->getCamera()->getPosition();
+	xNewCameraPos.x = xPlayerPos.x;
+	xNewCameraPos.y = xPlayerPos.y;
+
+	mCore->getCamera()->setPosition(xNewCameraPos);
+
+	// Обновление пуль
+	for(int i=0; i<mBullets.size(); i++)
+		mBullets[i]->update(evt);
+
+	// Обновление юнитов
+	for(int i=0; i<mUnits.size(); i++)
+	{
+		mUnits[i]->update(evt);
+
+		mUnits[i]->rotateTo(mPlayer->getCurrentPos());
+
+		if(mPlayer->getCurrentPos().distance(mUnits[i]->getCurrentPos()) > 33.3f) 
 		{
-			mEnemys[i]->shoot(false);
-			mEnemys[i]->moveUp(true);
+			mUnits[i]->shoot(false);
+			mUnits[i]->moveUp(true);
 		}
 		else
 		{
-			mEnemys[i]->moveUp(false);
-			mEnemys[i]->shoot(true);
+			mUnits[i]->moveUp(false);
+			mUnits[i]->shoot(true);
 		}		
 	}
 }
@@ -110,4 +130,31 @@ void PlayGameState::keyReleased(const OIS::KeyEvent& e)
 
 void PlayGameState::buttonClick(MyGUI::WidgetPtr xSender)
 {
+}
+
+void PlayGameState::setPlayer(Ogre::Vector2 xPos)
+{
+	mPlayer = new Player(mCore, this, "Player", xPos);
+}
+
+void PlayGameState::addEnemy(Ogre::Vector2 xPos)
+{
+	mEnemyCount++;
+	Ogre::String xEnemyName;
+	xEnemyName = "Enemy" + Ogre::StringConverter::toString(mEnemyCount);
+
+	Enemy *xEnemy;
+	xEnemy = new Enemy(mCore, this, xEnemyName, xPos);
+	mUnits.push_back(xEnemy);
+}
+
+void PlayGameState::addBullet(Ogre::Vector2 xPos, Ogre::Vector2 xDestination)
+{
+	mBulletsCount++;
+	Ogre::String xBulletName;
+	xBulletName = "Bullet" + Ogre::StringConverter::toString(mBulletsCount);
+
+	Bullet *xBullet;
+	xBullet = new Bullet(mCore, this, xBulletName, xPos, xDestination);
+	mBullets.push_back(xBullet);
 }

@@ -1,22 +1,24 @@
 #include "GameObject.h"
 
 #include "iCore.h"
+#include "iGameObjectsListener.h"
 
-GameObject::GameObject(iCore *xCore, Ogre::String xObjectName)
+GameObject::GameObject(iCore *xCore, iGameObjectsListener *xGameObjectsListener, Ogre::String xObjectName)
 {
 	mCore = xCore;
-
-	mObjectNode = mCore->getSceneManager()->getRootSceneNode()->createChildSceneNode(xObjectName+"_Node");
-
-	mMoveDirection = Ogre::Vector3::ZERO;
-	mMoveSpeed = 0;
-	mLookAt = Ogre::Vector2::ZERO;
+	mGameObjectsListener = xGameObjectsListener;
 
 	mObjectName = xObjectName;
-	mDamage = 0;
 	mHealthCount = 0;
-	mShootDelay = 0;
+	mDamage = 0;
+	mMoveSpeed = 0;
+
+	mObjectNode = mCore->getSceneManager()->getRootSceneNode()->createChildSceneNode(xObjectName+"_Node");
+	mMoveDirection = Ogre::Vector3::ZERO;
+	mDestinationDot = Ogre::Vector2::ZERO;
+
 	isCanShoot = false;
+	mShootDelay = 0;
 	mTimeAfterLastShoot = mShootDelay;
 }
 
@@ -31,13 +33,13 @@ void GameObject::update(const Ogre::FrameEvent& evt)
 	Ogre::Real xMove = mMoveSpeed * evt.timeSinceLastFrame;
 	mObjectNode->translate(mMoveDirection * xMove, Ogre::Node::TS_LOCAL);
 
+
+
 	// ROTATE
-	Ogre::Vector3 xDirection = Ogre::Vector3(mLookAt.x, mLookAt.y, 0) - mObjectNode->getPosition();
-	//xDirection.x = 0;
+	Ogre::Vector3 xDirection = Ogre::Vector3(mDestinationDot.x, mDestinationDot.y, 0) - mObjectNode->getPosition();
 	xDirection.z = 0;
 
 	Ogre::Vector3 xSrc = mObjectNode->getOrientation() * Ogre::Vector3::UNIT_X;
-	//xSrc.x = 0;
 	xSrc.z = 0;
 	xSrc.normalise();
 
@@ -52,6 +54,7 @@ void GameObject::update(const Ogre::FrameEvent& evt)
 	}
 
 
+
 	// SHOOT!!!
 	if(isCanShoot == true)
 		if(mTimeAfterLastShoot >= mShootDelay)
@@ -60,7 +63,7 @@ void GameObject::update(const Ogre::FrameEvent& evt)
 			Ogre::Vector2 xPos;
 			xPos.x = xPosObject.x;
 			xPos.y = xPosObject.y;
-			mCore->addBullet(xPos, mLookAt);
+			mGameObjectsListener->addBullet(xPos, mDestinationDot);
 			mTimeAfterLastShoot=0;
 		}
 		else
@@ -74,17 +77,9 @@ Ogre::String GameObject::getObjectName()
 	return mObjectName; 
 }
 
-Ogre::Vector2 GameObject::getCurrentPos()
+int GameObject::getCurrentHealth()
 {
-	Ogre::Vector3 xVector3Pos;
-	Ogre::Vector2 xVector2Pos;
-
-	xVector3Pos = mObjectNode->getPosition();
-
-	xVector2Pos.x = xVector3Pos.x;
-	xVector2Pos.y = xVector3Pos.y;
-
-	return xVector2Pos;
+	return mHealthCount;
 }
 
 int GameObject::getDamage()
@@ -97,9 +92,17 @@ void GameObject::doDamage(int xDamage)
 	mHealthCount -= xDamage;
 }
 
-int GameObject::getCurrentHealth()
+Ogre::Vector2 GameObject::getCurrentPos()
 {
-	return mHealthCount;
+	Ogre::Vector3 xVector3Pos;
+	Ogre::Vector2 xVector2Pos;
+
+	xVector3Pos = mObjectNode->getPosition();
+
+	xVector2Pos.x = xVector3Pos.x;
+	xVector2Pos.y = xVector3Pos.y;
+
+	return xVector2Pos;
 }
 
 void GameObject::moveUp(bool doMove)
@@ -134,9 +137,9 @@ void GameObject::moveLeft(bool doMove)
 		mMoveDirection.y = 0;
 }
 
-void GameObject::rotateTo(Ogre::Vector2 xDot)
+void GameObject::rotateTo(Ogre::Vector2 xDestinationDot)
 {
-	mLookAt = xDot;
+	mDestinationDot = xDestinationDot;
 }
 
 void GameObject::shoot(bool doShoot)
