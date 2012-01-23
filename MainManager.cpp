@@ -4,11 +4,11 @@ MainManager::MainManager(MyGUI::Gui *xMyGUI, Ogre::SceneManager *xSceneManager, 
 {
 	mNeedShutdown = false;
 
-	mGUIManager = new GUIManager(xMyGUI);
-	mStateManager = new StateManager(this);
-
 	mSceneManager = xSceneManager;
 	mCamera = xCamera;
+
+	mGUIManager = new GUIManager(xMyGUI);
+	mStateManager = new StateManager(this);
 }
 
 

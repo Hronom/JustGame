@@ -16,6 +16,7 @@ Enemy::Enemy(iCore *xCore, iGameObjectsListener *xGameObjectsListener, Ogre::Str
 
 	mObjectRadius = 7;
 
+	Ogre::ColourValue xColor = Ogre::ColourValue(0.0, 0.0, 1.0, 0.0);
 	mManualObject = new Ogre::ManualObject(mObjectName+"_Manual");
 	// accuracy is the count of points (and lines).
 	// Higher values make the circle smoother, but may slowdown the performance.
@@ -26,6 +27,7 @@ Enemy::Enemy(iCore *xCore, iGameObjectsListener *xGameObjectsListener, Ogre::Str
 	for(float xTheta = 0; xTheta <= 2 * Ogre::Math::PI; xTheta += Ogre::Math::PI / xAccuracy) 
 	{
 		mManualObject->position(mObjectRadius * cos(xTheta), mObjectRadius * sin(xTheta), 0);
+		mManualObject->colour(xColor);
 		mManualObject->index(xPoint_index++);
 	}
 	mManualObject->index(0); // Rejoins the last point to the first.

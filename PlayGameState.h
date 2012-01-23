@@ -20,6 +20,9 @@ private:
 
 	GameObject *mPlayer;
 
+	Ogre::ManualObject *mGridManualObject;
+	Ogre::SceneNode *mGridSceneNode;
+
 	int mEnemyCount;
 	int mBulletsCount;
 

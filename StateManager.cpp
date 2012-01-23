@@ -19,7 +19,7 @@ StateManager::StateManager(iCore *xCore)
 
 StateManager::~StateManager()
 {
-	for(int i=0; i < mStatesMap.size(); i++)
+	for(unsigned i=0; i < mStatesMap.size(); i++)
 	{
 		mStatesMap[i]->exit();
 
