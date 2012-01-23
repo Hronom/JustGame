@@ -8,6 +8,8 @@
 class Enemy: public GameObject
 {
 private:
+	Ogre::ManualObject *mManualObject;
+	Ogre::Entity *mObjectEntity;
 	Ogre::Real mTimeBeforeDelete;
 
 public:

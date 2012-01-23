@@ -2,11 +2,15 @@
 
 #include "MainMenuState.h"
 #include "PlayGameState.h"
+#include "WinState.h"
+#include "LoseState.h"
 
 StateManager::StateManager(iCore *xCore)
 {
 	mStatesMap[0] = new MainMenuState(xCore);
 	mStatesMap[1] = new PlayGameState(xCore);
+	mStatesMap[2] = new WinState(xCore);
+	mStatesMap[3] = new LoseState(xCore);
 
 	mCurrentState = mStatesMap[0];
 

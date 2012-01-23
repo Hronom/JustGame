@@ -23,6 +23,26 @@ void PlayGameState::enter()
 
 void PlayGameState::exit()
 {
+	mEnemyCount = 0;
+	mBulletsCount = 0;
+
+	if(mPlayer != 0)
+	{
+		delete mPlayer;
+		mPlayer = 0;
+	}
+
+	for(int i=0; i<mUnits.size(); i++)
+		delete mUnits[i];
+	mUnits.clear();
+
+	for(int i=0; i<mBullets.size(); i++)
+		delete mBullets[i];
+	mBullets.clear();
+
+	for(int i=0; i<mForDelete.size(); i++)
+		delete mForDelete[i];
+	mForDelete.clear();
 }
 
 void PlayGameState::needUpdate(const Ogre::FrameEvent& evt)
@@ -90,6 +110,18 @@ void PlayGameState::needUpdate(const Ogre::FrameEvent& evt)
 			delete mForDelete[i];
 			mForDelete.erase(mForDelete.begin() + i);
 		}
+	}
+
+	if(mPlayer->getCurrentHealth() <= 0)
+	{
+		mCore->needSwitchToStateId(3);
+		return;
+	}
+
+	if(mUnits.size() <= 0)
+	{
+		mCore->needSwitchToStateId(2);
+		return;
 	}
 }
 

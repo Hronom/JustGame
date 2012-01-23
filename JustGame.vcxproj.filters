@@ -59,6 +59,12 @@
     <ClCompile Include="GameObject.cpp">
       <Filter>Objects</Filter>
     </ClCompile>
+    <ClCompile Include="WinState.cpp">
+      <Filter>GameStates</Filter>
+    </ClCompile>
+    <ClCompile Include="LoseState.cpp">
+      <Filter>GameStates</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameWindowEventListener.h">
@@ -112,6 +118,12 @@
     </ClInclude>
     <ClInclude Include="iGameObjectsListener.h">
       <Filter>Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="WinState.h">
+      <Filter>GameStates</Filter>
+    </ClInclude>
+    <ClInclude Include="LoseState.h">
+      <Filter>GameStates</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

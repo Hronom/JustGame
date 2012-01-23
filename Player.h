@@ -7,6 +7,10 @@
 
 class Player: public GameObject
 {
+private:
+	Ogre::ManualObject *mManualObject;
+	Ogre::Entity *mObjectEntity;
+
 public:
 	Player(iCore *xCore, iGameObjectsListener *xGameObjectsListener, Ogre::String xObjectName, Ogre::Vector2 xPos);
 	~Player();

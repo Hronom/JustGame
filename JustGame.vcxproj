@@ -101,6 +101,7 @@
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameWindowEventListener.cpp" />
     <ClCompile Include="GUIManager.cpp" />
+    <ClCompile Include="LoseState.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainClass.cpp" />
     <ClCompile Include="GameMouseListener.cpp" />
@@ -109,6 +110,7 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayGameState.cpp" />
     <ClCompile Include="StateManager.cpp" />
+    <ClCompile Include="WinState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bullet.h" />
@@ -121,6 +123,7 @@
     <ClInclude Include="GUIManager.h" />
     <ClInclude Include="iGameObjectsListener.h" />
     <ClInclude Include="iMainListener.h" />
+    <ClInclude Include="LoseState.h" />
     <ClInclude Include="MainClass.h" />
     <ClInclude Include="GameMouseListener.h" />
     <ClInclude Include="MainManager.h" />
@@ -129,6 +132,7 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayGameState.h" />
     <ClInclude Include="StateManager.h" />
+    <ClInclude Include="WinState.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

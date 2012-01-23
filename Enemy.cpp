@@ -13,30 +13,30 @@ Enemy::Enemy(iCore *xCore, iGameObjectsListener *xGameObjectsListener, Ogre::Str
 	mDestinationDot = Ogre::Vector2(1.0f,1.0f);
 
 
-	
+
 	mObjectRadius = 7;
-	
-	Ogre::ManualObject *xManualObject = new Ogre::ManualObject(mObjectName+"_Manual");
-    // accuracy is the count of points (and lines).
-    // Higher values make the circle smoother, but may slowdown the performance.
-    // The performance also is related to the count of circles.
-    float const xAccuracy = 35;
-    xManualObject->begin("BaseWhiteNoLighting", Ogre::RenderOperation::OT_LINE_STRIP);
-    unsigned xPoint_index = 0;
-    for(float xTheta = 0; xTheta <= 2 * Ogre::Math::PI; xTheta += Ogre::Math::PI / xAccuracy) 
+
+	mManualObject = new Ogre::ManualObject(mObjectName+"_Manual");
+	// accuracy is the count of points (and lines).
+	// Higher values make the circle smoother, but may slowdown the performance.
+	// The performance also is related to the count of circles.
+	float const xAccuracy = 35;
+	mManualObject->begin("BaseWhiteNoLighting", Ogre::RenderOperation::OT_LINE_STRIP);
+	unsigned xPoint_index = 0;
+	for(float xTheta = 0; xTheta <= 2 * Ogre::Math::PI; xTheta += Ogre::Math::PI / xAccuracy) 
 	{
-        xManualObject->position(mObjectRadius * cos(xTheta), mObjectRadius * sin(xTheta), 0);
-        xManualObject->index(xPoint_index++);
-    }
-    xManualObject->index(0); // Rejoins the last point to the first.
-    xManualObject->end();
-    xManualObject->convertToMesh(mObjectName+"_Mesh");
+		mManualObject->position(mObjectRadius * cos(xTheta), mObjectRadius * sin(xTheta), 0);
+		mManualObject->index(xPoint_index++);
+	}
+	mManualObject->index(0); // Rejoins the last point to the first.
+	mManualObject->end();
+	mManualObject->convertToMesh(mObjectName+"_Mesh");
 
 
 
-	Ogre::Entity* xObjectEntity = mCore->getSceneManager()->createEntity(mObjectName+"_Entity", mObjectName+"_Mesh");
+	mObjectEntity = mCore->getSceneManager()->createEntity(mObjectName+"_Entity", mObjectName+"_Mesh");
 
-	mObjectNode->attachObject(xObjectEntity);	
+	mObjectNode->attachObject(mObjectEntity);	
 	mObjectNode->setPosition(Ogre::Vector3(xPos.x, xPos.y, 0));
 
 	mTimeBeforeDelete = 0.3f;
@@ -44,6 +44,9 @@ Enemy::Enemy(iCore *xCore, iGameObjectsListener *xGameObjectsListener, Ogre::Str
 
 Enemy::~Enemy()
 {
+	mObjectNode->detachAllObjects();
+	mCore->getSceneManager()->destroyManualObject(mManualObject);
+	mCore->getSceneManager()->destroyEntity(mObjectEntity);
 }
 
 void Enemy::update(const Ogre::FrameEvent& evt)
