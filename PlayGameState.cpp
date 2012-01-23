@@ -41,10 +41,6 @@ void PlayGameState::needUpdate(const Ogre::FrameEvent& evt)
 
 	mCore->getCamera()->setPosition(xNewCameraPos);
 
-	// Обновление пуль
-	for(int i=0; i<mBullets.size(); i++)
-		mBullets[i]->update(evt);
-
 	// Обновление юнитов
 	for(int i=0; i<mUnits.size(); i++)
 	{
@@ -61,7 +57,39 @@ void PlayGameState::needUpdate(const Ogre::FrameEvent& evt)
 		{
 			mUnits[i]->moveUp(false);
 			mUnits[i]->shoot(true);
-		}		
+		}	
+
+		if(mUnits[i]->getCurrentHealth() <= 0)
+		{
+			mForDelete.push_back(mUnits[i]);
+			mUnits.erase(mUnits.begin() + i);
+		}
+	}
+
+	// Обновление пуль
+	for(int i=0; i<mBullets.size(); i++)
+	{
+		mBullets[i]->update(evt);
+
+		if(mBullets[i]->getCurrentHealth() <= 0)
+		{
+			mForDelete.push_back(mBullets[i]);
+			mBullets.erase(mBullets.begin() + i);
+		}
+	}
+
+	checkBullets();
+
+	// Обновление объектов для удаления
+	for(int i=0; i<mForDelete.size(); i++)
+	{
+		mForDelete[i]->update(evt);
+
+		if(mForDelete[i]->isNeedDelete() == true) 
+		{
+			delete mForDelete[i];
+			mForDelete.erase(mForDelete.begin() + i);
+		}
 	}
 }
 
@@ -135,6 +163,7 @@ void PlayGameState::buttonClick(MyGUI::WidgetPtr xSender)
 void PlayGameState::setPlayer(Ogre::Vector2 xPos)
 {
 	mPlayer = new Player(mCore, this, "Player", xPos);
+	mPlayer->setObjectString("Player");
 }
 
 void PlayGameState::addEnemy(Ogre::Vector2 xPos)
@@ -145,10 +174,11 @@ void PlayGameState::addEnemy(Ogre::Vector2 xPos)
 
 	Enemy *xEnemy;
 	xEnemy = new Enemy(mCore, this, xEnemyName, xPos);
+	xEnemy->setObjectString("Enemy");
 	mUnits.push_back(xEnemy);
 }
 
-void PlayGameState::addBullet(Ogre::Vector2 xPos, Ogre::Vector2 xDestination)
+void PlayGameState::addBullet(Ogre::String xObjectString, Ogre::Vector2 xPos, Ogre::Vector2 xDestination)
 {
 	mBulletsCount++;
 	Ogre::String xBulletName;
@@ -156,5 +186,60 @@ void PlayGameState::addBullet(Ogre::Vector2 xPos, Ogre::Vector2 xDestination)
 
 	Bullet *xBullet;
 	xBullet = new Bullet(mCore, this, xBulletName, xPos, xDestination);
+	xBullet->setObjectString(xObjectString);
 	mBullets.push_back(xBullet);
+}
+
+void PlayGameState::checkBullets()
+{
+	// Обновление пуль для игрока
+	{
+		GameObject *xUnit = mPlayer;
+		Ogre::String xUnitType = xUnit->getObjectString();
+		Ogre::Vector2 xUnitPos = xUnit->getCurrentPos();
+		float xUnitRadius = xUnit->getObjectRadius();
+
+		for(int y=0; y<mBullets.size(); y++)
+		{
+			GameObject *xBullet = mBullets[y];
+			Ogre::String xBulletType = xBullet->getObjectString();
+			Ogre::Vector2 xBulletPos = xBullet->getCurrentPos();
+			float xBulletRadius = xBullet->getObjectRadius();
+
+
+			if(xUnit->getCurrentHealth() > 0 && xBulletType != xUnitType && xBulletPos.distance(xUnitPos) <= xBulletRadius+xUnitRadius )
+			{
+				xUnit->doDamage(xBullet->getDamage());
+				mBullets[y]->doDamage(10);
+				mBullets.erase(mBullets.begin()+y);
+				mForDelete.push_back(xBullet);
+			}
+		}
+	}
+
+	// Обновление пуль для врагов
+	for(int x=0; x<mUnits.size(); x++)
+	{
+		GameObject *xUnit = mUnits[x];
+		Ogre::String xUnitType = xUnit->getObjectString();
+		Ogre::Vector2 xUnitPos = xUnit->getCurrentPos();
+		float xUnitRadius = xUnit->getObjectRadius();
+
+		for(int y=0; y<mBullets.size(); y++)
+		{
+			GameObject *xBullet = mBullets[y];
+			Ogre::String xBulletType = xBullet->getObjectString();
+			Ogre::Vector2 xBulletPos = xBullet->getCurrentPos();
+			float xBulletRadius = xBullet->getObjectRadius();
+
+
+			if(xUnit->getCurrentHealth() > 0 && xBulletType != xUnitType && xBulletPos.distance(xUnitPos) <= xBulletRadius+xUnitRadius )
+			{
+				xUnit->doDamage(xBullet->getDamage());
+				mBullets[y]->doDamage(10);
+				mBullets.erase(mBullets.begin()+y);
+				mForDelete.push_back(xBullet);
+			}
+		}
+	}
 }

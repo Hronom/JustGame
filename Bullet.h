@@ -8,6 +8,10 @@
 
 class Bullet: public GameObject
 {
+private:
+	Ogre::Real mLiveTime;
+	Ogre::Real mTimeBeforeDelete;
+
 public:
 	Bullet(iCore *xCore, iGameObjectsListener *xGameObjectsListener, Ogre::String xObjectName, Ogre::Vector2 xPos, Ogre::Vector2 xDestination);
 	~Bullet();

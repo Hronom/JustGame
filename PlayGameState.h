@@ -26,6 +26,8 @@ private:
 	std::vector<GameObject*> mUnits;
 	std::vector<GameObject*> mBullets;
 
+	std::vector<GameObject*> mForDelete;
+
 public:
 	PlayGameState(iCore *xCore);
 	~PlayGameState();
@@ -43,7 +45,9 @@ public:
 
 	void setPlayer(Ogre::Vector2 xPos);
 	void addEnemy(Ogre::Vector2 xPos);
-	virtual void addBullet(Ogre::Vector2 xPos, Ogre::Vector2 xDestination);
+	virtual void addBullet(Ogre::String xObjectString, Ogre::Vector2 xPos, Ogre::Vector2 xDestination);
+
+	void checkBullets();
 };
 
 #endif

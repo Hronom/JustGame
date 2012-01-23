@@ -6,7 +6,7 @@
 class iGameObjectsListener
 {
 public:
-	virtual void addBullet(Ogre::Vector2 xPos, Ogre::Vector2 xDestination) = 0;
+	virtual void addBullet(Ogre::String xObjectString, Ogre::Vector2 xPos, Ogre::Vector2 xDestination) = 0;
 
 };
 

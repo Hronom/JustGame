@@ -14,17 +14,21 @@ GameObject::GameObject(iCore *xCore, iGameObjectsListener *xGameObjectsListener,
 	mMoveSpeed = 0;
 
 	mObjectNode = mCore->getSceneManager()->getRootSceneNode()->createChildSceneNode(xObjectName+"_Node");
+	mObjectRadius = 0;
 	mMoveDirection = Ogre::Vector3::ZERO;
 	mDestinationDot = Ogre::Vector2::ZERO;
 
-	isCanShoot = false;
+	mCanDoShot = false;
 	mShootDelay = 0;
 	mTimeAfterLastShoot = mShootDelay;
+
+	mNeedDelete = false;
 }
 
 GameObject::~GameObject()
 {
-
+	mObjectNode->removeAndDestroyAllChildren();
+	mCore->getSceneManager()->destroySceneNode(mObjectNode->getName());
 }
 
 void GameObject::update(const Ogre::FrameEvent& evt)
@@ -56,14 +60,14 @@ void GameObject::update(const Ogre::FrameEvent& evt)
 
 
 	// SHOOT!!!
-	if(isCanShoot == true)
+	if(mCanDoShot == true)
 		if(mTimeAfterLastShoot >= mShootDelay)
 		{
 			Ogre::Vector3 xPosObject = mObjectNode->getPosition();
 			Ogre::Vector2 xPos;
 			xPos.x = xPosObject.x;
 			xPos.y = xPosObject.y;
-			mGameObjectsListener->addBullet(xPos, mDestinationDot);
+			mGameObjectsListener->addBullet(mObjectString, xPos, mDestinationDot);
 			mTimeAfterLastShoot=0;
 		}
 		else
@@ -75,6 +79,16 @@ void GameObject::update(const Ogre::FrameEvent& evt)
 Ogre::String GameObject::getObjectName()
 {
 	return mObjectName; 
+}
+
+void GameObject::setObjectString(Ogre::String xString)
+{
+	mObjectString = xString;
+}
+
+Ogre::String GameObject::getObjectString()
+{
+	return mObjectString;
 }
 
 int GameObject::getCurrentHealth()
@@ -103,6 +117,16 @@ Ogre::Vector2 GameObject::getCurrentPos()
 	xVector2Pos.y = xVector3Pos.y;
 
 	return xVector2Pos;
+}
+
+float GameObject::getObjectRadius()
+{
+	return mObjectRadius;
+}
+
+bool GameObject::isNeedDelete()
+{
+	return mNeedDelete;
 }
 
 void GameObject::moveUp(bool doMove)
@@ -144,5 +168,5 @@ void GameObject::rotateTo(Ogre::Vector2 xDestinationDot)
 
 void GameObject::shoot(bool doShoot)
 {
-	isCanShoot = doShoot;
+	mCanDoShot = doShoot;
 }

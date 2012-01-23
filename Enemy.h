@@ -7,9 +7,14 @@
 
 class Enemy: public GameObject
 {
+private:
+	Ogre::Real mTimeBeforeDelete;
+
 public:
 	Enemy(iCore *xCore, iGameObjectsListener *xGameObjectsListener, Ogre::String xObjectName, Ogre::Vector2 xPos);
 	~Enemy();
+
+	virtual void update(const Ogre::FrameEvent& evt);
 };
 
 #endif
