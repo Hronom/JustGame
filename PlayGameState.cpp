@@ -11,25 +11,34 @@ PlayGameState::PlayGameState(iCore *xCore)
 	Ogre::ColourValue xColor = Ogre::ColourValue(0.104f, 0.234f, 0.140f, 0.0f);
 	// create ManualObject
 	mGridManualObject = new Ogre::ManualObject("grid_manual");
+	
+	Ogre::Real xGridDistance = 10.0f;
 	for (Ogre::Real i = -50.0f; i < 50.0f; i+=1.0f)
 	{
+		// Draw vertical line
 		mGridManualObject->begin("BaseWhiteNoLighting", Ogre::RenderOperation::OT_LINE_LIST);
-		mGridManualObject->position(i * 10.0f, -1500.0f, -100.0f);
+		mGridManualObject->position(i * xGridDistance, -500.0f, -100.0f);
 		mGridManualObject->colour(xColor);
-		mGridManualObject->position(i * 10.0f, +1500.0f, -100.0f);
+		mGridManualObject->position(i * xGridDistance, +500.0f, -100.0f);
 		mGridManualObject->colour(xColor);
 		mGridManualObject->end();
+		// Draw gorizontal line
 		mGridManualObject->begin("BaseWhiteNoLighting", Ogre::RenderOperation::OT_LINE_LIST);
-		mGridManualObject->position(-1500.0f, i * 10.0f, -100.0f);
+		mGridManualObject->position(-500.0f, i * xGridDistance, -100.0f);
 		mGridManualObject->colour(xColor);
-		mGridManualObject->position(1500.0f, i * 10.0f, -100.0f);
+		mGridManualObject->position(+500.0f, i * xGridDistance, -100.0f);
 		mGridManualObject->colour(xColor);
 		mGridManualObject->end();
 	}
 	// add ManualObject to the RootSceneNode (so it will be visible)
-	mGridManualObject->convertToMesh("grid_mesh");
+	Ogre::MeshPtr xMeshPtr = mGridManualObject->convertToMesh("grid_mesh");
+
 	mGridSceneNode = mCore->getSceneManager()->getRootSceneNode()->createChildSceneNode("grid_node");
 	mGridSceneNode->attachObject(mGridManualObject);
+
+	/*Ogre::StaticGeometry *xStaticGeometry = new Ogre::StaticGeometry(mCore->getSceneManager(), "grid_stat");
+	xStaticGeometry->addSceneNode(mGridSceneNode);
+	xStaticGeometry->build();*/
 }
 
 PlayGameState::~PlayGameState()
@@ -62,16 +71,30 @@ void PlayGameState::exit()
 		mPlayer = 0;
 	}
 
-	for(unsigned i=0; i<mUnits.size(); i++)
-		delete mUnits[i];
+	std::list<GameObject*>::iterator xElement;
+
+	xElement = mUnits.begin();
+	while(xElement != mUnits.end())
+	{
+		delete *xElement;
+		++xElement;
+	}
 	mUnits.clear();
 
-	for(unsigned i=0; i<mBullets.size(); i++)
-		delete mBullets[i];
+	xElement = mBullets.begin();
+	while(xElement != mBullets.end())
+	{
+		delete *xElement;
+		++xElement;
+	}
 	mBullets.clear();
 
-	for(unsigned i=0; i<mForDelete.size(); i++)
-		delete mForDelete[i];
+	xElement = mForDelete.begin();
+	while(xElement != mForDelete.end())
+	{
+		delete *xElement;
+		++xElement;
+	}
 	mForDelete.clear();
 }
 
@@ -98,55 +121,67 @@ void PlayGameState::needUpdate(const Ogre::FrameEvent& evt)
 
 	mCore->getCamera()->setPosition(xNewCameraPos);
 
+	std::list<GameObject*>::iterator xUnit;
+	xUnit = mUnits.begin();
 	// Обновление юнитов
-	for(unsigned i=0; i<mUnits.size(); i++)
+	while(xUnit != mUnits.end())
 	{
-		mUnits[i]->update(evt);
+		(*xUnit)->update(evt);
 
-		mUnits[i]->rotateTo(mPlayer->getCurrentPos());
+		(*xUnit)->rotateTo(mPlayer->getCurrentPos());
 
-		if(mPlayer->getCurrentPos().distance(mUnits[i]->getCurrentPos()) > 33.3f) 
+		if(mPlayer->getCurrentPos().distance((*xUnit)->getCurrentPos()) > 33.3f) 
 		{
-			mUnits[i]->shoot(false);
-			mUnits[i]->moveUp(true);
+			(*xUnit)->shoot(false);
+			(*xUnit)->moveUp(true);
 		}
 		else
 		{
-			mUnits[i]->moveUp(false);
-			mUnits[i]->shoot(true);
+			(*xUnit)->moveUp(false);
+			(*xUnit)->shoot(true);
 		}	
 
-		if(mUnits[i]->getCurrentHealth() <= 0)
+		if((*xUnit)->getCurrentHealth() <= 0)
 		{
-			mForDelete.push_back(mUnits[i]);
-			mUnits.erase(mUnits.begin() + i);
+			mForDelete.push_back((*xUnit));
+			xUnit = mUnits.erase(xUnit);
 		}
+		else
+			++xUnit;
 	}
 
 	// Обновление пуль
-	for(unsigned i=0; i<mBullets.size(); i++)
+	std::list<GameObject*>::iterator xBullet;
+	xBullet = mBullets.begin();
+	while(xBullet != mBullets.end())
 	{
-		mBullets[i]->update(evt);
+		(*xBullet)->update(evt);
 
-		if(mBullets[i]->getCurrentHealth() <= 0)
+		if((*xBullet)->getCurrentHealth() <= 0)
 		{
-			mForDelete.push_back(mBullets[i]);
-			mBullets.erase(mBullets.begin() + i);
+			mForDelete.push_back((*xBullet));
+			xBullet = mBullets.erase(xBullet);
 		}
+		else
+			++xBullet;
 	}
 
 	checkBullets();
 
 	// Обновление объектов для удаления
-	for(unsigned i=0; i<mForDelete.size(); i++)
+	std::list<GameObject*>::iterator xForDelete;
+	xForDelete = mForDelete.begin();
+	while(xForDelete != mForDelete.end())
 	{
-		mForDelete[i]->update(evt);
+		(*xForDelete)->update(evt);
 
-		if(mForDelete[i]->isNeedDelete() == true) 
+		if((*xForDelete)->isNeedDelete() == true) 
 		{
-			delete mForDelete[i];
-			mForDelete.erase(mForDelete.begin() + i);
+			delete (*xForDelete);
+			xForDelete = mForDelete.erase(xForDelete);
 		}
+		else
+			++xForDelete;
 	}
 
 	if(mPlayer->getCurrentHealth() <= 0)
@@ -185,6 +220,8 @@ void PlayGameState::mouseReleased(const OIS::MouseEvent& e, OIS::MouseButtonID i
 
 void PlayGameState::keyPressed(const OIS::KeyEvent& e)
 {
+	Ogre::Vector2 xVectorPos(-100.0f,-100.0f);
+
 	switch (e.key)
 	{
 	case OIS::KC_W:
@@ -198,6 +235,9 @@ void PlayGameState::keyPressed(const OIS::KeyEvent& e)
 		break;
 	case OIS::KC_A:
 		mPlayer->moveLeft(true); 
+		break;
+	case OIS::KC_E:
+		addEnemy(xVectorPos.randomDeviant(100));
 		break;
 	default: break;
 	}
@@ -269,35 +309,42 @@ void PlayGameState::checkBullets()
 		Ogre::Vector2 xUnitPos = xUnit->getCurrentPos();
 		float xUnitRadius = xUnit->getObjectRadius();
 
-		for(unsigned y=0; y<mBullets.size(); y++)
+		std::list<GameObject*>::iterator xElement;
+		xElement = mBullets.begin();
+		while(xElement != mBullets.end())
 		{
-			GameObject *xBullet = mBullets[y];
+			GameObject *xBullet = (*xElement);
 			Ogre::String xBulletType = xBullet->getObjectString();
 			Ogre::Vector2 xBulletPos = xBullet->getCurrentPos();
 			float xBulletRadius = xBullet->getObjectRadius();
 
-
 			if(xUnit->getCurrentHealth() > 0 && xBulletType != xUnitType && xBulletPos.distance(xUnitPos) <= xBulletRadius+xUnitRadius )
 			{
 				xUnit->doDamage(xBullet->getDamage());
-				mBullets[y]->doDamage(10);
-				mBullets.erase(mBullets.begin()+y);
+				xBullet->doDamage(10);
+				xElement = mBullets.erase(xElement);
 				mForDelete.push_back(xBullet);
 			}
+			else
+				++xElement;
 		}
 	}
 
 	// Обновление пуль для врагов
-	for(unsigned x=0; x<mUnits.size(); x++)
+	std::list<GameObject*>::iterator xElement;
+	xElement = mUnits.begin();
+	while(xElement != mUnits.end())
 	{
-		GameObject *xUnit = mUnits[x];
+		GameObject *xUnit = (*xElement);
 		Ogre::String xUnitType = xUnit->getObjectString();
 		Ogre::Vector2 xUnitPos = xUnit->getCurrentPos();
 		float xUnitRadius = xUnit->getObjectRadius();
 
-		for(unsigned y=0; y<mBullets.size(); y++)
+		std::list<GameObject*>::iterator xElement2;
+		xElement2 = mBullets.begin();
+		while(xElement2 != mBullets.end())
 		{
-			GameObject *xBullet = mBullets[y];
+			GameObject *xBullet = (*xElement2);
 			Ogre::String xBulletType = xBullet->getObjectString();
 			Ogre::Vector2 xBulletPos = xBullet->getCurrentPos();
 			float xBulletRadius = xBullet->getObjectRadius();
@@ -306,10 +353,14 @@ void PlayGameState::checkBullets()
 			if(xUnit->getCurrentHealth() > 0 && xBulletType != xUnitType && xBulletPos.distance(xUnitPos) <= xBulletRadius+xUnitRadius )
 			{
 				xUnit->doDamage(xBullet->getDamage());
-				mBullets[y]->doDamage(10);
-				mBullets.erase(mBullets.begin()+y);
+				xBullet->doDamage(10);
+				xElement2 = mBullets.erase(xElement2);
 				mForDelete.push_back(xBullet);
 			}
+			else
+				++xElement2;
 		}
+
+		++xElement;
 	}
 }

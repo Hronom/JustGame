@@ -1,5 +1,8 @@
 #include "MainClass.h"
 
+//using namespace OgreBulletCollisions;
+//using namespace OgreBulletDynamics;
+
 MainClass::MainClass()
 {
 	mOgreCfg = "ogre.cfg";
@@ -11,6 +14,8 @@ MainClass::MainClass()
 	// 1 Создание рута
 	//-----------------------------------------------------
 	mRoot = new Ogre::Root();
+
+//	OgreBullet::OgreBulletListener::init(root, win, application);
 }
 
 MainClass::~MainClass()

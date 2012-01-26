@@ -41,15 +41,15 @@
     <LinkIncremental>true</LinkIncremental>
     <IntDir>$(SolutionDir)\IntermediateFiles\$(Configuration)\</IntDir>
     <SourcePath>$(SourcePath)</SourcePath>
-    <IncludePath>$(MyGUI_HOME)/MyGUIEngine/include;$(MyGUI_HOME)/Platforms/Ogre/OgrePlatform/include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(MyGUI_builded_HOME)/lib/$(Configuration)/;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(MyGUI_HOME)/MyGUIEngine/include;$(MyGUI_HOME)/Platforms/Ogre/OgrePlatform/include;D:\Dev\ExternalDependencies\OgreBullet\Collisions\include;D:\Dev\ExternalDependencies\OgreBullet\Dynamics\include;D:\Dev\ExternalDependencies\Bullet\src;$(IncludePath)</IncludePath>
+    <LibraryPath>$(MyGUI_builded_HOME)/lib/$(Configuration)/;D:\Dev\ExternalDependencies\OgreBullet\lib\$(Configuration)\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <IntDir>$(SolutionDir)\IntermediateFiles\$(Configuration)\</IntDir>
     <SourcePath>$(SourcePath)</SourcePath>
-    <IncludePath>$(MyGUI_HOME)/MyGUIEngine/include;$(MyGUI_HOME)/Platforms/Ogre/OgrePlatform/include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(MyGUI_builded_HOME)/lib/$(Configuration)/;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(MyGUI_HOME)/MyGUIEngine/include;$(MyGUI_HOME)/Platforms/Ogre/OgrePlatform/include;D:\Dev\ExternalDependencies\OgreBullet\Collisions\include;D:\Dev\ExternalDependencies\OgreBullet\Dynamics\include;D:\Dev\ExternalDependencies\Bullet\src;$(IncludePath)</IncludePath>
+    <LibraryPath>$(MyGUI_builded_HOME)/lib/$(Configuration)/;D:\Dev\ExternalDependencies\OgreBullet\lib\$(Configuration)\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

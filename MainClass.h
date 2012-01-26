@@ -9,6 +9,10 @@
 #include <OgreConfigFile.h>
 #include <OgreCamera.h>
 #include <OgreViewport.h>
+
+#include <OgreBulletCollisions.h>
+#include <OgreBulletDynamics.h>
+
 #include <OIS\OIS.h>
 
 #include "MyGUI.h"
@@ -32,6 +36,8 @@ private:
 	Ogre::RenderWindow *mRenderWindow;
 	Ogre::SceneManager *mSceneManager;
 	Ogre::Camera* mCamera; 
+
+	//OgreBulletListener *mBulletListener;
 
 	OIS::InputManager *mInputManager;
 	OIS::Keyboard *mKeyboard;

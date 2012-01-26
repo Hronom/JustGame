@@ -41,7 +41,7 @@ Enemy::Enemy(iCore *xCore, iGameObjectsListener *xGameObjectsListener, Ogre::Str
 	mObjectNode->attachObject(mObjectEntity);	
 	mObjectNode->setPosition(Ogre::Vector3(xPos.x, xPos.y, 0));
 
-	mTimeBeforeDelete = 0.3f;
+	mTimeBeforeDelete = 0.7f;
 }
 
 Enemy::~Enemy()

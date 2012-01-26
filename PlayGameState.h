@@ -26,10 +26,10 @@ private:
 	int mEnemyCount;
 	int mBulletsCount;
 
-	std::vector<GameObject*> mUnits;
-	std::vector<GameObject*> mBullets;
+	std::list<GameObject*> mUnits;
+	std::list<GameObject*> mBullets;
 
-	std::vector<GameObject*> mForDelete;
+	std::list<GameObject*> mForDelete;
 
 public:
 	PlayGameState(iCore *xCore);
