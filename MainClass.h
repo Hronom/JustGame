@@ -10,8 +10,7 @@
 #include <OgreCamera.h>
 #include <OgreViewport.h>
 
-#include <OgreBulletCollisions.h>
-#include <OgreBulletDynamics.h>
+#include "OgreBulletDynamicsRigidBody.h"
 
 #include <OIS\OIS.h>
 
@@ -37,7 +36,8 @@ private:
 	Ogre::SceneManager *mSceneManager;
 	Ogre::Camera* mCamera; 
 
-	//OgreBulletListener *mBulletListener;
+	OgreBulletDynamics::DynamicsWorld *mWorld;   // OgreBullet World
+	OgreBulletCollisions::DebugDrawer *debugDrawer;
 
 	OIS::InputManager *mInputManager;
 	OIS::Keyboard *mKeyboard;
@@ -62,6 +62,7 @@ private:
 	void createWindow();
 	void loadResources();
 	void createScene();
+	void initPhysics();
 	void initMyGUI();
 	void initOIS();
 	void initListeners();

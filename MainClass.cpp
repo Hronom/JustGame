@@ -172,6 +172,19 @@ void MainClass::initMyGUI()
 	mMyGUI->initialise();
 }
 
+void MainClass::initPhysics()
+{
+	/*
+	// Start Bullet
+	mWorld = new OgreBulletDynamics::DynamicsWorld(mSceneManager, bounds, gravityVector);
+	// add Debug info display tool
+	debugDrawer = new OgreBulletCollisions::DebugDrawer();
+	debugDrawer->setDrawWireframe(true);   // we want to see the Bullet containers
+	mWorld->setDebugDrawer(debugDrawer);
+	mWorld->setShowDebugShapes(true);      // enable it if you want to see the Bullet containers
+	*/
+}
+
 void MainClass::initOIS()
 {
 	//---------------------------------------------------- 

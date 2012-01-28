@@ -30,15 +30,9 @@ PlayGameState::PlayGameState(iCore *xCore)
 		mGridManualObject->colour(xColor);
 		mGridManualObject->end();
 	}
-	// add ManualObject to the RootSceneNode (so it will be visible)
-	Ogre::MeshPtr xMeshPtr = mGridManualObject->convertToMesh("grid_mesh");
 
 	mGridSceneNode = mCore->getSceneManager()->getRootSceneNode()->createChildSceneNode("grid_node");
 	mGridSceneNode->attachObject(mGridManualObject);
-
-	/*Ogre::StaticGeometry *xStaticGeometry = new Ogre::StaticGeometry(mCore->getSceneManager(), "grid_stat");
-	xStaticGeometry->addSceneNode(mGridSceneNode);
-	xStaticGeometry->build();*/
 }
 
 PlayGameState::~PlayGameState()

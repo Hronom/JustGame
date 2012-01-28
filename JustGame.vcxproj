@@ -40,16 +40,16 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <IntDir>$(SolutionDir)\IntermediateFiles\$(Configuration)\</IntDir>
-    <SourcePath>$(SourcePath)</SourcePath>
-    <IncludePath>$(MyGUI_HOME)/MyGUIEngine/include;$(MyGUI_HOME)/Platforms/Ogre/OgrePlatform/include;D:\Dev\ExternalDependencies\OgreBullet\Collisions\include;D:\Dev\ExternalDependencies\OgreBullet\Dynamics\include;D:\Dev\ExternalDependencies\Bullet\src;$(IncludePath)</IncludePath>
-    <LibraryPath>$(MyGUI_builded_HOME)/lib/$(Configuration)/;D:\Dev\ExternalDependencies\OgreBullet\lib\$(Configuration)\;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(OGRE_HOME)\include;$(OGRE_HOME)\include\OIS;$(OGRE_HOME)\include\OGRE;$(OGRE_HOME)\Samples\Common\include;$(OGRE_HOME)\boost_1_47;$(MyGUI_HOME)\MyGUIEngine\include;$(MyGUI_HOME)\Platforms\Ogre\OgrePlatform\include;$(OgreBullet_HOME)\Collisions\include;$(OgreBullet_HOME)\Dynamics\include;$(Bullet_HOME)\src;$(IncludePath)</IncludePath>
+    <LibraryPath>$(OGRE_HOME)\lib\$(Configuration);$(OGRE_HOME)\boost_1_47\lib;$(MyGUI_builded_HOME)\lib\$(Configuration);$(OgreBullet_HOME)\lib\$(Configuration);$(Bullet_builded_HOME)\lib\$(Configuration);$(LibraryPath)</LibraryPath>
+    <OutDir>$(SolutionDir)\install\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <IntDir>$(SolutionDir)\IntermediateFiles\$(Configuration)\</IntDir>
-    <SourcePath>$(SourcePath)</SourcePath>
-    <IncludePath>$(MyGUI_HOME)/MyGUIEngine/include;$(MyGUI_HOME)/Platforms/Ogre/OgrePlatform/include;D:\Dev\ExternalDependencies\OgreBullet\Collisions\include;D:\Dev\ExternalDependencies\OgreBullet\Dynamics\include;D:\Dev\ExternalDependencies\Bullet\src;$(IncludePath)</IncludePath>
-    <LibraryPath>$(MyGUI_builded_HOME)/lib/$(Configuration)/;D:\Dev\ExternalDependencies\OgreBullet\lib\$(Configuration)\;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(OGRE_HOME)\include;$(OGRE_HOME)\include\OIS;$(OGRE_HOME)\include\OGRE;$(OGRE_HOME)\Samples\Common\include;$(OGRE_HOME)\boost_1_47;$(MyGUI_HOME)\MyGUIEngine\include;$(MyGUI_HOME)\Platforms\Ogre\OgrePlatform\include;$(OgreBullet_HOME)\Collisions\include;$(OgreBullet_HOME)\Dynamics\include;$(Bullet_HOME)\src;$(IncludePath)</IncludePath>
+    <LibraryPath>$(OGRE_HOME)\lib\$(Configuration);$(OGRE_HOME)\boost_1_47\lib;$(MyGUI_builded_HOME)\lib\$(Configuration);$(OgreBullet_HOME)\lib\$(Configuration);$(Bullet_builded_HOME)\lib\$(Configuration);$(LibraryPath)</LibraryPath>
+    <OutDir>$(SolutionDir)\install\$(Configuration)\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -58,12 +58,14 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(OGRE_HOME)\include;$(OGRE_HOME)\include\OIS;$(OGRE_HOME)\include\OGRE;$(OGRE_HOME)\Samples\Common\include;$(OGRE_HOME)\boost_1_47</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>
+      </AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(OGRE_HOME)\lib\$(Configuration);$(OGRE_HOME)\boost_1_47\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>
+      </AdditionalLibraryDirectories>
       <AdditionalDependencies>OgreMain_d.lib;OIS_d.lib;MyGUIEngine_d.lib;MyGUI.OgrePlatform_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
@@ -79,14 +81,16 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(OGRE_HOME)\include;$(OGRE_HOME)\include\OIS;$(OGRE_HOME)\include\OGRE;$(OGRE_HOME)\Samples\Common\include;$(OGRE_HOME)\boost_1_47</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>
+      </AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(OGRE_HOME)\lib\$(Configuration);$(OGRE_HOME)\boost_1_47\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>
+      </AdditionalLibraryDirectories>
       <AdditionalDependencies>OgreMain.lib;OIS.lib;MyGUIEngine.lib;MyGUI.OgrePlatform.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
