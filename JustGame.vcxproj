@@ -66,7 +66,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>
       </AdditionalLibraryDirectories>
-      <AdditionalDependencies>OgreMain_d.lib;OIS_d.lib;MyGUIEngine_d.lib;MyGUI.OgrePlatform_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>OgreMain_d.lib;OIS_d.lib;MyGUIEngine_d.lib;MyGUI.OgrePlatform_d.lib;OgreBulletCollisions_d.lib;OgreBulletDynamics_d.lib;BulletCollision_Debug.lib;BulletDynamics_Debug.lib;LinearMath_Debug.lib;GIMPACTUtils_Debug.lib;ConvexDecomposition_Debug.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>copy "$(OutDir)\$(TargetFileName)" "$(OGRE_HOME)\Bin\$(Configuration)"</Command>
@@ -91,7 +91,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>
       </AdditionalLibraryDirectories>
-      <AdditionalDependencies>OgreMain.lib;OIS.lib;MyGUIEngine.lib;MyGUI.OgrePlatform.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>OgreMain.lib;OIS.lib;MyGUIEngine.lib;MyGUI.OgrePlatform.lib;OgreBulletCollisions.lib;OgreBulletDynamics.lib;BulletCollision.lib;BulletDynamics.lib;LinearMath.lib;GIMPACTUtils.lib;ConvexDecomposition.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>copy "$(OutDir)\$(TargetFileName)" "$(OGRE_HOME)\Bin\$(Configuration)"</Command>

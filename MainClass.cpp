@@ -67,8 +67,9 @@ bool MainClass::run()
 	loadResources();
 	createScene();
 	initMyGUI();
+	initPhysics();
 	initOIS();
-	mMainManager = new MainManager(mMyGUI, mSceneManager, mCamera);
+	mMainManager = new MainManager(mMyGUI, mSceneManager, mCamera, mDynamicsWorld);
 	initListeners();
 
 	//----------------------------------------------------
@@ -174,15 +175,16 @@ void MainClass::initMyGUI()
 
 void MainClass::initPhysics()
 {
-	/*
 	// Start Bullet
-	mWorld = new OgreBulletDynamics::DynamicsWorld(mSceneManager, bounds, gravityVector);
+	mDynamicsWorld = new OgreBulletDynamics::DynamicsWorld(mSceneManager,
+		Ogre::AxisAlignedBox(Ogre::Vector3(-10000, -10000, -10000),Ogre::Vector3(10000,  10000,  10000)), Ogre::Vector3(0,0,0));
 	// add Debug info display tool
-	debugDrawer = new OgreBulletCollisions::DebugDrawer();
-	debugDrawer->setDrawWireframe(true);   // we want to see the Bullet containers
-	mWorld->setDebugDrawer(debugDrawer);
-	mWorld->setShowDebugShapes(true);      // enable it if you want to see the Bullet containers
-	*/
+	mDebugDrawer = new OgreBulletCollisions::DebugDrawer();
+	mDebugDrawer->setDrawWireframe(true);   // we want to see the Bullet containers
+	mDynamicsWorld->setDebugDrawer(mDebugDrawer);
+	mDynamicsWorld->setShowDebugShapes(true);      // enable it if you want to see the Bullet containers
+	Ogre::SceneNode *xNode = mSceneManager->getRootSceneNode()->createChildSceneNode("debugDrawer", Ogre::Vector3::ZERO);
+	xNode->attachObject(static_cast <Ogre::SimpleRenderable*> (mDebugDrawer));
 }
 
 void MainClass::initOIS()

@@ -1,11 +1,13 @@
 #include "MainManager.h"
 
-MainManager::MainManager(MyGUI::Gui *xMyGUI, Ogre::SceneManager *xSceneManager, Ogre::Camera* xCamera)
+MainManager::MainManager(MyGUI::Gui *xMyGUI, Ogre::SceneManager *xSceneManager, Ogre::Camera* xCamera, OgreBulletDynamics::DynamicsWorld *xDynamicsWorld)
 {
 	mNeedShutdown = false;
 
 	mSceneManager = xSceneManager;
 	mCamera = xCamera;
+
+	mDynamicsWorld = xDynamicsWorld;
 
 	mGUIManager = new GUIManager(xMyGUI);
 	mStateManager = new StateManager(this);
@@ -23,6 +25,9 @@ MainManager::~MainManager()
 bool MainManager::needUpdate(const Ogre::FrameEvent& evt)
 {
 	mStateManager->needUpdate(evt);
+
+	mDynamicsWorld->stepSimulation(evt.timeSinceLastFrame);	// update Bullet Physics animation
+	
 	return !mNeedShutdown;
 }
 
@@ -92,4 +97,9 @@ Ogre::SceneManager* MainManager::getSceneManager()
 Ogre::Camera* MainManager::getCamera()
 {
 	return mCamera;
+}
+
+OgreBulletDynamics::DynamicsWorld* MainManager::getDynamicsWorld()
+{
+	return mDynamicsWorld;
 }

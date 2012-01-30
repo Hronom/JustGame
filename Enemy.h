@@ -12,6 +12,9 @@ private:
 	Ogre::Entity *mObjectEntity;
 	Ogre::Real mTimeBeforeDelete;
 
+	OgreBulletCollisions::BoxCollisionShape *mBoxShape;
+	OgreBulletDynamics::RigidBody *mRigidBody;
+
 public:
 	Enemy(iCore *xCore, iGameObjectsListener *xGameObjectsListener, Ogre::String xObjectName, Ogre::Vector2 xPos);
 	~Enemy();

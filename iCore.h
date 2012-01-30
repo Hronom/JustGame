@@ -3,6 +3,7 @@
 
 #include <OGRE\OgreSceneManager.h>
 #include <OGRE\OgreCamera.h>
+#include <OgreBulletDynamicsRigidBody.h>
 
 #include "iState.h"
 class GameObject;
@@ -22,6 +23,8 @@ public:
 
 	virtual Ogre::SceneManager* getSceneManager() = 0;
 	virtual Ogre::Camera* getCamera() = 0;
+
+	virtual OgreBulletDynamics::DynamicsWorld* getDynamicsWorld() = 0;
 };
 
 #endif

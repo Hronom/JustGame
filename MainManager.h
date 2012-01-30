@@ -4,6 +4,8 @@
 #include <MyGUI.h>
 #include <OgreSceneManager.h>
 
+#include <OgreBulletDynamicsRigidBody.h>
+
 #include "iCore.h"
 #include "iMainListener.h"
 #include "GUIManager.h"
@@ -20,8 +22,10 @@ private:
 	Ogre::SceneManager *mSceneManager;
 	Ogre::Camera *mCamera;
 
+	OgreBulletDynamics::DynamicsWorld *mDynamicsWorld;
+
 public:
-	MainManager(MyGUI::Gui *xMyGUI, Ogre::SceneManager *xSceneManager, Ogre::Camera* xCamera);
+	MainManager(MyGUI::Gui *xMyGUI, Ogre::SceneManager *xSceneManager, Ogre::Camera* xCamera, OgreBulletDynamics::DynamicsWorld *xDynamicsWorld);
 	~MainManager();
 
 	virtual bool needUpdate(const Ogre::FrameEvent& evt);
@@ -43,6 +47,8 @@ public:
 
 	virtual Ogre::SceneManager* getSceneManager();
 	virtual Ogre::Camera* getCamera();
+
+	virtual OgreBulletDynamics::DynamicsWorld* getDynamicsWorld();
 };
 
 #endif

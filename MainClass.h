@@ -36,8 +36,8 @@ private:
 	Ogre::SceneManager *mSceneManager;
 	Ogre::Camera* mCamera; 
 
-	OgreBulletDynamics::DynamicsWorld *mWorld;   // OgreBullet World
-	OgreBulletCollisions::DebugDrawer *debugDrawer;
+	OgreBulletDynamics::DynamicsWorld *mDynamicsWorld;   // OgreBullet World
+	OgreBulletCollisions::DebugDrawer *mDebugDrawer;
 
 	OIS::InputManager *mInputManager;
 	OIS::Keyboard *mKeyboard;
