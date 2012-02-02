@@ -180,9 +180,9 @@ void MainClass::initPhysics()
 		Ogre::AxisAlignedBox(Ogre::Vector3(-10000, -10000, -10000),Ogre::Vector3(10000,  10000,  10000)), Ogre::Vector3(0,0,0));
 	// add Debug info display tool
 	mDebugDrawer = new OgreBulletCollisions::DebugDrawer();
-	mDebugDrawer->setDrawWireframe(true);   // we want to see the Bullet containers
+	mDebugDrawer->setDrawWireframe(false);   // we want to see the Bullet containers
 	mDynamicsWorld->setDebugDrawer(mDebugDrawer);
-	mDynamicsWorld->setShowDebugShapes(true);      // enable it if you want to see the Bullet containers
+	mDynamicsWorld->setShowDebugShapes(false);      // enable it if you want to see the Bullet containers
 	Ogre::SceneNode *xNode = mSceneManager->getRootSceneNode()->createChildSceneNode("debugDrawer", Ogre::Vector3::ZERO);
 	xNode->attachObject(static_cast <Ogre::SimpleRenderable*> (mDebugDrawer));
 }

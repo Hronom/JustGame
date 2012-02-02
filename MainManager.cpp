@@ -24,9 +24,9 @@ MainManager::~MainManager()
 
 bool MainManager::needUpdate(const Ogre::FrameEvent& evt)
 {
-	mStateManager->needUpdate(evt);
-
 	mDynamicsWorld->stepSimulation(evt.timeSinceLastFrame);	// update Bullet Physics animation
+	
+	mStateManager->needUpdate(evt);
 	
 	return !mNeedShutdown;
 }

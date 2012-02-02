@@ -33,47 +33,7 @@ GameObject::~GameObject()
 
 void GameObject::update(const Ogre::FrameEvent& evt)
 {
-	// MOVE
-	Ogre::Real xMove = mMoveSpeed * evt.timeSinceLastFrame;
-	mObjectNode->translate(mMoveDirection * xMove, Ogre::Node::TS_LOCAL);
 
-
-
-	// ROTATE
-	Ogre::Vector3 xDirection = Ogre::Vector3(mDestinationDot.x, mDestinationDot.y, 0) - mObjectNode->getPosition();
-	xDirection.z = 0;
-
-	Ogre::Vector3 xSrc = mObjectNode->getOrientation() * Ogre::Vector3::UNIT_X;
-	xSrc.z = 0;
-	xSrc.normalise();
-
-	if ((1.0f + xSrc.dotProduct(xDirection)) < 0.0001f) 
-	{
-		mObjectNode->roll(Ogre::Degree(180));
-	}
-	else
-	{
-		Ogre::Quaternion xQuat = xSrc.getRotationTo(xDirection);
-		mObjectNode->rotate(xQuat);
-	}
-
-
-
-	// SHOOT!!!
-	if(mCanDoShot == true)
-		if(mTimeAfterLastShoot >= mShootDelay)
-		{
-			Ogre::Vector3 xPosObject = mObjectNode->getPosition();
-			Ogre::Vector2 xPos;
-			xPos.x = xPosObject.x;
-			xPos.y = xPosObject.y;
-			mGameObjectsListener->addBullet(mObjectString, xPos, mDestinationDot);
-			mTimeAfterLastShoot=0;
-		}
-		else
-		{
-			mTimeAfterLastShoot += evt.timeSinceLastFrame;
-		}
 }
 
 Ogre::String GameObject::getObjectName()

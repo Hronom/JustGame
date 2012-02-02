@@ -16,6 +16,8 @@
 class PlayGameState: public iState, public iGameObjectsListener
 {
 private:
+	bool isDebug;
+
 	iCore *mCore;
 
 	GameObject *mPlayer;

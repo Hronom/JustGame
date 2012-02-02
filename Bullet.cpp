@@ -3,7 +3,7 @@
 Bullet::Bullet(iCore *xCore, iGameObjectsListener *xGameObjectsListener, Ogre::String xObjectName, Ogre::Vector2 xPos, Ogre::Vector2 xDestination): GameObject(xCore, xGameObjectsListener, xObjectName)
 {
 	mHealthCount = 1;
-	mDamage = -10;
+	mDamage = 10;
 	mMoveSpeed = 45.0f;
 
 	mCanDoShot = false;

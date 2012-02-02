@@ -8,7 +8,7 @@
 Enemy::Enemy(iCore *xCore, iGameObjectsListener *xGameObjectsListener, Ogre::String xObjectName, Ogre::Vector2 xPos): GameObject(xCore, xGameObjectsListener, xObjectName)
 {
 	mHealthCount = 100;
-	mMoveSpeed = 35.0f;
+	mMoveSpeed = 15.0f;
 	mShootDelay = 0.3f;
 	mCanDoShot = false;
 	mTimeAfterLastShoot = mShootDelay;
@@ -36,14 +36,14 @@ Enemy::Enemy(iCore *xCore, iGameObjectsListener *xGameObjectsListener, Ogre::Str
 	mManualObject->end();
 	mManualObject->convertToMesh(mObjectName+"_Mesh");
 
-	// create ObjectEntity
-	mObjectEntity = mCore->getSceneManager()->createEntity(mObjectName+"_Entity", mObjectName+"_Mesh");
+	// create Entity
+	mEntity = mCore->getSceneManager()->createEntity(mObjectName+"_Entity", mObjectName+"_Mesh");
+	// connect Entity to Node
+	mObjectNode->attachObject(mEntity);
 
 	// create Physical Body
 	// starting xPosition of the box
 	Ogre::Vector3 xPosition = Ogre::Vector3(xPos.x, xPos.y, 0);
-
-	mObjectNode->attachObject(mObjectEntity);
 
 	// after that create the Bullet shape with the calculated xSize
 	mSphereShape = new OgreBulletCollisions::SphereCollisionShape(mObjectRadius);
@@ -56,7 +56,7 @@ Enemy::Enemy(iCore *xCore, iGameObjectsListener *xGameObjectsListener, Ogre::Str
 		0.1f, 			// dynamic bodymass
 		xPosition,		// starting xPosition of the box
 		Ogre::Quaternion(0,0,0,1));// orientation of the box
-	
+
 	mRigidBody->getBulletRigidBody()->setLinearFactor(btVector3(1,1,0));
 	mRigidBody->getBulletRigidBody()->setAngularFactor(btVector3(0, 0, 1));
 	mRigidBody->setCastShadows(false);
@@ -64,62 +64,26 @@ Enemy::Enemy(iCore *xCore, iGameObjectsListener *xGameObjectsListener, Ogre::Str
 
 Enemy::~Enemy()
 {
+	mCore->getDynamicsWorld()->getBulletDynamicsWorld()->removeRigidBody(mRigidBody->getBulletRigidBody());
+	delete mRigidBody->getBulletRigidBody()->getMotionState();
+	delete mRigidBody->getBulletRigidBody();
+
+	delete mSphereShape;
+
 	mObjectNode->detachAllObjects();
 	mCore->getSceneManager()->destroyManualObject(mManualObject);
-	mCore->getSceneManager()->destroyEntity(mObjectEntity);
+	mCore->getSceneManager()->destroyEntity(mEntity);
 }
 
 void Enemy::update(const Ogre::FrameEvent& evt)
 {
 	if(mHealthCount > 0)
 	{
-		// ROTATE Ogre SceneNode
-		Ogre::Vector3 xDirection = Ogre::Vector3(mDestinationDot.x, mDestinationDot.y, 0) - mObjectNode->getPosition();
-		xDirection.z = 0;
-
-		Ogre::Vector3 xSrcDirection = mObjectNode->getOrientation() * Ogre::Vector3::UNIT_X;
-		xSrcDirection.z = 0;
-		//xSrc.normalise();
-
-		Ogre::Quaternion xQuat;		
-		if ((1.0f + xSrcDirection.dotProduct(xDirection)) < 0.0001f)
-			xQuat = Ogre::Quaternion(Ogre::Degree(180), Ogre::Vector3::UNIT_Z);
-		else
-			xQuat = xSrcDirection.getRotationTo(xDirection);
-
-		mObjectNode->rotate(xQuat);
-
-		// APPLY ROTATE to Bullet RigidBody
-		btTransform xRigidBodyTransform = mRigidBody->getBulletRigidBody()->getWorldTransform();
-		xRigidBodyTransform.setRotation(OgreBulletCollisions::OgreBtConverter::to(mObjectNode->getOrientation()));
-		mRigidBody->getBulletRigidBody()->setWorldTransform(xRigidBodyTransform);
-
-		// MOVE Ogre SceneNode
-		Ogre::Real xMove = mMoveSpeed * evt.timeSinceLastFrame;
-		Ogre::Vector3 xVector;
-		xVector = mMoveDirection * xMove;
-		xVector =  mObjectNode->getOrientation() * xVector;
-
-		mRigidBody->getBulletRigidBody()->applyCentralForce(OgreBulletCollisions::OgreBtConverter::to(xVector));
+		rotateEnemy(evt.timeSinceLastFrame);
+		moveEnemy(evt.timeSinceLastFrame);
+		enemyShoot(evt.timeSinceLastFrame);
 
 		mRigidBody->enableActiveState();
-
-
-		// SHOOT!!!
-		if(mCanDoShot == true)
-			if(mTimeAfterLastShoot >= mShootDelay)
-			{
-				Ogre::Vector3 xPosObject = mObjectNode->getPosition();
-				Ogre::Vector2 xPos;
-				xPos.x = xPosObject.x;
-				xPos.y = xPosObject.y;
-				mGameObjectsListener->addBullet(mObjectString, xPos, mDestinationDot);
-				mTimeAfterLastShoot=0;
-			}
-			else
-			{
-				mTimeAfterLastShoot += evt.timeSinceLastFrame;
-			}
 	}
 	else
 	{
@@ -128,4 +92,69 @@ void Enemy::update(const Ogre::FrameEvent& evt)
 		else 
 			mTimeBeforeDelete -= evt.timeSinceLastFrame;
 	}
+}
+
+
+void Enemy::rotateEnemy(Ogre::Real xTimeSinceLastFrame)
+{
+	// ROTATE Ogre SceneNode
+	Ogre::Vector3 xDirection = Ogre::Vector3(mDestinationDot.x, mDestinationDot.y, 0) - mObjectNode->getPosition();
+	xDirection.z = 0;
+
+	Ogre::Vector3 xSrcDirection = mObjectNode->getOrientation() * Ogre::Vector3::UNIT_X;
+	xSrcDirection.z = 0;
+	//xSrcDirection.normalise();
+
+	Ogre::Quaternion xQuat;		
+	if ((1.0f + xSrcDirection.dotProduct(xDirection)) < 0.0001f)
+		xQuat = Ogre::Quaternion(Ogre::Degree(180), Ogre::Vector3::UNIT_Z);
+	else
+		xQuat = xSrcDirection.getRotationTo(xDirection);
+
+	mObjectNode->rotate(xQuat);
+
+	// APPLY ROTATE to Bullet RigidBody
+	btTransform xRigidBodyTransform = mRigidBody->getBulletRigidBody()->getWorldTransform();
+	xRigidBodyTransform.setRotation(OgreBulletCollisions::OgreBtConverter::to(mObjectNode->getOrientation()));
+	mRigidBody->getBulletRigidBody()->setWorldTransform(xRigidBodyTransform);
+}
+
+void Enemy::moveEnemy(Ogre::Real xTimeSinceLastFrame)
+{
+	// MOVE Ogre SceneNode
+	Ogre::Real xMove = mMoveSpeed * xTimeSinceLastFrame;
+	//Ogre::Real xMove = mMoveSpeed;
+	Ogre::Vector3 xVector;
+	xVector = mMoveDirection * xMove;
+	xVector =  mObjectNode->getOrientation() * xVector;
+
+	mRigidBody->getBulletRigidBody()->applyCentralImpulse(OgreBulletCollisions::OgreBtConverter::to(xVector));
+
+	// mRigidBody is the spaceship's btRigidBody
+    btVector3 xCurrentVelocity = mRigidBody->getBulletRigidBody()->getLinearVelocity();
+    btScalar xCurrentSpeed = xCurrentVelocity.length();
+    if(xCurrentSpeed > mMoveSpeed) 
+	{
+        xCurrentVelocity *= mMoveSpeed/xCurrentSpeed;
+        mRigidBody->getBulletRigidBody()->setLinearVelocity(xCurrentVelocity);
+    }
+}
+
+void Enemy::enemyShoot(Ogre::Real xTimeSinceLastFrame)
+{
+	// SHOOT!!!
+	if(mCanDoShot == true)
+		if(mTimeAfterLastShoot >= mShootDelay)
+		{
+			Ogre::Vector3 xPosObject = mObjectNode->getPosition();
+			Ogre::Vector2 xPos;
+			xPos.x = xPosObject.x;
+			xPos.y = xPosObject.y;
+			mGameObjectsListener->addBullet(mObjectString, xPos, mDestinationDot);
+			mTimeAfterLastShoot=0;
+		}
+		else
+		{
+			mTimeAfterLastShoot += xTimeSinceLastFrame;
+		}
 }

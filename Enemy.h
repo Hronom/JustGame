@@ -9,7 +9,7 @@ class Enemy: public GameObject
 {
 private:
 	Ogre::ManualObject *mManualObject;
-	Ogre::Entity *mObjectEntity;
+	Ogre::Entity *mEntity;
 	Ogre::Real mTimeBeforeDelete;
 
 	OgreBulletCollisions::SphereCollisionShape *mSphereShape;
@@ -20,6 +20,11 @@ public:
 	~Enemy();
 
 	virtual void update(const Ogre::FrameEvent& evt);
+
+private:
+	void rotateEnemy(Ogre::Real xTimeSinceLastFrame);
+	void moveEnemy(Ogre::Real xTimeSinceLastFrame);
+	void enemyShoot(Ogre::Real xTimeSinceLastFrame);
 };
 
 #endif

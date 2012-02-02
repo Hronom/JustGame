@@ -2,6 +2,8 @@
 
 PlayGameState::PlayGameState(iCore *xCore)
 {
+	isDebug = true;
+
 	mCore = xCore;
 
 	mPlayer = 0;
@@ -103,17 +105,6 @@ void PlayGameState::needUpdate(const Ogre::FrameEvent& evt)
 
 	// Обновление игрока
 	mPlayer->update(evt);
-
-	// Установка нового положения камеры
-	Ogre::Vector2 xPlayerPos;
-	xPlayerPos = mPlayer->getCurrentPos();
-
-	Ogre::Vector3 xNewCameraPos;
-	xNewCameraPos = mCore->getCamera()->getPosition();
-	xNewCameraPos.x = xPlayerPos.x;
-	xNewCameraPos.y = xPlayerPos.y;
-
-	mCore->getCamera()->setPosition(xNewCameraPos);
 
 	std::list<GameObject*>::iterator xUnit;
 	xUnit = mUnits.begin();
@@ -232,6 +223,11 @@ void PlayGameState::keyPressed(const OIS::KeyEvent& e)
 		break;
 	case OIS::KC_E:
 		addEnemy(xVectorPos.randomDeviant(100));
+		break;
+	case OIS::KC_Q:
+		mCore->getDynamicsWorld()->getDebugDrawer()->setDrawWireframe(isDebug);
+		mCore->getDynamicsWorld()->setShowDebugShapes(isDebug);
+		isDebug = !isDebug;
 		break;
 	default: break;
 	}
