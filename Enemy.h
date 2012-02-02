@@ -12,7 +12,7 @@ private:
 	Ogre::Entity *mObjectEntity;
 	Ogre::Real mTimeBeforeDelete;
 
-	OgreBulletCollisions::BoxCollisionShape *mBoxShape;
+	OgreBulletCollisions::SphereCollisionShape *mSphereShape;
 	OgreBulletDynamics::RigidBody *mRigidBody;
 
 public:

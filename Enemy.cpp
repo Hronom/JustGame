@@ -3,7 +3,7 @@
 #include "iGameObjectsListener.h"
 
 #include <OgreBulletDynamicsRigidBody.h>
-#include <Shapes/OgreBulletCollisionsBoxShape.h>
+#include <Shapes/OgreBulletCollisionsSphereShape.h>
 
 Enemy::Enemy(iCore *xCore, iGameObjectsListener *xGameObjectsListener, Ogre::String xObjectName, Ogre::Vector2 xPos): GameObject(xCore, xGameObjectsListener, xObjectName)
 {
@@ -38,35 +38,21 @@ Enemy::Enemy(iCore *xCore, iGameObjectsListener *xGameObjectsListener, Ogre::Str
 
 	// create ObjectEntity
 	mObjectEntity = mCore->getSceneManager()->createEntity(mObjectName+"_Entity", mObjectName+"_Mesh");
-	//mObjectEntity = mCore->getSceneManager()->createEntity(mObjectName+"_Entity", "cube.mesh");
-	//mObjectEntity->setMaterialName("Examples/BumpyMetal");
 
 	// create Physical Body
 	// starting xPosition of the box
 	Ogre::Vector3 xPosition = Ogre::Vector3(xPos.x, xPos.y, 0);
 
-	// we need the bounding box of the box to be able to set the xSize of the Bullet-box
-	Ogre::AxisAlignedBox xBoundingBox = mObjectEntity->getBoundingBox();
-
-	Ogre::Vector3 xSize = Ogre::Vector3::ZERO;	// xSize of the box
-	xSize = xBoundingBox.getSize(); 
-	xSize.z = 7.0f;
-	xSize /= 2.0f; // only the half needed
-	xSize *= 0.95f;	// Bullet margin is a bit bigger so we need a smaller xSize
-	// (Bullet 2.76 Physics SDK Manual page 18)
-
 	mObjectNode->attachObject(mObjectEntity);
-	//mObjectNode->scale(0.05f, 0.05f, 0.05f);	// the cube is too big for us
-	//xSize *= 0.051f;						// don't forget to scale down the Bullet-box too
 
 	// after that create the Bullet shape with the calculated xSize
-	mBoxShape = new OgreBulletCollisions::BoxCollisionShape(xSize);
+	mSphereShape = new OgreBulletCollisions::SphereCollisionShape(mObjectRadius);
 	// and the Bullet rigid body
 	mRigidBody = new OgreBulletDynamics::RigidBody(mObjectName+"_RigidBody", mCore->getDynamicsWorld());
 	mRigidBody->setShape(mObjectNode,
-		mBoxShape,
-		0.6f,			// dynamic body restitution
-		0.6f,			// dynamic body friction
+		mSphereShape,
+		0.0f,			// dynamic body restitution
+		0.5f,			// dynamic body friction
 		0.1f, 			// dynamic bodymass
 		xPosition,		// starting xPosition of the box
 		Ogre::Quaternion(0,0,0,1));// orientation of the box
@@ -74,10 +60,6 @@ Enemy::Enemy(iCore *xCore, iGameObjectsListener *xGameObjectsListener, Ogre::Str
 	mRigidBody->getBulletRigidBody()->setLinearFactor(btVector3(1,1,0));
 	mRigidBody->getBulletRigidBody()->setAngularFactor(btVector3(0, 0, 1));
 	mRigidBody->setCastShadows(false);
-
-	/*mObjectNode->attachObject(mObjectEntity);	
-	mObjectNode->setPosition(Ogre::Vector3(xPos.x, xPos.y, 0));*/
-
 }
 
 Enemy::~Enemy()
@@ -91,45 +73,36 @@ void Enemy::update(const Ogre::FrameEvent& evt)
 {
 	if(mHealthCount > 0)
 	{
-		// MOVE Ogre SceneNode
-		Ogre::Real xMove = mMoveSpeed * evt.timeSinceLastFrame;
-		mObjectNode->translate(mMoveDirection * xMove, Ogre::Node::TS_LOCAL);
-
 		// ROTATE Ogre SceneNode
 		Ogre::Vector3 xDirection = Ogre::Vector3(mDestinationDot.x, mDestinationDot.y, 0) - mObjectNode->getPosition();
 		xDirection.z = 0;
 
-		Ogre::Vector3 xSrc = mObjectNode->getOrientation() * Ogre::Vector3::UNIT_X;
-		xSrc.z = 0;
-		xSrc.normalise();
+		Ogre::Vector3 xSrcDirection = mObjectNode->getOrientation() * Ogre::Vector3::UNIT_X;
+		xSrcDirection.z = 0;
+		//xSrc.normalise();
 
-		if ((1.0f + xSrc.dotProduct(xDirection)) < 0.0001f)
-		{
-			mObjectNode->roll(Ogre::Degree(180));
-		}
+		Ogre::Quaternion xQuat;		
+		if ((1.0f + xSrcDirection.dotProduct(xDirection)) < 0.0001f)
+			xQuat = Ogre::Quaternion(Ogre::Degree(180), Ogre::Vector3::UNIT_Z);
 		else
-		{
-			Ogre::Quaternion xQuat = xSrc.getRotationTo(xDirection);
-			mObjectNode->rotate(xQuat);
-		}
+			xQuat = xSrcDirection.getRotationTo(xDirection);
 
-		// APPLY to Bullet RigidBody
+		mObjectNode->rotate(xQuat);
+
+		// APPLY ROTATE to Bullet RigidBody
 		btTransform xRigidBodyTransform = mRigidBody->getBulletRigidBody()->getWorldTransform();
-		xRigidBodyTransform.setOrigin(OgreBulletCollisions::OgreBtConverter::to(mObjectNode->getPosition()));
 		xRigidBodyTransform.setRotation(OgreBulletCollisions::OgreBtConverter::to(mObjectNode->getOrientation()));
 		mRigidBody->getBulletRigidBody()->setWorldTransform(xRigidBodyTransform);
-		
+
+		// MOVE Ogre SceneNode
+		Ogre::Real xMove = mMoveSpeed * evt.timeSinceLastFrame;
+		Ogre::Vector3 xVector;
+		xVector = mMoveDirection * xMove;
+		xVector =  mObjectNode->getOrientation() * xVector;
+
+		mRigidBody->getBulletRigidBody()->applyCentralForce(OgreBulletCollisions::OgreBtConverter::to(xVector));
+
 		mRigidBody->enableActiveState();
-
-
-
-
-
-
-
-
-
-
 
 
 		// SHOOT!!!
