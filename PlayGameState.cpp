@@ -150,8 +150,21 @@ void PlayGameState::needUpdate(const Ogre::FrameEvent& evt)
 		else
 			++xBullet;
 	}
+	
+	// Нанесение урона пулями
+	int xNumManifolds = mCore->getDynamicsWorld()->getBulletDynamicsWorld()->getDispatcher()->getNumManifolds();
+	for (int i=0; i<xNumManifolds; i++)
+	{
+		btPersistentManifold* xContactManifold =  mCore->getDynamicsWorld()->getBulletDynamicsWorld()->getDispatcher()->getManifoldByIndexInternal(i);
+		btCollisionObject* xObjA = static_cast<btCollisionObject*>(xContactManifold->getBody0());
+		btCollisionObject* xObjB = static_cast<btCollisionObject*>(xContactManifold->getBody1());
 
-	checkBullets();
+		GameObject *xGameObjectA = static_cast<GameObject*>(xObjA->getUserPointer());
+		GameObject *xGameObjectB = static_cast<GameObject*>(xObjB->getUserPointer());
+
+		xGameObjectA->doDamage(xGameObjectB->getDamage());
+		xGameObjectB->doDamage(xGameObjectA->getDamage());
+	}
 
 	// Обновление объектов для удаления
 	std::list<GameObject*>::iterator xForDelete;
@@ -262,8 +275,7 @@ void PlayGameState::buttonClick(MyGUI::WidgetPtr xSender)
 
 void PlayGameState::setPlayer(Ogre::Vector2 xPos)
 {
-	mPlayer = new Player(mCore, this, "Player", xPos);
-	mPlayer->setObjectString("Player");
+	mPlayer = new Player(mCore, this, "Player", PLAYER_GROUP, xPos);
 }
 
 void PlayGameState::addEnemy(Ogre::Vector2 xPos)
@@ -273,84 +285,17 @@ void PlayGameState::addEnemy(Ogre::Vector2 xPos)
 	xEnemyName = "Enemy" + Ogre::StringConverter::toString(mEnemyCount);
 
 	Enemy *xEnemy;
-	xEnemy = new Enemy(mCore, this, xEnemyName, xPos);
-	xEnemy->setObjectString("Enemy");
+	xEnemy = new Enemy(mCore, this, xEnemyName, ENEMY_GROUP, xPos);
 	mUnits.push_back(xEnemy);
 }
 
-void PlayGameState::addBullet(Ogre::String xObjectString, Ogre::Vector2 xPos, Ogre::Vector2 xDestination)
+void PlayGameState::addBullet(short xObjectType, Ogre::Vector2 xPos, Ogre::Vector2 xDestination)
 {
 	mBulletsCount++;
 	Ogre::String xBulletName;
 	xBulletName = "Bullet" + Ogre::StringConverter::toString(mBulletsCount);
 
 	Bullet *xBullet;
-	xBullet = new Bullet(mCore, this, xBulletName, xPos, xDestination);
-	xBullet->setObjectString(xObjectString);
+	xBullet = new Bullet(mCore, this, xBulletName, xObjectType, xPos, xDestination);
 	mBullets.push_back(xBullet);
-}
-
-void PlayGameState::checkBullets()
-{
-	// Обновление пуль для игрока
-	{
-		GameObject *xUnit = mPlayer;
-		Ogre::String xUnitType = xUnit->getObjectString();
-		Ogre::Vector2 xUnitPos = xUnit->getCurrentPos();
-		float xUnitRadius = xUnit->getObjectRadius();
-
-		std::list<GameObject*>::iterator xElement;
-		xElement = mBullets.begin();
-		while(xElement != mBullets.end())
-		{
-			GameObject *xBullet = (*xElement);
-			Ogre::String xBulletType = xBullet->getObjectString();
-			Ogre::Vector2 xBulletPos = xBullet->getCurrentPos();
-			float xBulletRadius = xBullet->getObjectRadius();
-
-			if(xUnit->getCurrentHealth() > 0 && xBulletType != xUnitType && xBulletPos.distance(xUnitPos) <= xBulletRadius+xUnitRadius )
-			{
-				xUnit->doDamage(xBullet->getDamage());
-				xBullet->doDamage(10);
-				xElement = mBullets.erase(xElement);
-				mForDelete.push_back(xBullet);
-			}
-			else
-				++xElement;
-		}
-	}
-
-	// Обновление пуль для врагов
-	std::list<GameObject*>::iterator xElement;
-	xElement = mUnits.begin();
-	while(xElement != mUnits.end())
-	{
-		GameObject *xUnit = (*xElement);
-		Ogre::String xUnitType = xUnit->getObjectString();
-		Ogre::Vector2 xUnitPos = xUnit->getCurrentPos();
-		float xUnitRadius = xUnit->getObjectRadius();
-
-		std::list<GameObject*>::iterator xElement2;
-		xElement2 = mBullets.begin();
-		while(xElement2 != mBullets.end())
-		{
-			GameObject *xBullet = (*xElement2);
-			Ogre::String xBulletType = xBullet->getObjectString();
-			Ogre::Vector2 xBulletPos = xBullet->getCurrentPos();
-			float xBulletRadius = xBullet->getObjectRadius();
-
-
-			if(xUnit->getCurrentHealth() > 0 && xBulletType != xUnitType && xBulletPos.distance(xUnitPos) <= xBulletRadius+xUnitRadius )
-			{
-				xUnit->doDamage(xBullet->getDamage());
-				xBullet->doDamage(10);
-				xElement2 = mBullets.erase(xElement2);
-				mForDelete.push_back(xBullet);
-			}
-			else
-				++xElement2;
-		}
-
-		++xElement;
-	}
 }

@@ -3,12 +3,13 @@
 #include "iCore.h"
 #include "iGameObjectsListener.h"
 
-GameObject::GameObject(iCore *xCore, iGameObjectsListener *xGameObjectsListener, Ogre::String xObjectName)
+GameObject::GameObject(iCore *xCore, iGameObjectsListener *xGameObjectsListener, Ogre::String xObjectName, short xObjectType)
 {
 	mCore = xCore;
 	mGameObjectsListener = xGameObjectsListener;
 
 	mObjectName = xObjectName;
+	mObjectType = xObjectType;
 	mHealthCount = 0;
 	mDamage = 0;
 	mMoveSpeed = 0;
@@ -39,16 +40,6 @@ void GameObject::update(const Ogre::FrameEvent& evt)
 Ogre::String GameObject::getObjectName()
 {
 	return mObjectName; 
-}
-
-void GameObject::setObjectString(Ogre::String xString)
-{
-	mObjectString = xString;
-}
-
-Ogre::String GameObject::getObjectString()
-{
-	return mObjectString;
 }
 
 int GameObject::getCurrentHealth()

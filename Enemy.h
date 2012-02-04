@@ -2,6 +2,7 @@
 #define ENEMY_H
 
 #include <Ogre.h>
+
 #include "iCore.h"
 #include "GameObject.h"
 
@@ -16,7 +17,7 @@ private:
 	OgreBulletDynamics::RigidBody *mRigidBody;
 
 public:
-	Enemy(iCore *xCore, iGameObjectsListener *xGameObjectsListener, Ogre::String xObjectName, Ogre::Vector2 xPos);
+	Enemy(iCore *xCore, iGameObjectsListener *xGameObjectsListener, Ogre::String xObjectName, short xObjectType, Ogre::Vector2 xPos);
 	~Enemy();
 
 	virtual void update(const Ogre::FrameEvent& evt);

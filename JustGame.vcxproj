@@ -42,14 +42,14 @@
     <IntDir>$(SolutionDir)\IntermediateFiles\$(Configuration)\</IntDir>
     <IncludePath>$(OGRE_HOME)\include;$(OGRE_HOME)\include\OIS;$(OGRE_HOME)\include\OGRE;$(OGRE_HOME)\Samples\Common\include;$(OGRE_HOME)\boost_1_47;$(MyGUI_HOME)\MyGUIEngine\include;$(MyGUI_HOME)\Platforms\Ogre\OgrePlatform\include;$(OgreBullet_HOME)\Collisions\include;$(OgreBullet_HOME)\Dynamics\include;$(Bullet_HOME)\src;$(IncludePath)</IncludePath>
     <LibraryPath>$(OGRE_HOME)\lib\$(Configuration);$(OGRE_HOME)\boost_1_47\lib;$(MyGUI_builded_HOME)\lib\$(Configuration);$(OgreBullet_HOME)\lib\$(Configuration);$(Bullet_builded_HOME)\lib\$(Configuration);$(LibraryPath)</LibraryPath>
-    <OutDir>$(SolutionDir)\install\$(Configuration)\</OutDir>
+    <OutDir>$(SolutionDir)\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <IntDir>$(SolutionDir)\IntermediateFiles\$(Configuration)\</IntDir>
     <IncludePath>$(OGRE_HOME)\include;$(OGRE_HOME)\include\OIS;$(OGRE_HOME)\include\OGRE;$(OGRE_HOME)\Samples\Common\include;$(OGRE_HOME)\boost_1_47;$(MyGUI_HOME)\MyGUIEngine\include;$(MyGUI_HOME)\Platforms\Ogre\OgrePlatform\include;$(OgreBullet_HOME)\Collisions\include;$(OgreBullet_HOME)\Dynamics\include;$(Bullet_HOME)\src;$(IncludePath)</IncludePath>
     <LibraryPath>$(OGRE_HOME)\lib\$(Configuration);$(OGRE_HOME)\boost_1_47\lib;$(MyGUI_builded_HOME)\lib\$(Configuration);$(OgreBullet_HOME)\lib\$(Configuration);$(Bullet_builded_HOME)\lib\$(Configuration);$(LibraryPath)</LibraryPath>
-    <OutDir>$(SolutionDir)\install\$(Configuration)\</OutDir>
+    <OutDir>$(SolutionDir)\$(Configuration)\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

@@ -5,7 +5,7 @@
 #include <OgreBulletDynamicsRigidBody.h>
 #include <Shapes/OgreBulletCollisionsSphereShape.h>
 
-Enemy::Enemy(iCore *xCore, iGameObjectsListener *xGameObjectsListener, Ogre::String xObjectName, Ogre::Vector2 xPos): GameObject(xCore, xGameObjectsListener, xObjectName)
+Enemy::Enemy(iCore *xCore, iGameObjectsListener *xGameObjectsListener, Ogre::String xObjectName, short xObjectType, Ogre::Vector2 xPos): GameObject(xCore, xGameObjectsListener, xObjectName, xObjectType)
 {
 	mHealthCount = 100;
 	mMoveSpeed = 15.0f;
@@ -48,7 +48,7 @@ Enemy::Enemy(iCore *xCore, iGameObjectsListener *xGameObjectsListener, Ogre::Str
 	// after that create the Bullet shape with the calculated xSize
 	mSphereShape = new OgreBulletCollisions::SphereCollisionShape(mObjectRadius);
 	// and the Bullet rigid body
-	mRigidBody = new OgreBulletDynamics::RigidBody(mObjectName+"_RigidBody", mCore->getDynamicsWorld());
+	mRigidBody = new OgreBulletDynamics::RigidBody(mObjectName+"_RigidBody", mCore->getDynamicsWorld(), ENEMY_GROUP, PLAYER_GROUP | ENEMY_GROUP | BULLET_GROUP);
 	mRigidBody->setShape(mObjectNode,
 		mSphereShape,
 		0.0f,			// dynamic body restitution
@@ -60,6 +60,8 @@ Enemy::Enemy(iCore *xCore, iGameObjectsListener *xGameObjectsListener, Ogre::Str
 	mRigidBody->getBulletRigidBody()->setLinearFactor(btVector3(1,1,0));
 	mRigidBody->getBulletRigidBody()->setAngularFactor(btVector3(0, 0, 1));
 	mRigidBody->setCastShadows(false);
+
+	mRigidBody->getBulletRigidBody()->setUserPointer(this);
 }
 
 Enemy::~Enemy()
@@ -150,7 +152,7 @@ void Enemy::enemyShoot(Ogre::Real xTimeSinceLastFrame)
 			Ogre::Vector2 xPos;
 			xPos.x = xPosObject.x;
 			xPos.y = xPosObject.y;
-			mGameObjectsListener->addBullet(mObjectString, xPos, mDestinationDot);
+			mGameObjectsListener->addBullet(PLAYER_GROUP, xPos, mDestinationDot);
 			mTimeAfterLastShoot=0;
 		}
 		else

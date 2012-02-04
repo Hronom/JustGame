@@ -1,6 +1,15 @@
 #ifndef GAMEOBJECT_H
 #define GAMEOBJECT_H
 
+#define BIT(x) (1<<(x))
+enum CollisionGroups 
+{
+	EMPTY_GROUP = 0,
+    PLAYER_GROUP = BIT(0), //<Collide with PLAYER
+    ENEMY_GROUP = BIT(1), //<Collide with ENEMY
+	BULLET_GROUP = BIT(2) //<Collide with BULLET
+};
+
 #include <Ogre.h>
 
 class iCore;
@@ -12,7 +21,7 @@ protected:
 	iGameObjectsListener *mGameObjectsListener;
 
 	Ogre::String mObjectName;
-	Ogre::String mObjectString;
+	short mObjectType;
 	int mHealthCount;
 	int mDamage;
 	Ogre::Real mMoveSpeed;
@@ -29,14 +38,12 @@ protected:
 	bool mNeedDelete;
 
 public:
-	GameObject(iCore *xCore, iGameObjectsListener *xGameObjectsListener, Ogre::String xObjectName);
+	GameObject(iCore *xCore, iGameObjectsListener *xGameObjectsListener, Ogre::String xObjectName, short xObjectType);
 	virtual ~GameObject();
 
 	virtual void update(const Ogre::FrameEvent& evt);
 
 	virtual Ogre::String getObjectName();
-	virtual void setObjectString(Ogre::String xString);
-	virtual Ogre::String getObjectString();
 	virtual int getCurrentHealth();
 	virtual int getDamage();
 	virtual void doDamage(int xDamage);
