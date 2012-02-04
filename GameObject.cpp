@@ -70,11 +70,6 @@ Ogre::Vector2 GameObject::getCurrentPos()
 	return xVector2Pos;
 }
 
-float GameObject::getObjectRadius()
-{
-	return mObjectRadius;
-}
-
 bool GameObject::isNeedDelete()
 {
 	return mNeedDelete;

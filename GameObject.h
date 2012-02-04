@@ -49,7 +49,6 @@ public:
 	virtual void doDamage(int xDamage);
 	
 	virtual Ogre::Vector2 getCurrentPos();
-	virtual float getObjectRadius();
 	virtual bool isNeedDelete();
 
 	virtual void moveUp(bool doMove);

@@ -1,7 +1,7 @@
 #include "Bullet.h"
 
 #include <OgreBulletDynamicsRigidBody.h>
-#include <Shapes/OgreBulletCollisionsSphereShape.h>
+#include <Shapes/OgreBulletCollisionsBoxShape.h>
 
 Bullet::Bullet(iCore *xCore, iGameObjectsListener *xGameObjectsListener, Ogre::String xObjectName, short xObjectType, Ogre::Vector2 xPos, Ogre::Vector2 xDestination): GameObject(xCore, xGameObjectsListener, xObjectName, xObjectType)
 {
@@ -17,26 +17,21 @@ Bullet::Bullet(iCore *xCore, iGameObjectsListener *xGameObjectsListener, Ogre::S
 	GameObject::mMoveDirection = Ogre::Vector3(1,0,0);
 
 
-	mObjectRadius = 1;
-
 	Ogre::ColourValue xColor = Ogre::ColourValue(1.0, 0.0, 0.0, 0.0);
 	mManualObject = new Ogre::ManualObject(mObjectName+"_Manual");
-	// accuracy is the count of points (and lines).
-	// Higher values make the circle smoother, but may slowdown the performance.
-	// The performance also is related to the count of circles.
-	float const xAccuracy = 35;
 	mManualObject->begin("BaseWhiteNoLighting", Ogre::RenderOperation::OT_LINE_STRIP);
-	unsigned xPoint_index = 0;
-	for(float xTheta = 0; xTheta <= 2 * Ogre::Math::PI; xTheta += Ogre::Math::PI / xAccuracy) 
-	{
-		mManualObject->position(mObjectRadius * cos(xTheta), mObjectRadius * sin(xTheta), 0);
-		mManualObject->colour(xColor);
-		mManualObject->index(xPoint_index++);
-	}
-	mManualObject->index(0); // Rejoins the last point to the first.
+	mManualObject->position(Ogre::Vector3(-1.5,-0.3,0));	
+	mManualObject->colour(xColor);
+	mManualObject->position(Ogre::Vector3(-1.5,0.3,0));
+	mManualObject->colour(xColor);
+	mManualObject->position(Ogre::Vector3(1.5,0.3,0));
+	mManualObject->colour(xColor);
+	mManualObject->position(Ogre::Vector3(1.5,-0.3,0));
+	mManualObject->colour(xColor);
+	mManualObject->position(Ogre::Vector3(-1.5,-0.3,0));
+	mManualObject->colour(xColor);
 	mManualObject->end();
 	mManualObject->convertToMesh(mObjectName+"_Mesh");
-
 
 	// create Entity
 	mEntity = mCore->getSceneManager()->createEntity(mObjectName+"_Entity", mObjectName+"_Mesh");
@@ -44,11 +39,19 @@ Bullet::Bullet(iCore *xCore, iGameObjectsListener *xGameObjectsListener, Ogre::S
 	mObjectNode->attachObject(mEntity);
 
 	// create Physical Body
+	Ogre::AxisAlignedBox xBoundingBox = mEntity->getBoundingBox();
+
+	Ogre::Vector3 xSize = Ogre::Vector3::ZERO;	// xSize of the box
+	xSize = xBoundingBox.getSize(); 
+	xSize.z = 3.0f;
+	xSize /= 2.0f; // only the half needed
+	xSize *= 0.95f;	// Bullet margin is a bit bigger so we need a smaller xSize
+	// (Bullet 2.76 Physics SDK Manual page 18)
 	// starting xPosition of the box
 	Ogre::Vector3 xPosition = Ogre::Vector3(xPos.x, xPos.y, 0);
 
 	// after that create the Bullet shape with the calculated xSize
-	mSphereShape = new OgreBulletCollisions::SphereCollisionShape(mObjectRadius);
+	mBoxShape = new OgreBulletCollisions::BoxCollisionShape(xSize);
 	// and the Bullet rigid body
 	if(mObjectType == 2)
 		mRigidBody = new OgreBulletDynamics::RigidBody(mObjectName+"_RigidBody", mCore->getDynamicsWorld(), BULLET_GROUP, ENEMY_GROUP | BULLET_GROUP);
@@ -56,7 +59,7 @@ Bullet::Bullet(iCore *xCore, iGameObjectsListener *xGameObjectsListener, Ogre::S
 		mRigidBody = new OgreBulletDynamics::RigidBody(mObjectName+"_RigidBody", mCore->getDynamicsWorld(), BULLET_GROUP, PLAYER_GROUP | BULLET_GROUP);
 
 	mRigidBody->setShape(mObjectNode,
-		mSphereShape,
+		mBoxShape,
 		0.0f,			// dynamic body restitution
 		0.5f,			// dynamic body friction
 		0.1f, 			// dynamic bodymass
@@ -97,7 +100,7 @@ Bullet::~Bullet()
 	delete mRigidBody->getBulletRigidBody()->getMotionState();
 	delete mRigidBody->getBulletRigidBody();
 
-	delete mSphereShape;
+	delete mBoxShape;
 
 	mObjectNode->detachAllObjects();
 	mCore->getSceneManager()->destroyManualObject(mManualObject);
@@ -122,7 +125,7 @@ void Bullet::update(const Ogre::FrameEvent& evt)
 	{
 		if(mTimeBeforeDelete <= 0) 
 			mNeedDelete = true;
-		else 
+		else
 			mTimeBeforeDelete -= evt.timeSinceLastFrame;
 	}
 }

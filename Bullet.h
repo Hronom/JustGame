@@ -15,7 +15,7 @@ private:
 	Ogre::Real mLiveTime;
 	Ogre::Real mTimeBeforeDelete;
 
-	OgreBulletCollisions::SphereCollisionShape *mSphereShape;
+	OgreBulletCollisions::BoxCollisionShape *mBoxShape;
 	OgreBulletDynamics::RigidBody *mRigidBody;
 
 public:

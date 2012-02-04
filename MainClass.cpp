@@ -177,7 +177,7 @@ void MainClass::initPhysics()
 {
 	// Start Bullet
 	mDynamicsWorld = new OgreBulletDynamics::DynamicsWorld(mSceneManager,
-		Ogre::AxisAlignedBox(Ogre::Vector3(-10000, -10000, -10000),Ogre::Vector3(10000,  10000,  10000)), Ogre::Vector3(0,0,0));
+		Ogre::AxisAlignedBox(Ogre::Vector3(-500.0f, -500.0f, -500.0f),Ogre::Vector3(500.0f,  500.0f,  500.0f)), Ogre::Vector3(0,0,0));
 	// add Debug info display tool
 	mDebugDrawer = new OgreBulletCollisions::DebugDrawer();
 	mDebugDrawer->setDrawWireframe(false);   // we want to see the Bullet containers
