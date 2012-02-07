@@ -5,18 +5,18 @@
 #include <OgreBulletDynamicsRigidBody.h>
 #include <Shapes/OgreBulletCollisionsSphereShape.h>
 
-Enemy::Enemy(iCore *xCore, iGameObjectsListener *xGameObjectsListener, Ogre::String xObjectName, short xObjectType, Ogre::Vector2 xPos): GameObject(xCore, xGameObjectsListener, xObjectName, xObjectType)
+Enemy::Enemy(iCore *xCore, iGameObjectsListener *xGameObjectsListener, Ogre::String xObjectName, short xObjectCollideWith, Ogre::Vector2 xPos): GameObject(xCore, xGameObjectsListener, xObjectName, xObjectCollideWith)
 {
 	mHealthCount = 100;
 	mMoveSpeed = 15.0f;
 	mShootDelay = 0.3f;
-	mCanDoShot = false;
-	mTimeAfterLastShoot = mShootDelay;
+	mShoot = false;
+	mTimeSinceLastShot = mShootDelay;
 	mDestinationDot = Ogre::Vector2(1.0f,1.0f);
 	mTimeBeforeDelete = 0.7f;
 
 	// create ManualObject
-	mObjectRadius = 7;
+	float xObjectRadius = 7;
 
 	Ogre::ColourValue xColor = Ogre::ColourValue(0.0, 0.0, 1.0, 0.0);
 	mManualObject = new Ogre::ManualObject(mObjectName+"_Manual");
@@ -28,7 +28,7 @@ Enemy::Enemy(iCore *xCore, iGameObjectsListener *xGameObjectsListener, Ogre::Str
 	unsigned xPoint_index = 0;
 	for(float xTheta = 0; xTheta <= 2 * Ogre::Math::PI; xTheta += Ogre::Math::PI / xAccuracy) 
 	{
-		mManualObject->position(mObjectRadius * cos(xTheta), mObjectRadius * sin(xTheta), 0);
+		mManualObject->position(xObjectRadius * cos(xTheta), xObjectRadius * sin(xTheta), 0);
 		mManualObject->colour(xColor);
 		mManualObject->index(xPoint_index++);
 	}
@@ -39,18 +39,19 @@ Enemy::Enemy(iCore *xCore, iGameObjectsListener *xGameObjectsListener, Ogre::Str
 	// create Entity
 	mEntity = mCore->getSceneManager()->createEntity(mObjectName+"_Entity", mObjectName+"_Mesh");
 	// connect Entity to Node
-	mObjectNode->attachObject(mEntity);
+	mSceneNode = mCore->getSceneManager()->getRootSceneNode()->createChildSceneNode(xObjectName+"_Node");
+	mSceneNode->attachObject(mEntity);
 
 	// create Physical Body
 	// starting xPosition of the box
 	Ogre::Vector3 xPosition = Ogre::Vector3(xPos.x, xPos.y, 0);
 
 	// after that create the Bullet shape with the calculated xSize
-	mSphereShape = new OgreBulletCollisions::SphereCollisionShape(mObjectRadius);
+	mCollisionShape = new OgreBulletCollisions::SphereCollisionShape(xObjectRadius);
 	// and the Bullet rigid body
 	mRigidBody = new OgreBulletDynamics::RigidBody(mObjectName+"_RigidBody", mCore->getDynamicsWorld(), ENEMY_GROUP, PLAYER_GROUP | ENEMY_GROUP | BULLET_GROUP);
-	mRigidBody->setShape(mObjectNode,
-		mSphereShape,
+	mRigidBody->setShape(mSceneNode,
+		mCollisionShape,
 		0.0f,			// dynamic body restitution
 		0.5f,			// dynamic body friction
 		0.1f, 			// dynamic bodymass
@@ -66,15 +67,7 @@ Enemy::Enemy(iCore *xCore, iGameObjectsListener *xGameObjectsListener, Ogre::Str
 
 Enemy::~Enemy()
 {
-	mCore->getDynamicsWorld()->getBulletDynamicsWorld()->removeRigidBody(mRigidBody->getBulletRigidBody());
-	delete mRigidBody->getBulletRigidBody()->getMotionState();
-	delete mRigidBody->getBulletRigidBody();
-
-	delete mSphereShape;
-
-	mObjectNode->detachAllObjects();
 	mCore->getSceneManager()->destroyManualObject(mManualObject);
-	mCore->getSceneManager()->destroyEntity(mEntity);
 }
 
 void Enemy::update(const Ogre::FrameEvent& evt)
@@ -100,10 +93,10 @@ void Enemy::update(const Ogre::FrameEvent& evt)
 void Enemy::rotateEnemy(Ogre::Real xTimeSinceLastFrame)
 {
 	// ROTATE Ogre SceneNode
-	Ogre::Vector3 xDirection = Ogre::Vector3(mDestinationDot.x, mDestinationDot.y, 0) - mObjectNode->getPosition();
+	Ogre::Vector3 xDirection = Ogre::Vector3(mDestinationDot.x, mDestinationDot.y, 0) - mSceneNode->getPosition();
 	xDirection.z = 0;
 
-	Ogre::Vector3 xSrcDirection = mObjectNode->getOrientation() * Ogre::Vector3::UNIT_X;
+	Ogre::Vector3 xSrcDirection = mSceneNode->getOrientation() * Ogre::Vector3::UNIT_X;
 	xSrcDirection.z = 0;
 	//xSrcDirection.normalise();
 
@@ -113,11 +106,11 @@ void Enemy::rotateEnemy(Ogre::Real xTimeSinceLastFrame)
 	else
 		xQuat = xSrcDirection.getRotationTo(xDirection);
 
-	mObjectNode->rotate(xQuat);
+	mSceneNode->rotate(xQuat);
 
 	// APPLY ROTATE to Bullet RigidBody
 	btTransform xRigidBodyTransform = mRigidBody->getBulletRigidBody()->getWorldTransform();
-	xRigidBodyTransform.setRotation(OgreBulletCollisions::OgreBtConverter::to(mObjectNode->getOrientation()));
+	xRigidBodyTransform.setRotation(OgreBulletCollisions::OgreBtConverter::to(mSceneNode->getOrientation()));
 	mRigidBody->getBulletRigidBody()->setWorldTransform(xRigidBodyTransform);
 }
 
@@ -128,7 +121,7 @@ void Enemy::moveEnemy(Ogre::Real xTimeSinceLastFrame)
 	//Ogre::Real xMove = mMoveSpeed;
 	Ogre::Vector3 xVector;
 	xVector = mMoveDirection * xMove;
-	xVector =  mObjectNode->getOrientation() * xVector;
+	xVector =  mSceneNode->getOrientation() * xVector;
 
 	mRigidBody->getBulletRigidBody()->applyCentralImpulse(OgreBulletCollisions::OgreBtConverter::to(xVector));
 
@@ -145,18 +138,18 @@ void Enemy::moveEnemy(Ogre::Real xTimeSinceLastFrame)
 void Enemy::enemyShoot(Ogre::Real xTimeSinceLastFrame)
 {
 	// SHOOT!!!
-	if(mCanDoShot == true)
-		if(mTimeAfterLastShoot >= mShootDelay)
+	if(mShoot == true)
+		if(mTimeSinceLastShot >= mShootDelay)
 		{
-			Ogre::Vector3 xPosObject = mObjectNode->getPosition();
+			Ogre::Vector3 xPosObject = mSceneNode->getPosition();
 			Ogre::Vector2 xPos;
 			xPos.x = xPosObject.x;
 			xPos.y = xPosObject.y;
 			mGameObjectsListener->addBullet(PLAYER_GROUP, xPos, mDestinationDot);
-			mTimeAfterLastShoot=0;
+			mTimeSinceLastShot=0;
 		}
 		else
 		{
-			mTimeAfterLastShoot += xTimeSinceLastFrame;
+			mTimeSinceLastShot += xTimeSinceLastFrame;
 		}
 }

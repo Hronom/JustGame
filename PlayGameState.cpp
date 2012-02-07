@@ -162,8 +162,8 @@ void PlayGameState::needUpdate(const Ogre::FrameEvent& evt)
 		GameObject *xGameObjectA = static_cast<GameObject*>(xObjA->getUserPointer());
 		GameObject *xGameObjectB = static_cast<GameObject*>(xObjB->getUserPointer());
 
-		xGameObjectA->doDamage(xGameObjectB->getDamage());
-		xGameObjectB->doDamage(xGameObjectA->getDamage());
+		xGameObjectA->makeDamage(xGameObjectB->getDamage());
+		xGameObjectB->makeDamage(xGameObjectA->getDamage());
 	}
 
 	// Обновление объектов для удаления
@@ -289,13 +289,13 @@ void PlayGameState::addEnemy(Ogre::Vector2 xPos)
 	mUnits.push_back(xEnemy);
 }
 
-void PlayGameState::addBullet(short xObjectType, Ogre::Vector2 xPos, Ogre::Vector2 xDestination)
+void PlayGameState::addBullet(short xObjectCollideWith, Ogre::Vector2 xPos, Ogre::Vector2 xDestination)
 {
 	mBulletsCount++;
 	Ogre::String xBulletName;
 	xBulletName = "Bullet" + Ogre::StringConverter::toString(mBulletsCount);
 
 	Bullet *xBullet;
-	xBullet = new Bullet(mCore, this, xBulletName, xObjectType, xPos, xDestination);
+	xBullet = new Bullet(mCore, this, xBulletName, xObjectCollideWith, xPos, xDestination);
 	mBullets.push_back(xBullet);
 }

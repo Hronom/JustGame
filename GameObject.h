@@ -11,6 +11,8 @@ enum CollisionGroups
 };
 
 #include <Ogre.h>
+#include <OgreBulletCollisionsShape.h>
+#include <OgreBulletDynamics.h>
 
 class iCore;
 class iGameObjectsListener;
@@ -21,24 +23,28 @@ protected:
 	iGameObjectsListener *mGameObjectsListener;
 
 	Ogre::String mObjectName;
-	short mObjectType;
+	short mObjectCollideWith;
 	int mHealthCount;
-	int mDamage;
+	int mMakeDamage;
 	Ogre::Real mMoveSpeed;
-
-	Ogre::SceneNode *mObjectNode;
-	float mObjectRadius;
-	Ogre::Vector2 mDestinationDot;
 	Ogre::Vector3 mMoveDirection;
-	
-	bool mCanDoShot;
-	Ogre::Real mShootDelay;
-	Ogre::Real mTimeAfterLastShoot;
+	Ogre::Vector2 mDestinationDot;
 
+	// Graph
+	Ogre::Entity *mEntity;
+	Ogre::SceneNode *mSceneNode;
+	
+	// Phys
+	OgreBulletCollisions::CollisionShape *mCollisionShape;
+	OgreBulletDynamics::RigidBody *mRigidBody;
+
+	bool mShoot;
+	Ogre::Real mShootDelay;
+	Ogre::Real mTimeSinceLastShot;
 	bool mNeedDelete;
 
 public:
-	GameObject(iCore *xCore, iGameObjectsListener *xGameObjectsListener, Ogre::String xObjectName, short xObjectType);
+	GameObject(iCore *xCore, iGameObjectsListener *xGameObjectsListener, Ogre::String xObjectName, short xObjectCollideWith);
 	virtual ~GameObject();
 
 	virtual void update(const Ogre::FrameEvent& evt);
@@ -46,7 +52,7 @@ public:
 	virtual Ogre::String getObjectName();
 	virtual int getCurrentHealth();
 	virtual int getDamage();
-	virtual void doDamage(int xDamage);
+	virtual void makeDamage(int xDamage);
 	
 	virtual Ogre::Vector2 getCurrentPos();
 	virtual bool isNeedDelete();

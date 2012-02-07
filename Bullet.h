@@ -10,16 +10,12 @@ class Bullet: public GameObject
 {
 private:
 	Ogre::ManualObject *mManualObject;
-	Ogre::Entity *mEntity;
 
 	Ogre::Real mLiveTime;
 	Ogre::Real mTimeBeforeDelete;
 
-	OgreBulletCollisions::BoxCollisionShape *mBoxShape;
-	OgreBulletDynamics::RigidBody *mRigidBody;
-
 public:
-	Bullet(iCore *xCore, iGameObjectsListener *xGameObjectsListener, Ogre::String xObjectName, short xObjectType, Ogre::Vector2 xPos, Ogre::Vector2 xDestination);
+	Bullet(iCore *xCore, iGameObjectsListener *xGameObjectsListener, Ogre::String xObjectName, short xObjectCollideWith, Ogre::Vector2 xPos, Ogre::Vector2 xDestination);
 	~Bullet();
 
 	virtual void update(const Ogre::FrameEvent& evt);

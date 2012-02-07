@@ -3,15 +3,15 @@
 #include <OgreBulletDynamicsRigidBody.h>
 #include <Shapes/OgreBulletCollisionsBoxShape.h>
 
-Bullet::Bullet(iCore *xCore, iGameObjectsListener *xGameObjectsListener, Ogre::String xObjectName, short xObjectType, Ogre::Vector2 xPos, Ogre::Vector2 xDestination): GameObject(xCore, xGameObjectsListener, xObjectName, xObjectType)
+Bullet::Bullet(iCore *xCore, iGameObjectsListener *xGameObjectsListener, Ogre::String xObjectName, short xObjectCollideWith, Ogre::Vector2 xPos, Ogre::Vector2 xDestination): GameObject(xCore, xGameObjectsListener, xObjectName, xObjectCollideWith)
 {
 	mHealthCount = 1;
-	mDamage = 10;
+	mMakeDamage = 10;
 	mMoveSpeed = 5.0f;
 
-	mCanDoShot = false;
+	mShoot = false;
 	mShootDelay = 0;
-	mTimeAfterLastShoot = mShootDelay;
+	mTimeSinceLastShot = mShootDelay;
 
 	GameObject::mDestinationDot = xDestination;
 	GameObject::mMoveDirection = Ogre::Vector3(1,0,0);
@@ -20,15 +20,15 @@ Bullet::Bullet(iCore *xCore, iGameObjectsListener *xGameObjectsListener, Ogre::S
 	Ogre::ColourValue xColor = Ogre::ColourValue(1.0, 0.0, 0.0, 0.0);
 	mManualObject = new Ogre::ManualObject(mObjectName+"_Manual");
 	mManualObject->begin("BaseWhiteNoLighting", Ogre::RenderOperation::OT_LINE_STRIP);
-	mManualObject->position(Ogre::Vector3(-1.5,-0.3,0));	
+	mManualObject->position(Ogre::Vector3(-1.5f,-0.3f,0.0f));	
 	mManualObject->colour(xColor);
-	mManualObject->position(Ogre::Vector3(-1.5,0.3,0));
+	mManualObject->position(Ogre::Vector3(-1.5f,0.3f,0.0f));
 	mManualObject->colour(xColor);
-	mManualObject->position(Ogre::Vector3(1.5,0.3,0));
+	mManualObject->position(Ogre::Vector3(1.5f,0.3f,0.0f));
 	mManualObject->colour(xColor);
-	mManualObject->position(Ogre::Vector3(1.5,-0.3,0));
+	mManualObject->position(Ogre::Vector3(1.5f,-0.3f,0.0f));
 	mManualObject->colour(xColor);
-	mManualObject->position(Ogre::Vector3(-1.5,-0.3,0));
+	mManualObject->position(Ogre::Vector3(-1.5f,-0.3f,0.0f));
 	mManualObject->colour(xColor);
 	mManualObject->end();
 	mManualObject->convertToMesh(mObjectName+"_Mesh");
@@ -36,7 +36,8 @@ Bullet::Bullet(iCore *xCore, iGameObjectsListener *xGameObjectsListener, Ogre::S
 	// create Entity
 	mEntity = mCore->getSceneManager()->createEntity(mObjectName+"_Entity", mObjectName+"_Mesh");
 	// connect Entity to Node
-	mObjectNode->attachObject(mEntity);
+	mSceneNode = mCore->getSceneManager()->getRootSceneNode()->createChildSceneNode(xObjectName+"_Node");
+	mSceneNode->attachObject(mEntity);
 
 	// create Physical Body
 	Ogre::AxisAlignedBox xBoundingBox = mEntity->getBoundingBox();
@@ -51,15 +52,12 @@ Bullet::Bullet(iCore *xCore, iGameObjectsListener *xGameObjectsListener, Ogre::S
 	Ogre::Vector3 xPosition = Ogre::Vector3(xPos.x, xPos.y, 0);
 
 	// after that create the Bullet shape with the calculated xSize
-	mBoxShape = new OgreBulletCollisions::BoxCollisionShape(xSize);
+	mCollisionShape = new OgreBulletCollisions::BoxCollisionShape(xSize);
 	// and the Bullet rigid body
-	if(mObjectType == 2)
-		mRigidBody = new OgreBulletDynamics::RigidBody(mObjectName+"_RigidBody", mCore->getDynamicsWorld(), BULLET_GROUP, ENEMY_GROUP | BULLET_GROUP);
-	else
-		mRigidBody = new OgreBulletDynamics::RigidBody(mObjectName+"_RigidBody", mCore->getDynamicsWorld(), BULLET_GROUP, PLAYER_GROUP | BULLET_GROUP);
+	mRigidBody = new OgreBulletDynamics::RigidBody(mObjectName+"_RigidBody", mCore->getDynamicsWorld(), BULLET_GROUP, mObjectCollideWith | BULLET_GROUP);
 
-	mRigidBody->setShape(mObjectNode,
-		mBoxShape,
+	mRigidBody->setShape(mSceneNode,
+		mCollisionShape,
 		0.0f,			// dynamic body restitution
 		0.5f,			// dynamic body friction
 		0.1f, 			// dynamic bodymass
@@ -76,35 +74,27 @@ Bullet::Bullet(iCore *xCore, iGameObjectsListener *xGameObjectsListener, Ogre::S
 	mTimeBeforeDelete = 0.3f;
 
 	// ROTATE Ogre SceneNode
-	Ogre::Vector3 xDirection = Ogre::Vector3(GameObject::mDestinationDot.x, GameObject::mDestinationDot.y, 0) - GameObject::mObjectNode->getPosition();
-	Ogre::Vector3 xSrc = GameObject::mObjectNode->getOrientation() * Ogre::Vector3::UNIT_X;
+	Ogre::Vector3 xDirection = Ogre::Vector3(GameObject::mDestinationDot.x, GameObject::mDestinationDot.y, 0) - GameObject::mSceneNode->getPosition();
+	Ogre::Vector3 xSrc = GameObject::mSceneNode->getOrientation() * Ogre::Vector3::UNIT_X;
 	Ogre::Quaternion xQuat = xSrc.getRotationTo(xDirection);
-	mObjectNode->rotate(xQuat);
+	mSceneNode->rotate(xQuat);
 
 	// APPLY ROTATE to Bullet RigidBody
 	btTransform xRigidBodyTransform = mRigidBody->getBulletRigidBody()->getWorldTransform();
-	xRigidBodyTransform.setRotation(OgreBulletCollisions::OgreBtConverter::to(mObjectNode->getOrientation()));
+	xRigidBodyTransform.setRotation(OgreBulletCollisions::OgreBtConverter::to(mSceneNode->getOrientation()));
 	mRigidBody->getBulletRigidBody()->setWorldTransform(xRigidBodyTransform);
 
 	// MOVE
 	Ogre::Vector3 xVector;
 	xVector = mMoveDirection * mMoveSpeed;
-	xVector =  mObjectNode->getOrientation() * xVector;
+	xVector =  mSceneNode->getOrientation() * xVector;
 
 	mRigidBody->getBulletRigidBody()->applyCentralImpulse(OgreBulletCollisions::OgreBtConverter::to(xVector));
 }
 
 Bullet::~Bullet()
 {
-	mCore->getDynamicsWorld()->getBulletDynamicsWorld()->removeRigidBody(mRigidBody->getBulletRigidBody());
-	delete mRigidBody->getBulletRigidBody()->getMotionState();
-	delete mRigidBody->getBulletRigidBody();
-
-	delete mBoxShape;
-
-	mObjectNode->detachAllObjects();
 	mCore->getSceneManager()->destroyManualObject(mManualObject);
-	mCore->getSceneManager()->destroyEntity(mEntity);
 }
 
 void Bullet::update(const Ogre::FrameEvent& evt)
@@ -133,7 +123,7 @@ void Bullet::update(const Ogre::FrameEvent& evt)
 int Bullet::getDamage()
 {
 	mHealthCount = 0;
-	int xDamage = mDamage;
-	mDamage = 0;
+	int xDamage = mMakeDamage;
+	mMakeDamage = 0;
 	return xDamage;
 }

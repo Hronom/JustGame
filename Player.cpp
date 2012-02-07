@@ -5,30 +5,30 @@
 #include <OgreBulletDynamicsRigidBody.h>
 #include <Shapes/OgreBulletCollisionsSphereShape.h>
 
-Player::Player(iCore *xCore, iGameObjectsListener *xGameObjectsListener, Ogre::String xObjectName, short xObjectType, Ogre::Vector2 xPos): GameObject(xCore, xGameObjectsListener, xObjectName, xObjectType)
+Player::Player(iCore *xCore, iGameObjectsListener *xGameObjectsListener, Ogre::String xObjectName, short xObjectCollideWith, Ogre::Vector2 xPos): GameObject(xCore, xGameObjectsListener, xObjectName, xObjectCollideWith)
 {
 	mHealthCount = 100;
 	mMoveSpeed = 35.0f;
 	mShootDelay = 0.3f;
-	mCanDoShot = false;
-	mTimeAfterLastShoot = mShootDelay;
+	mShoot = false;
+	mTimeSinceLastShot = mShootDelay;
 
 	mDestinationDot = Ogre::Vector2(1.0f,1.0f);
 
 	// create ManualObject
-	mObjectRadius = 5;
+	float xObjectRadius  = 5;
 
 	Ogre::ColourValue xColor = Ogre::ColourValue(1.0, 1.0, 1.0, 0.0);
 	mManualObject = new Ogre::ManualObject(mObjectName+"_Manual");
 	// accuracy is the count of points (and lines).
 	// Higher values make the circle smoother, but may slowdown the performance.
 	// The performance also is related to the count of circles.
-	float const xAccuracy = 35;
+	float const xAccuracy = 5;
 	mManualObject->begin("BaseWhiteNoLighting", Ogre::RenderOperation::OT_LINE_STRIP);
 	unsigned xPoint_index = 0;
 	for(float xTheta = 0; xTheta <= 2 * Ogre::Math::PI; xTheta += Ogre::Math::PI / xAccuracy) 
 	{
-		mManualObject->position(mObjectRadius * cos(xTheta), mObjectRadius * sin(xTheta), 0);
+		mManualObject->position(xObjectRadius * cos(xTheta), xObjectRadius * sin(xTheta), 0);
 		mManualObject->colour(xColor);
 		mManualObject->index(xPoint_index++);
 	}
@@ -39,18 +39,19 @@ Player::Player(iCore *xCore, iGameObjectsListener *xGameObjectsListener, Ogre::S
 	// create Entity
 	mEntity = mCore->getSceneManager()->createEntity(mObjectName+"_Entity", mObjectName+"_Mesh");
 	// connect Entity to Node
-	mObjectNode->attachObject(mEntity);
+	mSceneNode = mCore->getSceneManager()->getRootSceneNode()->createChildSceneNode(xObjectName+"_Node");
+	mSceneNode->attachObject(mEntity);
 
 	// create Physical Body
 	// starting xPosition of the box
 	Ogre::Vector3 xPosition = Ogre::Vector3(xPos.x, xPos.y, 0);
 
 	// after that create the Bullet shape with the calculated xSize
-	mSphereShape = new OgreBulletCollisions::SphereCollisionShape(mObjectRadius);
+	mCollisionShape = new OgreBulletCollisions::SphereCollisionShape(xObjectRadius);
 	// and the Bullet rigid body
 	mRigidBody = new OgreBulletDynamics::RigidBody(mObjectName+"_RigidBody", mCore->getDynamicsWorld(), PLAYER_GROUP,  PLAYER_GROUP | ENEMY_GROUP | BULLET_GROUP);
-	mRigidBody->setShape(mObjectNode,
-		mSphereShape,
+	mRigidBody->setShape(mSceneNode,
+		mCollisionShape,
 		0.0f,			// dynamic body restitution
 		0.5f,			// dynamic body friction
 		0.1f, 			// dynamic bodymass
@@ -66,15 +67,7 @@ Player::Player(iCore *xCore, iGameObjectsListener *xGameObjectsListener, Ogre::S
 
 Player::~Player()
 {
-	mCore->getDynamicsWorld()->getBulletDynamicsWorld()->removeRigidBody(mRigidBody->getBulletRigidBody());
-	delete mRigidBody->getBulletRigidBody()->getMotionState();
-	delete mRigidBody->getBulletRigidBody();
-
-	delete mSphereShape;
-
-	mObjectNode->detachAllObjects();
 	mCore->getSceneManager()->destroyManualObject(mManualObject);
-	mCore->getSceneManager()->destroyEntity(mEntity);
 }
 
 void Player::update(const Ogre::FrameEvent& evt)
@@ -87,7 +80,7 @@ void Player::update(const Ogre::FrameEvent& evt)
 
 	// Установка нового положения камеры
 	Ogre::Vector3 xPlayerPos;
-	xPlayerPos = mObjectNode->getPosition();
+	xPlayerPos = mSceneNode->getPosition();
 
 	Ogre::Vector3 xNewCameraPos;
 	xNewCameraPos = mCore->getCamera()->getPosition();
@@ -100,10 +93,10 @@ void Player::update(const Ogre::FrameEvent& evt)
 void Player::rotatePlayer(Ogre::Real xTimeSinceLastFrame)
 {
 	// ROTATE Ogre SceneNode
-	Ogre::Vector3 xDirection = Ogre::Vector3(mDestinationDot.x, mDestinationDot.y, 0) - mObjectNode->getPosition();
+	Ogre::Vector3 xDirection = Ogre::Vector3(mDestinationDot.x, mDestinationDot.y, 0) - mSceneNode->getPosition();
 	xDirection.z = 0;
 
-	Ogre::Vector3 xSrcDirection = mObjectNode->getOrientation() * Ogre::Vector3::UNIT_X;
+	Ogre::Vector3 xSrcDirection = mSceneNode->getOrientation() * Ogre::Vector3::UNIT_X;
 	xSrcDirection.z = 0;
 	//xSrcDirection.normalise();
 
@@ -113,11 +106,11 @@ void Player::rotatePlayer(Ogre::Real xTimeSinceLastFrame)
 	else
 		xQuat = xSrcDirection.getRotationTo(xDirection);
 
-	mObjectNode->rotate(xQuat);
+	mSceneNode->rotate(xQuat);
 
 	// APPLY ROTATE to Bullet RigidBody
 	btTransform xRigidBodyTransform = mRigidBody->getBulletRigidBody()->getWorldTransform();
-	xRigidBodyTransform.setRotation(OgreBulletCollisions::OgreBtConverter::to(mObjectNode->getOrientation()));
+	xRigidBodyTransform.setRotation(OgreBulletCollisions::OgreBtConverter::to(mSceneNode->getOrientation()));
 	mRigidBody->getBulletRigidBody()->setWorldTransform(xRigidBodyTransform);
 }
 
@@ -128,7 +121,7 @@ void Player::movePlayer(Ogre::Real xTimeSinceLastFrame)
 	//Ogre::Real xMove = mMoveSpeed;
 	Ogre::Vector3 xVector;
 	xVector = mMoveDirection * xMove;
-	xVector =  mObjectNode->getOrientation() * xVector;
+	xVector =  mSceneNode->getOrientation() * xVector;
 
 	mRigidBody->getBulletRigidBody()->applyCentralImpulse(OgreBulletCollisions::OgreBtConverter::to(xVector));
 
@@ -145,18 +138,18 @@ void Player::movePlayer(Ogre::Real xTimeSinceLastFrame)
 void Player::playerShoot(Ogre::Real xTimeSinceLastFrame)
 {
 	// SHOOT!!!
-	if(mCanDoShot == true)
-		if(mTimeAfterLastShoot >= mShootDelay)
+	if(mShoot == true)
+		if(mTimeSinceLastShot >= mShootDelay)
 		{
-			Ogre::Vector3 xPosObject = mObjectNode->getPosition();
+			Ogre::Vector3 xPosObject = mSceneNode->getPosition();
 			Ogre::Vector2 xPos;
 			xPos.x = xPosObject.x;
 			xPos.y = xPosObject.y;
 			mGameObjectsListener->addBullet(ENEMY_GROUP, xPos, mDestinationDot);
-			mTimeAfterLastShoot=0;
+			mTimeSinceLastShot=0;
 		}
 		else
 		{
-			mTimeAfterLastShoot += xTimeSinceLastFrame;
+			mTimeSinceLastShot += xTimeSinceLastFrame;
 		}
 }

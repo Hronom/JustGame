@@ -9,13 +9,9 @@ class Player: public GameObject
 {
 private:
 	Ogre::ManualObject *mManualObject;
-	Ogre::Entity *mEntity;
-
-	OgreBulletCollisions::SphereCollisionShape *mSphereShape;
-	OgreBulletDynamics::RigidBody *mRigidBody;
 
 public:
-	Player(iCore *xCore, iGameObjectsListener *xGameObjectsListener, Ogre::String xObjectName, short xObjectType, Ogre::Vector2 xPos);
+	Player(iCore *xCore, iGameObjectsListener *xGameObjectsListener, Ogre::String xObjectName, short xObjectCollideWith, Ogre::Vector2 xPos);
 	~Player();
 
 	virtual void update(const Ogre::FrameEvent& evt);
