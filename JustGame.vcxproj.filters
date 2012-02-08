@@ -1,9 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Listeners">
-      <UniqueIdentifier>{48d6e27c-a5fa-4126-8c0f-7968cb81df24}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Interfaces">
       <UniqueIdentifier>{9257a4f9-b293-4daa-991c-51ad9940b64d}</UniqueIdentifier>
     </Filter>
@@ -16,22 +13,12 @@
     <Filter Include="Objects">
       <UniqueIdentifier>{1dc583d0-4cf7-493b-bc77-f876651f1243}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Systems">
+      <UniqueIdentifier>{48d6e27c-a5fa-4126-8c0f-7968cb81df24}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="GameFrameListener.cpp">
-      <Filter>Listeners</Filter>
-    </ClCompile>
-    <ClCompile Include="GameKeyListener.cpp">
-      <Filter>Listeners</Filter>
-    </ClCompile>
-    <ClCompile Include="GameMouseListener.cpp">
-      <Filter>Listeners</Filter>
-    </ClCompile>
-    <ClCompile Include="GameWindowEventListener.cpp">
-      <Filter>Listeners</Filter>
-    </ClCompile>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="MainClass.cpp" />
     <ClCompile Include="StateManager.cpp">
       <Filter>Managers</Filter>
     </ClCompile>
@@ -65,21 +52,20 @@
     <ClCompile Include="LoseState.cpp">
       <Filter>GameStates</Filter>
     </ClCompile>
+    <ClCompile Include="GraphicSystem.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="InputSystem.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="MainSystem.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysicsSystem.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GameWindowEventListener.h">
-      <Filter>Listeners</Filter>
-    </ClInclude>
-    <ClInclude Include="GameFrameListener.h">
-      <Filter>Listeners</Filter>
-    </ClInclude>
-    <ClInclude Include="GameKeyListener.h">
-      <Filter>Listeners</Filter>
-    </ClInclude>
-    <ClInclude Include="GameMouseListener.h">
-      <Filter>Listeners</Filter>
-    </ClInclude>
-    <ClInclude Include="MainClass.h" />
     <ClInclude Include="StateManager.h">
       <Filter>Managers</Filter>
     </ClInclude>
@@ -124,6 +110,18 @@
     </ClInclude>
     <ClInclude Include="LoseState.h">
       <Filter>GameStates</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicSystem.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="InputSystem.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="MainSystem.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysicsSystem.h">
+      <Filter>Systems</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

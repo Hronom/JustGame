@@ -1,9 +1,9 @@
-#include "MainClass.h"
+#include "MainSystem.h"
 
 int WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR strCmdLine, INT)
 {
-	MainClass xMainClass;
-	xMainClass.run();
+	MainSystem xMainSystem;
+	xMainSystem.run();
 
 	return 0;
 }
