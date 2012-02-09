@@ -18,8 +18,8 @@ public:
 	~InputSystem();
 
 	void init(unsigned int xWinHandle, unsigned int xWinWidth, unsigned int xWinHeight);
-
 	void needUpdate();
+	void injectWindowResized(unsigned int xNewWidth, unsigned int xNewHeight);
 
 private:
 	bool mouseMoved(const OIS::MouseEvent& e);

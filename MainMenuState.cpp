@@ -46,7 +46,7 @@ void MainMenuState::keyReleased(const OIS::KeyEvent& e)
 {
 }
 
-void MainMenuState::buttonClick(MyGUI::WidgetPtr xSender)
+void MainMenuState::buttonClicked(MyGUI::WidgetPtr xSender)
 {
 	if(xSender->getUserString("ButtonType") == "NewGame")
 	{

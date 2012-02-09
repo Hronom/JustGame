@@ -30,6 +30,8 @@ public:
 	// iMainListener
 	//-------------------------------------------------------------
 	virtual bool frameStarted(const Ogre::FrameEvent& evt);
+	virtual void windowResized(unsigned int xNewWidth, unsigned int xNewHeight);
+	virtual void windowClosed();
 	virtual	void mouseMoved(const OIS::MouseEvent& e);
 	virtual void mousePressed(const OIS::MouseEvent& e, OIS::MouseButtonID id);
 	virtual void mouseReleased(const OIS::MouseEvent& e, OIS::MouseButtonID id);

@@ -50,6 +50,16 @@ bool MainSystem::frameStarted(const Ogre::FrameEvent& evt)
 	return !mNeedShutdown;
 }
 
+void MainSystem::windowResized(unsigned int xNewWidth, unsigned int xNewHeight)
+{
+	mInputSystem->injectWindowResized(xNewWidth, xNewHeight);
+}
+
+void MainSystem::windowClosed()
+{
+	mNeedShutdown = true;
+}
+
 void MainSystem::mouseMoved(const OIS::MouseEvent& e)
 {
 	mGraphicSystem->injectMouseMoved(e);

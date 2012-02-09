@@ -25,7 +25,7 @@ public:
 	virtual	void keyPressed(const OIS::KeyEvent& e);
 	virtual void keyReleased(const OIS::KeyEvent& e);
 
-	virtual void buttonClick(MyGUI::WidgetPtr xSender);
+	virtual void buttonClicked(MyGUI::WidgetPtr xSender);
 };
 
 #endif

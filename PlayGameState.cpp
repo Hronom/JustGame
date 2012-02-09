@@ -269,7 +269,7 @@ void PlayGameState::keyReleased(const OIS::KeyEvent& e)
 	}
 }
 
-void PlayGameState::buttonClick(MyGUI::WidgetPtr xSender)
+void PlayGameState::buttonClicked(MyGUI::WidgetPtr xSender)
 {
 }
 

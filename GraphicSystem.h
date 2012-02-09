@@ -11,8 +11,8 @@
 #include <OIS\OIS.h>
 
 #include "iMainListener.h"
-
 #include "iState.h"
+
 class GraphicSystem : public Ogre::FrameListener, public Ogre::WindowEventListener
 { 
 private: 
@@ -40,7 +40,6 @@ public:
 
 private:
 	bool frameStarted(const Ogre::FrameEvent& evt);
-	bool frameEnded(const Ogre::FrameEvent& evt);
 	virtual void windowResized(Ogre::RenderWindow* xRenderWindow);
 	virtual void windowClosed(Ogre::RenderWindow* xRenderWindow);
 

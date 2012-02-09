@@ -8,8 +8,9 @@ GraphicSystem::GraphicSystem(iMainListener *xMainListener)
 GraphicSystem::~GraphicSystem()
 {
 	//----------------------------------------------------
-	// 9 удаление
+	// 10 удаление
 	//----------------------------------------------------
+	// MyGUI
 	mMyGUI->shutdown();
 	delete mMyGUI;
 	mMyGUI = 0;   
@@ -20,7 +21,7 @@ GraphicSystem::~GraphicSystem()
 
 	Ogre::WindowEventUtilities::removeWindowEventListener(mRenderWindow, this);
 
-	//Огр
+	// Ogre
 	delete mRoot;
 	mRoot = 0;
 }
@@ -109,13 +110,16 @@ bool GraphicSystem::init()
 	mSceneManager->setAmbientLight(Ogre::ColourValue(0.5, 0.5, 0.5));
 
 	//----------------------------------------------------- 
-	// 6 Инициализация MyGUI
+	// 7 Инициализация MyGUI
 	//----------------------------------------------------- 
 	mOgrePlatform = new MyGUI::OgrePlatform();
 	mOgrePlatform->initialise(mRenderWindow, mSceneManager); // mWindow is Ogre::RenderWindow*, mSceneManager is Ogre::SceneManager*
 	mMyGUI = new MyGUI::Gui();
 	mMyGUI->initialise();
 
+	//----------------------------------------------------- 
+	// 8 Добавление слушателя событий
+	//----------------------------------------------------- 
 	Ogre::WindowEventUtilities::addWindowEventListener(mRenderWindow, this);
 	mRoot->addFrameListener(this);
 
@@ -125,34 +129,24 @@ bool GraphicSystem::init()
 void GraphicSystem::start()
 {
 	//----------------------------------------------------
-	// 8 старт рендера
+	// 9 старт рендера
 	//----------------------------------------------------
 	mRoot->startRendering(); // цикл кончается когда фреймлистенер вернёт false ( что и происходит при нажатии ESCAPE )
 }
 
 bool GraphicSystem::frameStarted(const  Ogre::FrameEvent& evt) 
 {
-	return mMainListener->needUpdate(evt);
-}
-
-bool GraphicSystem::frameEnded(const  Ogre::FrameEvent& evt) 
-{ 
-	return true; 
+	return mMainListener->frameStarted(evt);
 }
 
 void GraphicSystem::windowResized(Ogre::RenderWindow* xRenderWindow)
 {
-	/*unsigned int xWidth, xHeight, xDepth;
-	int xLeft, xTop;
-	xRenderWindow->getMetrics(xWidth, xHeight, xDepth, xLeft, xTop);
-
-	const OIS::MouseState &ms = mMouse->getMouseState();
-	ms.width = xWidth;
-	ms.height = xHeight;*/
+	mMainListener->windowResized(xRenderWindow->getWidth(), xRenderWindow->getHeight());
 }
 
 void GraphicSystem::windowClosed(Ogre::RenderWindow* xRenderWindow)
 {
+	mMainListener->windowClosed();
 }
 
 void GraphicSystem::injectMouseMoved( const OIS::MouseEvent &arg )
@@ -203,7 +197,7 @@ void GraphicSystem::unloadLayout()
 void GraphicSystem::addButtonDelegate(Ogre::String xButtonName, iState *xState)
 {
 	MyGUI::ButtonPtr xButton = mMyGUI->findWidget<MyGUI::Button>(xButtonName);
-	xButton->eventMouseButtonClick += MyGUI::newDelegate(xState, &iState::buttonClick);
+	xButton->eventMouseButtonClick += MyGUI::newDelegate(xState, &iState::buttonClicked);
 }
 
 size_t GraphicSystem::getWinHandle()

@@ -45,7 +45,7 @@ void LoseState::keyReleased(const OIS::KeyEvent& e)
 {
 }
 
-void LoseState::buttonClick(MyGUI::WidgetPtr xSender)
+void LoseState::buttonClicked(MyGUI::WidgetPtr xSender)
 {
 	mCore->needSwitchToStateId(0);
 }

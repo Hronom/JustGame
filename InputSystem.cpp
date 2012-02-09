@@ -57,6 +57,13 @@ void InputSystem::needUpdate()
 	mMouse->capture();
 }
 
+void InputSystem::injectWindowResized(unsigned int xNewWidth, unsigned int xNewHeight)
+{
+	const OIS::MouseState &ms = mMouse->getMouseState();
+	ms.width = xNewWidth;
+	ms.height = xNewHeight;
+}
+
 bool InputSystem::mouseMoved(const OIS::MouseEvent& e)
 {
 	mMainListener->mouseMoved(e);

@@ -45,7 +45,7 @@ void WinState::keyReleased(const OIS::KeyEvent& e)
 {
 }
 
-void WinState::buttonClick(MyGUI::WidgetPtr xSender)
+void WinState::buttonClicked(MyGUI::WidgetPtr xSender)
 {
 	mCore->needSwitchToStateId(0);
 }
