@@ -5,6 +5,15 @@ PhysicsSystem::PhysicsSystem(iMainListener *xMainListener)
 	mMainListener = xMainListener;
 }
 
+PhysicsSystem::~PhysicsSystem()
+{
+	delete mDynamicsWorld->getDebugDrawer();
+	mDynamicsWorld->setDebugDrawer(0);
+
+	delete mDynamicsWorld;
+	mDynamicsWorld = 0;
+}
+
 void PhysicsSystem::init(Ogre::SceneManager *xSceneManager)
 {
 	// Start Bullet
@@ -17,4 +26,14 @@ void PhysicsSystem::init(Ogre::SceneManager *xSceneManager)
 	mDynamicsWorld->setShowDebugShapes(false);      // enable it if you want to see the Bullet containers
 	Ogre::SceneNode *xNode = xSceneManager->getRootSceneNode()->createChildSceneNode("debugDrawer", Ogre::Vector3::ZERO);
 	xNode->attachObject(static_cast <Ogre::SimpleRenderable*> (mDebugDrawer));
+}
+
+void PhysicsSystem::needUpdate(const Ogre::FrameEvent& evt)
+{
+	mDynamicsWorld->stepSimulation(evt.timeSinceLastFrame);	// update Bullet Physics animation
+}
+
+OgreBulletDynamics::DynamicsWorld* PhysicsSystem::getDynamicsWorld()
+{
+	return mDynamicsWorld;
 }

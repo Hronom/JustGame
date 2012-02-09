@@ -1,0 +1,73 @@
+#include "StatesSystem.h"
+
+StatesSystem::StatesSystem()
+{
+	mCurrentState = 0;
+}
+
+StatesSystem::~StatesSystem()
+{
+	for(unsigned i=0; i < mStatesMap.size(); i++)
+	{
+		mStatesMap[i]->exit();
+		delete mStatesMap[i];
+	}
+
+	mStatesMap.clear();
+}
+
+bool StatesSystem::init()
+{
+	return true;
+}
+
+void StatesSystem::needUpdate(const Ogre::FrameEvent& evt)
+{
+	if(mCurrentState != 0) mCurrentState->needUpdate(evt);
+}
+
+void StatesSystem::injectMouseMoved(const OIS::MouseEvent& e)
+{
+	if(mCurrentState != 0) mCurrentState->mouseMoved(e);
+}
+
+void StatesSystem::injectMousePressed(const OIS::MouseEvent& e, OIS::MouseButtonID id)
+{
+	if(mCurrentState != 0) mCurrentState->mousePressed(e, id);
+}
+
+void StatesSystem::injectMouseReleased(const OIS::MouseEvent& e, OIS::MouseButtonID id)
+{
+	if(mCurrentState != 0) mCurrentState->mouseReleased(e, id);
+}
+
+void StatesSystem::injectKeyPressed(const OIS::KeyEvent& e)
+{
+	if(mCurrentState != 0) mCurrentState->keyPressed(e);
+}
+
+void StatesSystem::injectKeyReleased(const OIS::KeyEvent& e)
+{
+	if(mCurrentState != 0) mCurrentState->keyReleased(e);
+}
+
+void StatesSystem::addState(int xNumber, iState *xState)
+{
+	mStatesMap[xNumber] = xState; 
+	if(mCurrentState == 0)
+	{
+		mCurrentState = xState;
+		mCurrentState->enter();
+	}
+}
+
+void StatesSystem::switchToState(int xStateId)
+{
+	if(mCurrentState != 0) mCurrentState->exit();
+	
+	if(mStatesMap.count(xStateId) > 0)
+	{
+		mCurrentState = mStatesMap[xStateId];
+		mCurrentState->enter();
+	}
+}

@@ -13,9 +13,10 @@ GraphicSystem::~GraphicSystem()
 	mMyGUI->shutdown();
 	delete mMyGUI;
 	mMyGUI = 0;   
-	mPlatform->shutdown();
-	delete mPlatform;
-	mPlatform = 0;
+
+	mOgrePlatform->shutdown();
+	delete mOgrePlatform;
+	mOgrePlatform = 0;
 
 	Ogre::WindowEventUtilities::removeWindowEventListener(mRenderWindow, this);
 
@@ -110,8 +111,8 @@ bool GraphicSystem::init()
 	//----------------------------------------------------- 
 	// 6 Инициализация MyGUI
 	//----------------------------------------------------- 
-	mPlatform = new MyGUI::OgrePlatform();
-	mPlatform->initialise(mRenderWindow, mSceneManager); // mWindow is Ogre::RenderWindow*, mSceneManager is Ogre::SceneManager*
+	mOgrePlatform = new MyGUI::OgrePlatform();
+	mOgrePlatform->initialise(mRenderWindow, mSceneManager); // mWindow is Ogre::RenderWindow*, mSceneManager is Ogre::SceneManager*
 	mMyGUI = new MyGUI::Gui();
 	mMyGUI->initialise();
 
@@ -152,32 +153,57 @@ void GraphicSystem::windowResized(Ogre::RenderWindow* xRenderWindow)
 
 void GraphicSystem::windowClosed(Ogre::RenderWindow* xRenderWindow)
 {
-
 }
 
 void GraphicSystem::injectMouseMoved( const OIS::MouseEvent &arg )
 {
-	mMyGUI->injectMouseMove(arg.state.X.abs, arg.state.Y.abs, arg.state.Z.abs);
+	//mMyGUI->injectMouseMove(arg.state.X.abs, arg.state.Y.abs, arg.state.Z.abs);
+	MyGUI::InputManager::getInstance().injectMouseMove(arg.state.X.abs, arg.state.Y.abs, arg.state.Z.abs);
 }
 
 void GraphicSystem::injectMousePressed( const OIS::MouseEvent &arg, OIS::MouseButtonID id )
 {
-	mMyGUI->injectMousePress(arg.state.X.abs, arg.state.Y.abs, MyGUI::MouseButton::Enum(id));
+	//mMyGUI->injectMousePress(arg.state.X.abs, arg.state.Y.abs, MyGUI::MouseButton::Enum(id));
+	MyGUI::InputManager::getInstance().injectMousePress(arg.state.X.abs, arg.state.Y.abs, MyGUI::MouseButton::Enum(id));
 }
 
 void GraphicSystem::injectMouseReleased( const OIS::MouseEvent &arg, OIS::MouseButtonID id )
 {
-	mMyGUI->injectMouseRelease(arg.state.X.abs, arg.state.Y.abs, MyGUI::MouseButton::Enum(id));
+	//mMyGUI->injectMouseRelease(arg.state.X.abs, arg.state.Y.abs, MyGUI::MouseButton::Enum(id));
+	MyGUI::InputManager::getInstance().injectMouseRelease(arg.state.X.abs, arg.state.Y.abs, MyGUI::MouseButton::Enum(id));
 }
 
 void GraphicSystem::injectKeyPressed( const OIS::KeyEvent &arg )
 {
-	mMyGUI->injectKeyPress(MyGUI::KeyCode::Enum(arg.key), arg.text);
+	//mMyGUI->injectKeyPress(MyGUI::KeyCode::Enum(arg.key), arg.text);
+	MyGUI::InputManager::getInstance().injectKeyPress(MyGUI::KeyCode::Enum(arg.key), arg.text);
 }
 
 void GraphicSystem::injectKeyReleased( const OIS::KeyEvent &arg )
 {
-	mMyGUI->injectKeyRelease(MyGUI::KeyCode::Enum(arg.key));
+	//mMyGUI->injectKeyRelease(MyGUI::KeyCode::Enum(arg.key));
+	MyGUI::InputManager::getInstance().injectKeyRelease(MyGUI::KeyCode::Enum(arg.key));
+}
+
+void GraphicSystem::loadLayout(Ogre::String xLayoutName)
+{
+	unloadLayout();
+	mCurrentLayoutWidgets = MyGUI::LayoutManager::getInstance().loadLayout(xLayoutName);
+}
+
+void GraphicSystem::unloadLayout()
+{
+	if(mCurrentLayoutWidgets.size() != 0)
+	{
+		MyGUI::LayoutManager::getInstance().unloadLayout(mCurrentLayoutWidgets);
+		mCurrentLayoutWidgets.clear();
+	}
+}
+
+void GraphicSystem::addButtonDelegate(Ogre::String xButtonName, iState *xState)
+{
+	MyGUI::ButtonPtr xButton = mMyGUI->findWidget<MyGUI::Button>(xButtonName);
+	xButton->eventMouseButtonClick += MyGUI::newDelegate(xState, &iState::buttonClick);
 }
 
 size_t GraphicSystem::getWinHandle()
@@ -201,4 +227,9 @@ unsigned int GraphicSystem::getWinHeight()
 Ogre::SceneManager* GraphicSystem::getSceneManager()
 {
 	return mSceneManager;
+}
+
+Ogre::Camera* GraphicSystem::getCamera()
+{
+	return mCamera;
 }

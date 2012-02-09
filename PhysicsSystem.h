@@ -16,8 +16,13 @@ private:
 
 public: 
 	PhysicsSystem(iMainListener *xMainListener);
+	~PhysicsSystem();
 
 	void init(Ogre::SceneManager *xSceneManager);
+
+	void needUpdate(const Ogre::FrameEvent& evt);
+
+	OgreBulletDynamics::DynamicsWorld* getDynamicsWorld();
 };
 
 #endif

@@ -21,6 +21,7 @@ public:
 
 	void needUpdate();
 
+private:
 	bool mouseMoved(const OIS::MouseEvent& e);
 	bool mousePressed(const OIS::MouseEvent& e, OIS::MouseButtonID id);
 	bool mouseReleased(const OIS::MouseEvent& e, OIS::MouseButtonID id);

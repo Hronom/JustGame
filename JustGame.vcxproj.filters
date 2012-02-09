@@ -4,9 +4,6 @@
     <Filter Include="Interfaces">
       <UniqueIdentifier>{9257a4f9-b293-4daa-991c-51ad9940b64d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Managers">
-      <UniqueIdentifier>{c3c5e532-6662-4ad4-bc0f-11b4944fd91c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="GameStates">
       <UniqueIdentifier>{abff0ec1-5877-4cfe-96a2-9daa063c6221}</UniqueIdentifier>
     </Filter>
@@ -19,17 +16,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="StateManager.cpp">
-      <Filter>Managers</Filter>
-    </ClCompile>
     <ClCompile Include="MainMenuState.cpp">
       <Filter>GameStates</Filter>
-    </ClCompile>
-    <ClCompile Include="GUIManager.cpp">
-      <Filter>Managers</Filter>
-    </ClCompile>
-    <ClCompile Include="MainManager.cpp">
-      <Filter>Managers</Filter>
     </ClCompile>
     <ClCompile Include="PlayGameState.cpp">
       <Filter>GameStates</Filter>
@@ -64,19 +52,13 @@
     <ClCompile Include="PhysicsSystem.cpp">
       <Filter>Systems</Filter>
     </ClCompile>
+    <ClCompile Include="StatesSystem.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="StateManager.h">
-      <Filter>Managers</Filter>
-    </ClInclude>
     <ClInclude Include="MainMenuState.h">
       <Filter>GameStates</Filter>
-    </ClInclude>
-    <ClInclude Include="GUIManager.h">
-      <Filter>Managers</Filter>
-    </ClInclude>
-    <ClInclude Include="MainManager.h">
-      <Filter>Managers</Filter>
     </ClInclude>
     <ClInclude Include="iState.h">
       <Filter>Interfaces</Filter>
@@ -121,6 +103,9 @@
       <Filter>Systems</Filter>
     </ClInclude>
     <ClInclude Include="PhysicsSystem.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="StatesSystem.h">
       <Filter>Systems</Filter>
     </ClInclude>
   </ItemGroup>

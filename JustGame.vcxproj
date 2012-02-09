@@ -103,16 +103,14 @@
     <ClCompile Include="GraphicSystem.cpp" />
     <ClCompile Include="InputSystem.cpp" />
     <ClCompile Include="GameObject.cpp" />
-    <ClCompile Include="GUIManager.cpp" />
     <ClCompile Include="LoseState.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainSystem.cpp" />
     <ClCompile Include="PhysicsSystem.cpp" />
-    <ClCompile Include="MainManager.cpp" />
     <ClCompile Include="MainMenuState.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayGameState.cpp" />
-    <ClCompile Include="StateManager.cpp" />
+    <ClCompile Include="StatesSystem.cpp" />
     <ClCompile Include="WinState.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -122,18 +120,16 @@
     <ClInclude Include="iCore.h" />
     <ClInclude Include="GraphicSystem.h" />
     <ClInclude Include="InputSystem.h" />
-    <ClInclude Include="GUIManager.h" />
     <ClInclude Include="iGameObjectsListener.h" />
     <ClInclude Include="iMainListener.h" />
     <ClInclude Include="LoseState.h" />
     <ClInclude Include="MainSystem.h" />
     <ClInclude Include="PhysicsSystem.h" />
-    <ClInclude Include="MainManager.h" />
     <ClInclude Include="MainMenuState.h" />
     <ClInclude Include="iState.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayGameState.h" />
-    <ClInclude Include="StateManager.h" />
+    <ClInclude Include="StatesSystem.h" />
     <ClInclude Include="WinState.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

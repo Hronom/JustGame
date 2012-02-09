@@ -12,6 +12,7 @@
 
 #include "iMainListener.h"
 
+#include "iState.h"
 class GraphicSystem : public Ogre::FrameListener, public Ogre::WindowEventListener
 { 
 private: 
@@ -27,8 +28,9 @@ private:
 	Ogre::SceneManager *mSceneManager;
 	Ogre::Camera* mCamera; 
 
-	MyGUI::OgrePlatform *mPlatform;
+	MyGUI::OgrePlatform *mOgrePlatform;
 	MyGUI::Gui *mMyGUI;
+	MyGUI::VectorWidgetPtr mCurrentLayoutWidgets;
 
 public: 
 	GraphicSystem(iMainListener *xMainListener);
@@ -49,10 +51,15 @@ public:
 	void injectKeyPressed( const OIS::KeyEvent &arg );
 	void injectKeyReleased( const OIS::KeyEvent &arg );
 
+	void loadLayout(Ogre::String xLayoutName);
+	void unloadLayout();
+	void addButtonDelegate(Ogre::String xButtonName, iState *xState);
+
 	unsigned int getWinHandle();
 	unsigned int getWinWidth();
 	unsigned int getWinHeight();
 	Ogre::SceneManager* getSceneManager();
+	Ogre::Camera* getCamera();
 }; 
 
 #endif
