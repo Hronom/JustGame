@@ -105,6 +105,7 @@
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="LoseState.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MainClass.cpp" />
     <ClCompile Include="MainSystem.cpp" />
     <ClCompile Include="PhysicsSystem.cpp" />
     <ClCompile Include="MainMenuState.cpp" />
@@ -123,6 +124,7 @@
     <ClInclude Include="iGameObjectsListener.h" />
     <ClInclude Include="iMainListener.h" />
     <ClInclude Include="LoseState.h" />
+    <ClInclude Include="MainClass.h" />
     <ClInclude Include="MainSystem.h" />
     <ClInclude Include="PhysicsSystem.h" />
     <ClInclude Include="MainMenuState.h" />

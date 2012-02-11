@@ -7,9 +7,19 @@ PlayGameState::PlayGameState(iCore *xCore)
 	mCore = xCore;
 
 	mPlayer = 0;
+	mGridManualObject = 0;
+	mGridSceneNode = 0;
 	mEnemyCount = 0;
 	mBulletsCount = 0;
+}
 
+PlayGameState::~PlayGameState()
+{
+	exit();
+}
+
+void PlayGameState::enter()
+{
 	Ogre::ColourValue xColor = Ogre::ColourValue(0.104f, 0.234f, 0.140f, 0.0f);
 	// create ManualObject
 	mGridManualObject = new Ogre::ManualObject("grid_manual");
@@ -35,20 +45,9 @@ PlayGameState::PlayGameState(iCore *xCore)
 
 	mGridSceneNode = mCore->getSceneManager()->getRootSceneNode()->createChildSceneNode("grid_node");
 	mGridSceneNode->attachObject(mGridManualObject);
-}
 
-PlayGameState::~PlayGameState()
-{
-	mGridSceneNode->detachAllObjects();
-	mCore->getSceneManager()->destroyManualObject(mGridManualObject);
-	mGridSceneNode->removeAndDestroyAllChildren();
-	mCore->getSceneManager()->destroySceneNode(mGridSceneNode->getName());
 
-	exit();
-}
 
-void PlayGameState::enter()
-{
 	setPlayer(Ogre::Vector2(0,0));
 
 	Ogre::Vector2 xVectorPos(-100.0f,-100.0f);
@@ -58,6 +57,20 @@ void PlayGameState::enter()
 
 void PlayGameState::exit()
 {
+	if(mGridManualObject != 0)
+	{
+		mCore->getSceneManager()->destroyManualObject(mGridManualObject);
+		mGridManualObject = 0;
+	}
+
+	if(mGridSceneNode != 0)
+	{
+		mGridSceneNode->removeAndDestroyAllChildren();
+		mCore->getSceneManager()->destroySceneNode(mGridSceneNode);
+		//delete mGridSceneNode;
+		mGridSceneNode = 0;
+	}
+
 	mEnemyCount = 0;
 	mBulletsCount = 0;
 
@@ -267,10 +280,6 @@ void PlayGameState::keyReleased(const OIS::KeyEvent& e)
 		break;
 	default: break;
 	}
-}
-
-void PlayGameState::buttonClicked(MyGUI::WidgetPtr xSender)
-{
 }
 
 void PlayGameState::setPlayer(Ogre::Vector2 xPos)

@@ -55,6 +55,7 @@
     <ClCompile Include="StatesSystem.cpp">
       <Filter>Systems</Filter>
     </ClCompile>
+    <ClCompile Include="MainClass.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainMenuState.h">
@@ -108,5 +109,6 @@
     <ClInclude Include="StatesSystem.h">
       <Filter>Systems</Filter>
     </ClInclude>
+    <ClInclude Include="MainClass.h" />
   </ItemGroup>
 </Project>

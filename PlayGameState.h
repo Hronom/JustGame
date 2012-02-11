@@ -46,7 +46,6 @@ public:
 	virtual void mouseReleased(const OIS::MouseEvent& e, OIS::MouseButtonID id);
 	virtual	void keyPressed(const OIS::KeyEvent& e);
 	virtual void keyReleased(const OIS::KeyEvent& e);
-	virtual void buttonClicked(MyGUI::WidgetPtr xSender);
 
 	void setPlayer(Ogre::Vector2 xPos);
 	void addEnemy(Ogre::Vector2 xPos);

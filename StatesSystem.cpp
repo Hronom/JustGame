@@ -9,7 +9,7 @@ StatesSystem::~StatesSystem()
 {
 	for(unsigned i=0; i < mStatesMap.size(); i++)
 	{
-		mStatesMap[i]->exit();
+		//mStatesMap[i]->exit();
 		delete mStatesMap[i];
 	}
 
