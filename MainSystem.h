@@ -52,12 +52,9 @@ public:
 	virtual void stateLoadProgress(int xProgressValue, std::string xText);
 	virtual void needShutdown();
 
-	virtual void loadGUILayout(Ogre::String xLayoutName);
-	virtual void unloadGUILayout();
-	virtual void addButtonDelegate(Ogre::String xButtonName, iState *xState);
-
 	virtual Ogre::SceneManager* getSceneManager();
 	virtual Ogre::Camera* getCamera();
+	virtual	MyGUI::Gui* getGui();
 	virtual OgreBulletDynamics::DynamicsWorld* getDynamicsWorld();
 };
 

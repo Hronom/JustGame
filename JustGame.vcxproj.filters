@@ -56,7 +56,9 @@
       <Filter>Systems</Filter>
     </ClCompile>
     <ClCompile Include="MainClass.cpp" />
-    <ClCompile Include="LoadState.cpp" />
+    <ClCompile Include="LoadState.cpp">
+      <Filter>GameStates</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainMenuState.h">
@@ -114,6 +116,8 @@
     <ClInclude Include="iLoadState.h">
       <Filter>Interfaces</Filter>
     </ClInclude>
-    <ClInclude Include="LoadState.h" />
+    <ClInclude Include="LoadState.h">
+      <Filter>GameStates</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

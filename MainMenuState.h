@@ -12,6 +12,8 @@ class MainMenuState: public iState
 private:
 	iCore *mCore;
 
+	MyGUI::VectorWidgetPtr mCurrentLayoutWidgets;
+
 public:
 	MainMenuState(iCore *xCore);
 	~MainMenuState();
@@ -21,7 +23,8 @@ public:
 	virtual void exit();
 
 	virtual	void keyPressed(const OIS::KeyEvent& e);
-	virtual void buttonClicked(MyGUI::WidgetPtr xSender);
+	
+	void buttonClicked(MyGUI::WidgetPtr xSender);
 };
 
 #endif

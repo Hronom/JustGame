@@ -30,7 +30,6 @@ private:
 
 	MyGUI::OgrePlatform *mOgrePlatform;
 	MyGUI::Gui *mMyGUI;
-	MyGUI::VectorWidgetPtr mCurrentLayoutWidgets;
 
 public: 
 	GraphicSystem(iSystemsListener *xMainListener);
@@ -51,9 +50,6 @@ public:
 	void injectKeyPressed( const OIS::KeyEvent &arg );
 	void injectKeyReleased( const OIS::KeyEvent &arg );
 
-	void loadLayout(Ogre::String xLayoutName);
-	void unloadLayout();
-	void addButtonDelegate(Ogre::String xButtonName, iState *xState);
 	void needSingleUpdate();
 
 	unsigned int getWinHandle();
@@ -61,6 +57,7 @@ public:
 	unsigned int getWinHeight();
 	Ogre::SceneManager* getSceneManager();
 	Ogre::Camera* getCamera();
+	MyGUI::Gui* getGui();
 }; 
 
 #endif

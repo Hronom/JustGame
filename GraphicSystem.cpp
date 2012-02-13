@@ -157,58 +157,37 @@ void GraphicSystem::windowClosed(Ogre::RenderWindow* xRenderWindow)
 void GraphicSystem::injectMouseMoved( const OIS::MouseEvent &arg )
 {
 	//mMyGUI->injectMouseMove(arg.state.X.abs, arg.state.Y.abs, arg.state.Z.abs);
-	MyGUI::InputManager::getInstance().injectMouseMove(arg.state.X.abs, arg.state.Y.abs, arg.state.Z.abs);
+	MyGUI::InputManager::getInstancePtr()->injectMouseMove(arg.state.X.abs, arg.state.Y.abs, arg.state.Z.abs);
 }
 
 void GraphicSystem::injectMousePressed( const OIS::MouseEvent &arg, OIS::MouseButtonID id )
 {
 	//mMyGUI->injectMousePress(arg.state.X.abs, arg.state.Y.abs, MyGUI::MouseButton::Enum(id));
-	MyGUI::InputManager::getInstance().injectMousePress(arg.state.X.abs, arg.state.Y.abs, MyGUI::MouseButton::Enum(id));
+	MyGUI::InputManager::getInstancePtr()->injectMousePress(arg.state.X.abs, arg.state.Y.abs, MyGUI::MouseButton::Enum(id));
 }
 
 void GraphicSystem::injectMouseReleased( const OIS::MouseEvent &arg, OIS::MouseButtonID id )
 {
 	//mMyGUI->injectMouseRelease(arg.state.X.abs, arg.state.Y.abs, MyGUI::MouseButton::Enum(id));
-	MyGUI::InputManager::getInstance().injectMouseRelease(arg.state.X.abs, arg.state.Y.abs, MyGUI::MouseButton::Enum(id));
+	MyGUI::InputManager::getInstancePtr()->injectMouseRelease(arg.state.X.abs, arg.state.Y.abs, MyGUI::MouseButton::Enum(id));
 }
 
 void GraphicSystem::injectKeyPressed( const OIS::KeyEvent &arg )
 {
 	//mMyGUI->injectKeyPress(MyGUI::KeyCode::Enum(arg.key), arg.text);
-	MyGUI::InputManager::getInstance().injectKeyPress(MyGUI::KeyCode::Enum(arg.key), arg.text);
+	MyGUI::InputManager::getInstancePtr()->injectKeyPress(MyGUI::KeyCode::Enum(arg.key), arg.text);
 }
 
 void GraphicSystem::injectKeyReleased( const OIS::KeyEvent &arg )
 {
 	//mMyGUI->injectKeyRelease(MyGUI::KeyCode::Enum(arg.key));
-	MyGUI::InputManager::getInstance().injectKeyRelease(MyGUI::KeyCode::Enum(arg.key));
-}
-
-void GraphicSystem::loadLayout(Ogre::String xLayoutName)
-{
-	unloadLayout();
-	mCurrentLayoutWidgets = MyGUI::LayoutManager::getInstance().loadLayout(xLayoutName);
-	MyGUI::LayerManager::getInstance().resizeView(MyGUI::RenderManager::getInstance().getViewSize());
-}
-
-void GraphicSystem::unloadLayout()
-{
-	if(mCurrentLayoutWidgets.size() != 0)
-	{
-		MyGUI::LayoutManager::getInstance().unloadLayout(mCurrentLayoutWidgets);
-		mCurrentLayoutWidgets.clear();
-	}
-}
-
-void GraphicSystem::addButtonDelegate(Ogre::String xButtonName, iState *xState)
-{
-	MyGUI::ButtonPtr xButton = mMyGUI->findWidget<MyGUI::Button>(xButtonName);
-	xButton->eventMouseButtonClick += MyGUI::newDelegate(xState, &iState::buttonClicked);
+	MyGUI::InputManager::getInstancePtr()->injectKeyRelease(MyGUI::KeyCode::Enum(arg.key));
 }
 
 void GraphicSystem::needSingleUpdate()
 {
 	mRoot->renderOneFrame();
+	Ogre::WindowEventUtilities::messagePump();
 }
 
 size_t GraphicSystem::getWinHandle()
@@ -237,4 +216,9 @@ Ogre::SceneManager* GraphicSystem::getSceneManager()
 Ogre::Camera* GraphicSystem::getCamera()
 {
 	return mCamera;
+}
+
+MyGUI::Gui* GraphicSystem::getGui()
+{
+	return mMyGUI;
 }

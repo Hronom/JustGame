@@ -11,6 +11,8 @@ class WinState: public iState
 private:
 	iCore *mCore;
 
+	MyGUI::VectorWidgetPtr mCurrentLayoutWidgets;
+
 public:
 	WinState(iCore *xCore);
 	~WinState();
@@ -20,7 +22,8 @@ public:
 	virtual void exit();
 
 	virtual	void keyPressed(const OIS::KeyEvent& e);
-	virtual void buttonClicked(MyGUI::WidgetPtr xSender);
+	
+	void buttonClicked(MyGUI::WidgetPtr xSender);
 };
 
 #endif

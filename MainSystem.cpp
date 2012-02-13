@@ -133,21 +133,6 @@ void MainSystem::needShutdown()
 	mNeedShutdown = true;
 }
 
-void MainSystem::loadGUILayout(Ogre::String xLayoutName)
-{
-	mGraphicSystem->loadLayout(xLayoutName);
-}
-
-void MainSystem::unloadGUILayout()
-{
-	mGraphicSystem->unloadLayout();
-}
-
-void MainSystem::addButtonDelegate(Ogre::String xButtonName, iState *xState)
-{
-	mGraphicSystem->addButtonDelegate(xButtonName, xState);
-}
-
 Ogre::SceneManager* MainSystem::getSceneManager()
 {
 	return mGraphicSystem->getSceneManager();
@@ -156,6 +141,11 @@ Ogre::SceneManager* MainSystem::getSceneManager()
 Ogre::Camera* MainSystem::getCamera()
 {
 	return mGraphicSystem->getCamera();
+}
+
+MyGUI::Gui* MainSystem::getGui()
+{
+	return mGraphicSystem->getGui();
 }
 
 OgreBulletDynamics::DynamicsWorld* MainSystem::getDynamicsWorld()

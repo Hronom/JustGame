@@ -18,7 +18,6 @@ StatesSystem::~StatesSystem()
 
 	for(unsigned i=0; i < mStatesMap.size(); i++)
 	{
-		//mStatesMap[i]->exit();
 		delete mStatesMap[i];
 	}
 
@@ -32,7 +31,8 @@ bool StatesSystem::init()
 
 void StatesSystem::needUpdate(const Ogre::FrameEvent& evt)
 {
-	if(mCurrentState != 0) mCurrentState->needUpdate(evt);
+	if(mCurrentState != 0)
+		mCurrentState->needUpdate(evt);
 }
 
 void StatesSystem::injectMouseMoved(const OIS::MouseEvent& e)
@@ -62,7 +62,8 @@ void StatesSystem::injectKeyReleased(const OIS::KeyEvent& e)
 
 void StatesSystem::injectStateLoadProgress(int xProgressValue, std::string xText)
 {
-	if(mLoadState != 0) mLoadState->setProgress(xProgressValue, xText);
+	if(mLoadState != 0) 
+		mLoadState->setProgress(xProgressValue, xText);
 }
 
 void StatesSystem::setLoadState(iLoadState *xLoadState)
@@ -80,20 +81,17 @@ void StatesSystem::switchToState(int xStateId, bool xShowLoadState)
 	if(mStatesMap.count(xStateId) > 0)
 	{
 		if(mCurrentState != 0)
-		{
 			mCurrentState->exit();
-			mCurrentState = 0;
-		}
 
-		if(xShowLoadState == true)
+		mMainListener->stateStartLoad();
+
+		if(xShowLoadState == true && mLoadState != 0)
 		{
-			mMainListener->stateStartLoad();
 			mLoadState->show();
-			mStatesMap[xStateId]->prepareState();
-			mLoadState->hide();
-			mMainListener->stateEndLoad();
-
 			mCurrentState = mStatesMap[xStateId];
+			mCurrentState->prepareState();
+			mLoadState->hide();
+			
 			mCurrentState->enter();
 		}
 		else
@@ -102,5 +100,7 @@ void StatesSystem::switchToState(int xStateId, bool xShowLoadState)
 			mCurrentState->prepareState();
 			mCurrentState->enter();
 		}
+
+		mMainListener->stateEndLoad();
 	}
 }

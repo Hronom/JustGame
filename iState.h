@@ -21,8 +21,6 @@ public:
 	virtual void mouseReleased(const OIS::MouseEvent& e, OIS::MouseButtonID id) {};
 	virtual	void keyPressed(const OIS::KeyEvent& e) {};
 	virtual void keyReleased(const OIS::KeyEvent& e) {};
-
-	virtual void buttonClicked(MyGUI::WidgetPtr xSender) {};
 };
 
 #endif

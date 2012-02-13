@@ -3,6 +3,7 @@
 
 #include <MyGUI.h>
 #include <OIS\OIS.h>
+
 #include "iCore.h"
 #include "iState.h"
 
@@ -10,6 +11,8 @@ class LoseState: public iState
 {
 private:
 	iCore *mCore;
+
+	MyGUI::VectorWidgetPtr mCurrentLayoutWidgets;
 
 public:
 	LoseState(iCore *xCore);
@@ -20,7 +23,8 @@ public:
 	virtual void exit();
 
 	virtual	void keyPressed(const OIS::KeyEvent& e);
-	virtual void buttonClicked(MyGUI::WidgetPtr xSender);
+	
+	void buttonClicked(MyGUI::WidgetPtr xSender);
 };
 
 #endif

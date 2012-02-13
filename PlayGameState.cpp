@@ -20,11 +20,7 @@ PlayGameState::~PlayGameState()
 
 void PlayGameState::prepareState()
 {
-
-}
-
-void PlayGameState::enter()
-{
+	mCore->stateLoadProgress(0, "Loading world");
 	Ogre::ColourValue xColor = Ogre::ColourValue(0.104f, 0.234f, 0.140f, 0.0f);
 	// create ManualObject
 	mGridManualObject = new Ogre::ManualObject("grid_manual");
@@ -51,13 +47,22 @@ void PlayGameState::enter()
 	mGridSceneNode = mCore->getSceneManager()->getRootSceneNode()->createChildSceneNode("grid_node");
 	mGridSceneNode->attachObject(mGridManualObject);
 
-
+	mCore->stateLoadProgress(50, "Loading player");
 
 	setPlayer(Ogre::Vector2(0,0));
+
+	mCore->stateLoadProgress(70, "Loading enemys");
 
 	Ogre::Vector2 xVectorPos(-100.0f,-100.0f);
 	for(int i=0; i<3; i++)
 		addEnemy(xVectorPos.randomDeviant(100));
+
+	mCore->stateLoadProgress(100, "Loading complete");
+}
+
+void PlayGameState::enter()
+{
+	
 }
 
 void PlayGameState::exit()
@@ -114,8 +119,8 @@ void PlayGameState::exit()
 
 void PlayGameState::needUpdate(const Ogre::FrameEvent& evt)
 {
-	MyGUI::IntPoint xMousePosition = MyGUI::InputManager::getInstance().getMousePosition();
-	MyGUI::IntSize xSize = MyGUI::RenderManager::getInstance().getViewSize();
+	MyGUI::IntPoint xMousePosition = MyGUI::InputManager::getInstancePtr()->getMousePosition();
+	MyGUI::IntSize xSize = MyGUI::RenderManager::getInstancePtr()->getViewSize();
 	Ogre::Ray xMouseRay =  mCore->getCamera()->getCameraToViewportRay(xMousePosition.left / float(xSize.width), xMousePosition.top / float(xSize.height));
 	Ogre::Vector3 xVector = xMouseRay.getPoint(100);//почему 100? Расстояние между камерой и нулевой точкой оси z равно 100
 
@@ -216,8 +221,8 @@ void PlayGameState::needUpdate(const Ogre::FrameEvent& evt)
 void PlayGameState::mouseMoved(const OIS::MouseEvent& e)
 {
 	/*
-	MyGUI::IntPoint xMousePosition = MyGUI::InputManager::getInstance().getMousePosition();
-	MyGUI::IntSize xSize = MyGUI::RenderManager::getInstance().getViewSize();
+	MyGUI::IntPoint xMousePosition = MyGUI::InputManager::getInstancePtr().getMousePosition();
+	MyGUI::IntSize xSize = MyGUI::RenderManager::getInstancePtr().getViewSize();
 	Ogre::Ray xMouseRay =  mCore->getCamera()->getCameraToViewportRay(xMousePosition.left / float(xSize.width), xMousePosition.top / float(xSize.height));
 	Ogre::Vector3 xVector = xMouseRay.getPoint(100);//почему 100? Расстояние между камерой и нулевой точкой оси z равно 100
 

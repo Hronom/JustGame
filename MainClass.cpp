@@ -1,5 +1,6 @@
 #include "MainClass.h"
 
+#include "LoadState.h"
 #include "MainMenuState.h"
 #include "PlayGameState.h"
 #include "WinState.h"
@@ -10,6 +11,9 @@ MainClass::MainClass()
 	mMainSystem = new MainSystem();
 
 	mMainSystem->init();
+
+	LoadState *xLoadState = new LoadState(mMainSystem);
+	mMainSystem->setLoadState(xLoadState);
 
 	MainMenuState *xMainMenuState = new MainMenuState(mMainSystem);
 	mMainSystem->addNormalState(0, xMainMenuState);
