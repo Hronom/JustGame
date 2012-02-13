@@ -16,6 +16,7 @@ public:
 	MainMenuState(iCore *xCore);
 	~MainMenuState();
 
+	virtual void prepareState();
 	virtual void enter();
 	virtual void exit();
 

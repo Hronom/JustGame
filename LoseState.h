@@ -15,6 +15,7 @@ public:
 	LoseState(iCore *xCore);
 	~LoseState();
 
+	virtual void prepareState();
 	virtual void enter();
 	virtual void exit();
 

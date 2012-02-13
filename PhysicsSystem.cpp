@@ -1,6 +1,6 @@
 #include "PhysicsSystem.h"
 
-PhysicsSystem::PhysicsSystem(iMainListener *xMainListener)
+PhysicsSystem::PhysicsSystem(iSystemsListener *xMainListener)
 {
 	mMainListener = xMainListener;
 }

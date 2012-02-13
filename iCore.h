@@ -14,7 +14,8 @@ public:
 	iCore() {};
 	virtual ~iCore() {};
 
-	virtual void needSwitchToStateId(int xStateId) = 0;
+	virtual void needSwitchToStateId(int xStateId, bool xShowLoadState = false) = 0;
+	virtual void stateLoadProgress(int xProgressValue, std::string xText) = 0;
 	virtual void needShutdown() = 0;
 
 	virtual void loadGUILayout(Ogre::String xLayoutName) = 0;

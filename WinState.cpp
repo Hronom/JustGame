@@ -9,6 +9,11 @@ WinState::~WinState()
 {
 }
 
+void WinState::prepareState()
+{
+
+}
+
 void WinState::enter()
 {
 	mCore->loadGUILayout("WinMenu.layout");

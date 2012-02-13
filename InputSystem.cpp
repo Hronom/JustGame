@@ -1,7 +1,7 @@
 #include "InputSystem.h"
 
 
-InputSystem::InputSystem(iMainListener *xMainListener)
+InputSystem::InputSystem(iSystemsListener *xMainListener)
 {
 	mMainListener = xMainListener;
 }

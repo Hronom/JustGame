@@ -15,6 +15,7 @@ public:
 	WinState(iCore *xCore);
 	~WinState();
 
+	virtual void prepareState();
 	virtual void enter();
 	virtual void exit();
 

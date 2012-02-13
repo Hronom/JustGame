@@ -10,13 +10,13 @@
 
 #include <OIS\OIS.h>
 
-#include "iMainListener.h"
+#include "iSystemsListener.h"
 #include "iState.h"
 
 class GraphicSystem : public Ogre::FrameListener, public Ogre::WindowEventListener
 { 
 private: 
-	iMainListener *mMainListener;
+	iSystemsListener *mMainListener;
 
 	Ogre::String mOgreCfg;
 	Ogre::String mPluginsCfg;
@@ -33,13 +33,14 @@ private:
 	MyGUI::VectorWidgetPtr mCurrentLayoutWidgets;
 
 public: 
-	GraphicSystem(iMainListener *xMainListener);
+	GraphicSystem(iSystemsListener *xMainListener);
 	~GraphicSystem();
 	bool init();
 	void start();
 
 private:
 	bool frameStarted(const Ogre::FrameEvent& evt);
+	bool frameEnded(const Ogre::FrameEvent& evt);
 	virtual void windowResized(Ogre::RenderWindow* xRenderWindow);
 	virtual void windowClosed(Ogre::RenderWindow* xRenderWindow);
 
@@ -53,6 +54,7 @@ public:
 	void loadLayout(Ogre::String xLayoutName);
 	void unloadLayout();
 	void addButtonDelegate(Ogre::String xButtonName, iState *xState);
+	void needSingleUpdate();
 
 	unsigned int getWinHandle();
 	unsigned int getWinWidth();

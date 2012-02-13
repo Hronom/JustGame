@@ -9,11 +9,16 @@ MainMenuState::~MainMenuState()
 {
 }
 
-void MainMenuState::enter()
+void MainMenuState::prepareState()
 {
 	mCore->loadGUILayout("MainMenu.layout");
 	mCore->addButtonDelegate("NewGameButton", this);
 	mCore->addButtonDelegate("ExitButton", this);
+}
+
+void MainMenuState::enter()
+{
+
 }
 
 void MainMenuState::exit()

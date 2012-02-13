@@ -9,6 +9,11 @@ LoseState::~LoseState()
 {
 }
 
+void LoseState::prepareState()
+{
+
+}
+
 void LoseState::enter()
 {
 	mCore->loadGUILayout("LoseMenu.layout");

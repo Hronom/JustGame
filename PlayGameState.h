@@ -37,6 +37,7 @@ public:
 	PlayGameState(iCore *xCore);
 	~PlayGameState();
 
+	virtual void prepareState();
 	virtual void enter();
 	virtual void exit();
 

@@ -1,6 +1,6 @@
 #include "GraphicSystem.h"
 
-GraphicSystem::GraphicSystem(iMainListener *xMainListener) 
+GraphicSystem::GraphicSystem(iSystemsListener *xMainListener) 
 { 
 	mMainListener = xMainListener;
 } 
@@ -139,6 +139,11 @@ bool GraphicSystem::frameStarted(const  Ogre::FrameEvent& evt)
 	return mMainListener->frameStarted(evt);
 }
 
+bool GraphicSystem::frameEnded(const Ogre::FrameEvent& evt)
+{
+	return mMainListener->frameEnded(evt);
+}
+
 void GraphicSystem::windowResized(Ogre::RenderWindow* xRenderWindow)
 {
 	mMainListener->windowResized(xRenderWindow->getWidth(), xRenderWindow->getHeight());
@@ -183,6 +188,7 @@ void GraphicSystem::loadLayout(Ogre::String xLayoutName)
 {
 	unloadLayout();
 	mCurrentLayoutWidgets = MyGUI::LayoutManager::getInstance().loadLayout(xLayoutName);
+	MyGUI::LayerManager::getInstance().resizeView(MyGUI::RenderManager::getInstance().getViewSize());
 }
 
 void GraphicSystem::unloadLayout()
@@ -198,6 +204,11 @@ void GraphicSystem::addButtonDelegate(Ogre::String xButtonName, iState *xState)
 {
 	MyGUI::ButtonPtr xButton = mMyGUI->findWidget<MyGUI::Button>(xButtonName);
 	xButton->eventMouseButtonClick += MyGUI::newDelegate(xState, &iState::buttonClicked);
+}
+
+void GraphicSystem::needSingleUpdate()
+{
+	mRoot->renderOneFrame();
 }
 
 size_t GraphicSystem::getWinHandle()

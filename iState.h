@@ -11,6 +11,7 @@ public:
 	iState() {};
 	virtual ~iState() {};
 
+	virtual void prepareState() = 0;
 	virtual void enter() = 0;
 	virtual void exit() = 0;
 

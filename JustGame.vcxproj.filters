@@ -7,11 +7,11 @@
     <Filter Include="GameStates">
       <UniqueIdentifier>{abff0ec1-5877-4cfe-96a2-9daa063c6221}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Objects">
-      <UniqueIdentifier>{1dc583d0-4cf7-493b-bc77-f876651f1243}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Systems">
       <UniqueIdentifier>{48d6e27c-a5fa-4126-8c0f-7968cb81df24}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Objects">
+      <UniqueIdentifier>{1dc583d0-4cf7-493b-bc77-f876651f1243}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -56,15 +56,13 @@
       <Filter>Systems</Filter>
     </ClCompile>
     <ClCompile Include="MainClass.cpp" />
+    <ClCompile Include="LoadState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainMenuState.h">
       <Filter>GameStates</Filter>
     </ClInclude>
     <ClInclude Include="iState.h">
-      <Filter>Interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="iMainListener.h">
       <Filter>Interfaces</Filter>
     </ClInclude>
     <ClInclude Include="iCore.h">
@@ -110,5 +108,12 @@
       <Filter>Systems</Filter>
     </ClInclude>
     <ClInclude Include="MainClass.h" />
+    <ClInclude Include="iSystemsListener.h">
+      <Filter>Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="iLoadState.h">
+      <Filter>Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="LoadState.h" />
   </ItemGroup>
 </Project>

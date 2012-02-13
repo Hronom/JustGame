@@ -103,6 +103,7 @@
     <ClCompile Include="GraphicSystem.cpp" />
     <ClCompile Include="InputSystem.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="LoadState.cpp" />
     <ClCompile Include="LoseState.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainClass.cpp" />
@@ -120,9 +121,11 @@
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="iCore.h" />
     <ClInclude Include="GraphicSystem.h" />
+    <ClInclude Include="iLoadState.h" />
     <ClInclude Include="InputSystem.h" />
     <ClInclude Include="iGameObjectsListener.h" />
-    <ClInclude Include="iMainListener.h" />
+    <ClInclude Include="iSystemsListener.h" />
+    <ClInclude Include="LoadState.h" />
     <ClInclude Include="LoseState.h" />
     <ClInclude Include="MainClass.h" />
     <ClInclude Include="MainSystem.h" />

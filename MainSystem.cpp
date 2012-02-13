@@ -2,12 +2,13 @@
 
 MainSystem::MainSystem()
 {
-	mNeedShutdown = false;
-
 	mGraphicSystem = new GraphicSystem(this);
 	mPhysicsSystem = new PhysicsSystem(this);
 	mInputSystem = new InputSystem(this);
-	mStatesSystem = new StatesSystem();
+	mStatesSystem = new StatesSystem(this);
+
+	mNeedShutdown = false;
+	mStateLoad = false;
 }
 
 MainSystem::~MainSystem()
@@ -33,20 +34,33 @@ void MainSystem::run()
 	mGraphicSystem->start();
 }
 
-void MainSystem::addState(int xNumber, iState *xState)
+void  MainSystem::setLoadState(iLoadState *xLoadState)
 {
-	mStatesSystem->addState(xNumber, xState);
+	mStatesSystem->setLoadState(xLoadState);
+}
+
+void MainSystem::addNormalState(int xNumber, iState *xState)
+{
+	mStatesSystem->addNormalState(xNumber, xState);
 }
 
 //-------------------------------------------------------------
-// iMainListener
+// iSystemsListener
 //-------------------------------------------------------------
 bool MainSystem::frameStarted(const Ogre::FrameEvent& evt)
 {
-	mPhysicsSystem->needUpdate(evt);
-	mInputSystem->needUpdate();
-	mStatesSystem->needUpdate(evt);
+	if(mStateLoad != true)
+	{
+		mPhysicsSystem->needUpdate(evt);
+		mInputSystem->needUpdate();
+		mStatesSystem->needUpdate(evt);
+	}
 
+	return !mNeedShutdown;
+}
+
+bool MainSystem::frameEnded(const Ogre::FrameEvent& evt)
+{
 	return !mNeedShutdown;
 }
 
@@ -90,12 +104,28 @@ void MainSystem::keyReleased(const OIS::KeyEvent& e)
 	mStatesSystem->injectKeyReleased(e);
 }
 
+void MainSystem::stateStartLoad()
+{
+	mStateLoad = true;
+}
+
+void MainSystem::stateEndLoad()
+{
+	mStateLoad = false;
+}
+
 //-------------------------------------------------------------
 // iCore
 //-------------------------------------------------------------
-void MainSystem::needSwitchToStateId(int xStateId)
+void MainSystem::needSwitchToStateId(int xStateId, bool xShowLoadState)
 {
-	mStatesSystem->switchToState(xStateId);
+	mStatesSystem->switchToState(xStateId, xShowLoadState);
+}
+
+void MainSystem::stateLoadProgress(int xProgressValue, std::string xText)
+{
+	mStatesSystem->injectStateLoadProgress(xProgressValue, xText);
+	mGraphicSystem->needSingleUpdate();
 }
 
 void MainSystem::needShutdown()

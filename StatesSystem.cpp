@@ -1,12 +1,21 @@
 #include "StatesSystem.h"
 
-StatesSystem::StatesSystem()
+StatesSystem::StatesSystem(iSystemsListener *xMainListener)
 {
+	mMainListener = xMainListener;
+
+	mLoadState = 0;
 	mCurrentState = 0;
 }
 
 StatesSystem::~StatesSystem()
 {
+	if(mLoadState != 0)
+	{
+		delete mLoadState;
+		mLoadState = 0;
+	}
+
 	for(unsigned i=0; i < mStatesMap.size(); i++)
 	{
 		//mStatesMap[i]->exit();
@@ -51,23 +60,47 @@ void StatesSystem::injectKeyReleased(const OIS::KeyEvent& e)
 	if(mCurrentState != 0) mCurrentState->keyReleased(e);
 }
 
-void StatesSystem::addState(int xNumber, iState *xState)
+void StatesSystem::injectStateLoadProgress(int xProgressValue, std::string xText)
 {
-	mStatesMap[xNumber] = xState; 
-	if(mCurrentState == 0)
-	{
-		mCurrentState = xState;
-		mCurrentState->enter();
-	}
+	if(mLoadState != 0) mLoadState->setProgress(xProgressValue, xText);
 }
 
-void StatesSystem::switchToState(int xStateId)
+void StatesSystem::setLoadState(iLoadState *xLoadState)
 {
-	if(mCurrentState != 0) mCurrentState->exit();
-	
+	mLoadState = xLoadState;
+}
+
+void StatesSystem::addNormalState(int xNumber, iState *xState)
+{
+	mStatesMap[xNumber] = xState;
+}
+
+void StatesSystem::switchToState(int xStateId, bool xShowLoadState)
+{
 	if(mStatesMap.count(xStateId) > 0)
 	{
-		mCurrentState = mStatesMap[xStateId];
-		mCurrentState->enter();
+		if(mCurrentState != 0)
+		{
+			mCurrentState->exit();
+			mCurrentState = 0;
+		}
+
+		if(xShowLoadState == true)
+		{
+			mMainListener->stateStartLoad();
+			mLoadState->show();
+			mStatesMap[xStateId]->prepareState();
+			mLoadState->hide();
+			mMainListener->stateEndLoad();
+
+			mCurrentState = mStatesMap[xStateId];
+			mCurrentState->enter();
+		}
+		else
+		{
+			mCurrentState = mStatesMap[xStateId];
+			mCurrentState->prepareState();
+			mCurrentState->enter();
+		}
 	}
 }

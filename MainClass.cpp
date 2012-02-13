@@ -12,16 +12,18 @@ MainClass::MainClass()
 	mMainSystem->init();
 
 	MainMenuState *xMainMenuState = new MainMenuState(mMainSystem);
-	mMainSystem->addState(0, xMainMenuState);
+	mMainSystem->addNormalState(0, xMainMenuState);
 	
 	PlayGameState *xPlayGameState = new PlayGameState(mMainSystem);
-	mMainSystem->addState(1, xPlayGameState);
+	mMainSystem->addNormalState(1, xPlayGameState);
 	
 	WinState *xWinState = new WinState(mMainSystem);
-	mMainSystem->addState(2, xWinState);
+	mMainSystem->addNormalState(2, xWinState);
 	
 	LoseState *xLoseState = new LoseState(mMainSystem);
-	mMainSystem->addState(3, xLoseState);
+	mMainSystem->addNormalState(3, xLoseState);
+
+	mMainSystem->needSwitchToStateId(0);
 }
 
 

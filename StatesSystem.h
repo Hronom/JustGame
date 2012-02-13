@@ -1,17 +1,22 @@
 #ifndef STATESSYSTEM_H
 #define STATESSYSTEM_H
 
-#include "iState.h"
+#include "iSystemsListener.h"
 #include "iCore.h"
+#include "iLoadState.h"
+#include "iState.h"
 
 class StatesSystem
 {
 private:
+	iSystemsListener *mMainListener;
+
+	iLoadState *mLoadState;
 	iState *mCurrentState;
 	std::map<int, iState*> mStatesMap;
 
 public:
-	StatesSystem();
+	StatesSystem(iSystemsListener *xMainListener);
 	~StatesSystem();
 
 	bool init();
@@ -22,9 +27,11 @@ public:
 	virtual void injectMouseReleased(const OIS::MouseEvent& e, OIS::MouseButtonID id);
 	virtual	void injectKeyPressed(const OIS::KeyEvent& e);
 	virtual void injectKeyReleased(const OIS::KeyEvent& e);
+	virtual void injectStateLoadProgress(int xProgressValue, std::string xText);
 
-	void addState(int xNumber, iState *xState);
-	void switchToState(int xStateId);
+	void setLoadState(iLoadState *xLoadState);
+	void addNormalState(int xNumber, iState *xState);
+	void switchToState(int xStateId, bool xShowLoadState = false);
 };
 
 #endif

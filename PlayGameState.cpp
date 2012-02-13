@@ -18,6 +18,11 @@ PlayGameState::~PlayGameState()
 	exit();
 }
 
+void PlayGameState::prepareState()
+{
+
+}
+
 void PlayGameState::enter()
 {
 	Ogre::ColourValue xColor = Ogre::ColourValue(0.104f, 0.234f, 0.140f, 0.0f);
