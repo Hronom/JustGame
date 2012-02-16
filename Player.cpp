@@ -1,11 +1,11 @@
 #include "Player.h"
 
-#include "iGameObjectsListener.h"
+#include "IGameObjectsListener.h"
 
 #include <OgreBulletDynamicsRigidBody.h>
 #include <Shapes/OgreBulletCollisionsSphereShape.h>
 
-Player::Player(iCore *xCore, iGameObjectsListener *xGameObjectsListener, Ogre::String xObjectName, short xObjectCollideWith, Ogre::Vector2 xPos): GameObject(xCore, xGameObjectsListener, xObjectName, xObjectCollideWith)
+Player::Player(ICore *xCore, IGameObjectsListener *xGameObjectsListener, Ogre::String xObjectName, short xObjectCollideWith, Ogre::Vector2 xPos): GameObject(xCore, xGameObjectsListener, xObjectName, xObjectCollideWith)
 {
 	mHealthCount = 100;
 	mMoveSpeed = 35.0f;

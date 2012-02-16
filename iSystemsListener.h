@@ -5,11 +5,11 @@
 #include "OgreFrameListener.h"
 #include <OIS/OIS.h>
 
-class iSystemsListener
+class ISystemsListener
 {
 public:
-	iSystemsListener() {};
-	virtual ~iSystemsListener() {};
+	ISystemsListener() {};
+	virtual ~ISystemsListener() {};
 
 	virtual bool frameStarted(const Ogre::FrameEvent& evt) = 0;
 	virtual bool frameEnded(const Ogre::FrameEvent& evt) = 0;

@@ -1,9 +1,9 @@
 #include "GameObject.h"
 
-#include "iCore.h"
-#include "iGameObjectsListener.h"
+#include "ICore.h"
+#include "IGameObjectsListener.h"
 
-GameObject::GameObject(iCore *xCore, iGameObjectsListener *xGameObjectsListener, Ogre::String xObjectName, short xObjectCollideWith)
+GameObject::GameObject(ICore *xCore, IGameObjectsListener *xGameObjectsListener, Ogre::String xObjectName, short xObjectCollideWith)
 {
 	mCore = xCore;
 	mGameObjectsListener = xGameObjectsListener;

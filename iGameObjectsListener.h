@@ -3,7 +3,7 @@
 
 #include <Ogre.h>
 
-class iGameObjectsListener
+class IGameObjectsListener
 {
 public:
 	virtual void addBullet(short xObjectCollideWith, Ogre::Vector2 xPos, Ogre::Vector2 xDestination) = 0;

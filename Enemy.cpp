@@ -1,11 +1,11 @@
 #include "Enemy.h"
 
-#include "iGameObjectsListener.h"
+#include "IGameObjectsListener.h"
 
 #include <OgreBulletDynamicsRigidBody.h>
 #include <Shapes/OgreBulletCollisionsSphereShape.h>
 
-Enemy::Enemy(iCore *xCore, iGameObjectsListener *xGameObjectsListener, Ogre::String xObjectName, short xObjectCollideWith, Ogre::Vector2 xPos): GameObject(xCore, xGameObjectsListener, xObjectName, xObjectCollideWith)
+Enemy::Enemy(ICore *xCore, IGameObjectsListener *xGameObjectsListener, Ogre::String xObjectName, short xObjectCollideWith, Ogre::Vector2 xPos): GameObject(xCore, xGameObjectsListener, xObjectName, xObjectCollideWith)
 {
 	mHealthCount = 100;
 	mMoveSpeed = 15.0f;

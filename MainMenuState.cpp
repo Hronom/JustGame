@@ -1,6 +1,6 @@
 #include "MainMenuState.h"
 
-MainMenuState::MainMenuState(iCore *xCore)
+MainMenuState::MainMenuState(ICore *xCore)
 {
 	mCore = xCore;
 

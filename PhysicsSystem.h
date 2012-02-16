@@ -1,7 +1,7 @@
 #ifndef PHYSICSSYSTEM_H
 #define PHYSICSSYSTEM_H
 
-#include "iSystemsListener.h"
+#include "ISystemsListener.h"
 
 #include "OgreBulletDynamicsRigidBody.h"
 #include "Ogre.h"
@@ -9,13 +9,13 @@
 class PhysicsSystem
 {
 private:
-	iSystemsListener *mMainListener;
+	ISystemsListener *mMainListener;
 
 	OgreBulletDynamics::DynamicsWorld *mDynamicsWorld;   // OgreBullet World
 	OgreBulletCollisions::DebugDrawer *mDebugDrawer;
 
 public: 
-	PhysicsSystem(iSystemsListener *xMainListener);
+	PhysicsSystem(ISystemsListener *xMainListener);
 	~PhysicsSystem();
 
 	void init(Ogre::SceneManager *xSceneManager);

@@ -5,11 +5,11 @@
 #include <OIS/OIS.h>
 #include <MyGUI.h>
 
-class iState
+class IState
 {
 public:
-	iState() {};
-	virtual ~iState() {};
+	IState() {};
+	virtual ~IState() {};
 
 	virtual void prepareState() = 0;
 	virtual void enter() = 0;

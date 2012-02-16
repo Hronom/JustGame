@@ -7,15 +7,15 @@
 #include <OgreBulletDynamicsRigidBody.h>
 #include <string>
 
-#include "iState.h"
+#include "IState.h"
 
 class GameObject;
 
-class iCore
+class ICore
 {
 public:
-	iCore() {};
-	virtual ~iCore() {};
+	ICore() {};
+	virtual ~ICore() {};
 
 	virtual void needSwitchToStateId(int xStateId, bool xShowLoadState = false) = 0;
 	virtual void stateLoadProgress(int xProgressValue, std::string xText) = 0;

@@ -3,7 +3,7 @@
 
 #include <Ogre.h>
 
-#include "iCore.h"
+#include "ICore.h"
 #include "GameObject.h"
 
 class Enemy: public GameObject
@@ -14,7 +14,7 @@ private:
 	Ogre::Real mTimeBeforeDelete;
 
 public:
-	Enemy(iCore *xCore, iGameObjectsListener *xGameObjectsListener, Ogre::String xObjectName, short xObjectCollideWith, Ogre::Vector2 xPos);
+	Enemy(ICore *xCore, IGameObjectsListener *xGameObjectsListener, Ogre::String xObjectName, short xObjectCollideWith, Ogre::Vector2 xPos);
 	~Enemy();
 
 	virtual void update(const Ogre::FrameEvent& evt);

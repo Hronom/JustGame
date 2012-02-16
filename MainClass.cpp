@@ -1,6 +1,7 @@
 #include "MainClass.h"
 
-#include "LoadState.h"
+#include "LoadScreen.h"
+#include "SplashState.h"
 #include "MainMenuState.h"
 #include "PlayGameState.h"
 #include "WinState.h"
@@ -12,8 +13,11 @@ MainClass::MainClass()
 
 	mMainSystem->init();
 
-	LoadState *xLoadState = new LoadState(mMainSystem);
+	LoadScreen *xLoadState = new LoadScreen(mMainSystem);
 	mMainSystem->setLoadState(xLoadState);
+
+	SplashState *xSplashState = new SplashState(mMainSystem);
+	mMainSystem->addNormalState(-1, xSplashState);
 
 	MainMenuState *xMainMenuState = new MainMenuState(mMainSystem);
 	mMainSystem->addNormalState(0, xMainMenuState);
@@ -27,7 +31,7 @@ MainClass::MainClass()
 	LoseState *xLoseState = new LoseState(mMainSystem);
 	mMainSystem->addNormalState(3, xLoseState);
 
-	mMainSystem->needSwitchToStateId(0);
+	mMainSystem->needSwitchToStateId(-1);
 }
 
 

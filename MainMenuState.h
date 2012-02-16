@@ -4,18 +4,18 @@
 #include <MyGUI.h>
 #include <OIS\OIS.h>
 
-#include "iState.h"
-#include "iCore.h"
+#include "IState.h"
+#include "ICore.h"
 
-class MainMenuState: public iState
+class MainMenuState: public IState
 {
 private:
-	iCore *mCore;
+	ICore *mCore;
 
 	MyGUI::VectorWidgetPtr mCurrentLayoutWidgets;
 
 public:
-	MainMenuState(iCore *xCore);
+	MainMenuState(ICore *xCore);
 	~MainMenuState();
 
 	virtual void prepareState();

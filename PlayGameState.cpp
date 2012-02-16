@@ -1,6 +1,6 @@
 #include "PlayGameState.h"
 
-PlayGameState::PlayGameState(iCore *xCore)
+PlayGameState::PlayGameState(ICore *xCore)
 {
 	isDebug = true;
 

@@ -13,6 +13,9 @@
     <Filter Include="Objects">
       <UniqueIdentifier>{1dc583d0-4cf7-493b-bc77-f876651f1243}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Other">
+      <UniqueIdentifier>{6f03b88d-a07a-4111-ba15-ac46207e88e5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -56,19 +59,16 @@
       <Filter>Systems</Filter>
     </ClCompile>
     <ClCompile Include="MainClass.cpp" />
-    <ClCompile Include="LoadState.cpp">
+    <ClCompile Include="LoadScreen.cpp">
+      <Filter>Other</Filter>
+    </ClCompile>
+    <ClCompile Include="SplashState.cpp">
       <Filter>GameStates</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainMenuState.h">
       <Filter>GameStates</Filter>
-    </ClInclude>
-    <ClInclude Include="iState.h">
-      <Filter>Interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="iCore.h">
-      <Filter>Interfaces</Filter>
     </ClInclude>
     <ClInclude Include="PlayGameState.h">
       <Filter>GameStates</Filter>
@@ -84,9 +84,6 @@
     </ClInclude>
     <ClInclude Include="GameObject.h">
       <Filter>Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="iGameObjectsListener.h">
-      <Filter>Interfaces</Filter>
     </ClInclude>
     <ClInclude Include="WinState.h">
       <Filter>GameStates</Filter>
@@ -110,13 +107,25 @@
       <Filter>Systems</Filter>
     </ClInclude>
     <ClInclude Include="MainClass.h" />
-    <ClInclude Include="iSystemsListener.h">
+    <ClInclude Include="IState.h">
       <Filter>Interfaces</Filter>
     </ClInclude>
-    <ClInclude Include="iLoadState.h">
+    <ClInclude Include="ISystemsListener.h">
       <Filter>Interfaces</Filter>
     </ClInclude>
-    <ClInclude Include="LoadState.h">
+    <ClInclude Include="IGameObjectsListener.h">
+      <Filter>Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="ICore.h">
+      <Filter>Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="ILoadScreen.h">
+      <Filter>Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="LoadScreen.h">
+      <Filter>Other</Filter>
+    </ClInclude>
+    <ClInclude Include="SplashState.h">
       <Filter>GameStates</Filter>
     </ClInclude>
   </ItemGroup>

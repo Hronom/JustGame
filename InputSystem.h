@@ -2,19 +2,19 @@
 #define INPUTSYSTEM_H
 
 #include <OIS/OIS.h>
-#include "iSystemsListener.h"
+#include "ISystemsListener.h"
 
 class InputSystem : public OIS::MouseListener, public OIS::KeyListener
 { 
 private:
-	iSystemsListener *mMainListener;
+	ISystemsListener *mMainListener;
 
 	OIS::InputManager *mInputManager;
 	OIS::Keyboard *mKeyboard;
 	OIS::Mouse *mMouse;
 
 public: 
-	InputSystem(iSystemsListener *xMainListener);
+	InputSystem(ISystemsListener *xMainListener);
 	~InputSystem();
 
 	void init(unsigned int xWinHandle, unsigned int xWinWidth, unsigned int xWinHeight);

@@ -1,6 +1,6 @@
 #include "StatesSystem.h"
 
-StatesSystem::StatesSystem(iSystemsListener *xMainListener)
+StatesSystem::StatesSystem(ISystemsListener *xMainListener)
 {
 	mMainListener = xMainListener;
 
@@ -16,11 +16,13 @@ StatesSystem::~StatesSystem()
 		mLoadState = 0;
 	}
 
-	for(unsigned i=0; i < mStatesMap.size(); i++)
+	std::map<int, IState*>::iterator xElement;
+	xElement = mStatesMap.begin();
+	while(xElement != mStatesMap.end())
 	{
-		delete mStatesMap[i];
+		delete xElement->second;
+		++xElement;
 	}
-
 	mStatesMap.clear();
 }
 
@@ -66,12 +68,12 @@ void StatesSystem::injectStateLoadProgress(int xProgressValue, std::string xText
 		mLoadState->setProgress(xProgressValue, xText);
 }
 
-void StatesSystem::setLoadState(iLoadState *xLoadState)
+void StatesSystem::setLoadState(ILoadScreen *xLoadState)
 {
 	mLoadState = xLoadState;
 }
 
-void StatesSystem::addNormalState(int xNumber, iState *xState)
+void StatesSystem::addNormalState(int xNumber, IState *xState)
 {
 	mStatesMap[xNumber] = xState;
 }

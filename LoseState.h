@@ -4,25 +4,24 @@
 #include <MyGUI.h>
 #include <OIS\OIS.h>
 
-#include "iCore.h"
-#include "iState.h"
+#include "ICore.h"
+#include "IState.h"
 
-class LoseState: public iState
+class LoseState: public IState
 {
 private:
-	iCore *mCore;
+	ICore *mCore;
 
 	MyGUI::VectorWidgetPtr mCurrentLayoutWidgets;
 
 public:
-	LoseState(iCore *xCore);
+	LoseState(ICore *xCore);
 	~LoseState();
 
 	virtual void prepareState();
 	virtual void enter();
 	virtual void exit();
-
-	virtual	void keyPressed(const OIS::KeyEvent& e);
+	virtual void keyPressed(const OIS::KeyEvent& e);
 	
 	void buttonClicked(MyGUI::WidgetPtr xSender);
 };

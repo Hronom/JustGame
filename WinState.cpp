@@ -1,6 +1,6 @@
 #include "WinState.h"
 
-WinState::WinState(iCore *xCore)
+WinState::WinState(ICore *xCore)
 {
 	mCore = xCore;
 

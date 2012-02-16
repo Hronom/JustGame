@@ -34,18 +34,18 @@ void MainSystem::run()
 	mGraphicSystem->start();
 }
 
-void  MainSystem::setLoadState(iLoadState *xLoadState)
+void  MainSystem::setLoadState(ILoadScreen *xLoadState)
 {
 	mStatesSystem->setLoadState(xLoadState);
 }
 
-void MainSystem::addNormalState(int xNumber, iState *xState)
+void MainSystem::addNormalState(int xNumber, IState *xState)
 {
 	mStatesSystem->addNormalState(xNumber, xState);
 }
 
 //-------------------------------------------------------------
-// iSystemsListener
+// ISystemsListener
 //-------------------------------------------------------------
 bool MainSystem::frameStarted(const Ogre::FrameEvent& evt)
 {
@@ -115,7 +115,7 @@ void MainSystem::stateEndLoad()
 }
 
 //-------------------------------------------------------------
-// iCore
+// ICore
 //-------------------------------------------------------------
 void MainSystem::needSwitchToStateId(int xStateId, bool xShowLoadState)
 {

@@ -3,18 +3,18 @@
 
 #include <MyGUI.h>
 #include <OIS\OIS.h>
-#include "iCore.h"
-#include "iState.h"
+#include "ICore.h"
+#include "IState.h"
 
-class WinState: public iState
+class WinState: public IState
 {
 private:
-	iCore *mCore;
+	ICore *mCore;
 
 	MyGUI::VectorWidgetPtr mCurrentLayoutWidgets;
 
 public:
-	WinState(iCore *xCore);
+	WinState(ICore *xCore);
 	~WinState();
 
 	virtual void prepareState();

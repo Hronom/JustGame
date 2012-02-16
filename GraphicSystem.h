@@ -10,13 +10,13 @@
 
 #include <OIS\OIS.h>
 
-#include "iSystemsListener.h"
-#include "iState.h"
+#include "ISystemsListener.h"
+#include "IState.h"
 
 class GraphicSystem : public Ogre::FrameListener, public Ogre::WindowEventListener
 { 
 private: 
-	iSystemsListener *mMainListener;
+	ISystemsListener *mMainListener;
 
 	Ogre::String mOgreCfg;
 	Ogre::String mPluginsCfg;
@@ -32,7 +32,7 @@ private:
 	MyGUI::Gui *mMyGUI;
 
 public: 
-	GraphicSystem(iSystemsListener *xMainListener);
+	GraphicSystem(ISystemsListener *xMainListener);
 	~GraphicSystem();
 	bool init();
 	void start();

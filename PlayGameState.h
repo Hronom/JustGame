@@ -5,20 +5,20 @@
 #include <MyGUI.h>
 #include <OIS\OIS.h>
 
-#include "iCore.h"
-#include "iState.h"
-#include "iGameObjectsListener.h"
+#include "ICore.h"
+#include "IState.h"
+#include "IGameObjectsListener.h"
 #include "GameObject.h"
 #include "Player.h"
 #include "Enemy.h"
 #include "Bullet.h"
 
-class PlayGameState: public iState, public iGameObjectsListener
+class PlayGameState: public IState, public IGameObjectsListener
 {
 private:
 	bool isDebug;
 
-	iCore *mCore;
+	ICore *mCore;
 
 	GameObject *mPlayer;
 
@@ -34,7 +34,7 @@ private:
 	std::list<GameObject*> mForDelete;
 
 public:
-	PlayGameState(iCore *xCore);
+	PlayGameState(ICore *xCore);
 	~PlayGameState();
 
 	virtual void prepareState();

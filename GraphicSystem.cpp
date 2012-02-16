@@ -1,6 +1,6 @@
 #include "GraphicSystem.h"
 
-GraphicSystem::GraphicSystem(iSystemsListener *xMainListener) 
+GraphicSystem::GraphicSystem(ISystemsListener *xMainListener) 
 { 
 	mMainListener = xMainListener;
 } 

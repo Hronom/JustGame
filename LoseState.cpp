@@ -1,6 +1,6 @@
 #include "LoseState.h"
 
-LoseState::LoseState(iCore *xCore)
+LoseState::LoseState(ICore *xCore)
 {
 	mCore = xCore;
 

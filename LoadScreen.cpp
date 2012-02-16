@@ -1,6 +1,6 @@
-#include "LoadState.h"
+#include "LoadScreen.h"
 
-LoadState::LoadState(iCore *xCore)
+LoadScreen::LoadScreen(ICore *xCore)
 {
 	mCore = xCore;
 
@@ -14,7 +14,7 @@ LoadState::LoadState(iCore *xCore)
 }
 
 
-LoadState::~LoadState()
+LoadScreen::~LoadScreen()
 {
 	if(mCurrentLayoutWidgets.size() != 0)
 	{
@@ -23,19 +23,19 @@ LoadState::~LoadState()
 	}
 }
 
-void LoadState::show()
+void LoadScreen::show()
 {
 	MyGUI::PointerManager::getInstancePtr()->hide();
 	mCurrentLayoutWidgets[0]->setVisible(true);
 }
 
-void LoadState::hide()
+void LoadScreen::hide()
 {
 	mCurrentLayoutWidgets[0]->setVisible(false);
 	MyGUI::PointerManager::getInstancePtr()->show();
 }
 
-void LoadState::setProgress(int xProgressValue, std::string xText)
+void LoadScreen::setProgress(int xProgressValue, std::string xText)
 {
 	mTextBox->setCaption(xText);
 	mProgressBar->setProgressPosition(xProgressValue);

@@ -3,7 +3,7 @@
 
 #include <Ogre.h>
 
-#include "iCore.h"
+#include "ICore.h"
 #include "GameObject.h"
 
 class Bullet: public GameObject
@@ -15,7 +15,7 @@ private:
 	Ogre::Real mTimeBeforeDelete;
 
 public:
-	Bullet(iCore *xCore, iGameObjectsListener *xGameObjectsListener, Ogre::String xObjectName, short xObjectCollideWith, Ogre::Vector2 xPos, Ogre::Vector2 xDestination);
+	Bullet(ICore *xCore, IGameObjectsListener *xGameObjectsListener, Ogre::String xObjectName, short xObjectCollideWith, Ogre::Vector2 xPos, Ogre::Vector2 xDestination);
 	~Bullet();
 
 	virtual void update(const Ogre::FrameEvent& evt);

@@ -103,7 +103,7 @@
     <ClCompile Include="GraphicSystem.cpp" />
     <ClCompile Include="InputSystem.cpp" />
     <ClCompile Include="GameObject.cpp" />
-    <ClCompile Include="LoadState.cpp" />
+    <ClCompile Include="LoadScreen.cpp" />
     <ClCompile Include="LoseState.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainClass.cpp" />
@@ -112,6 +112,7 @@
     <ClCompile Include="MainMenuState.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayGameState.cpp" />
+    <ClCompile Include="SplashState.cpp" />
     <ClCompile Include="StatesSystem.cpp" />
     <ClCompile Include="WinState.cpp" />
   </ItemGroup>
@@ -119,21 +120,22 @@
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="GameObject.h" />
-    <ClInclude Include="iCore.h" />
+    <ClInclude Include="ICore.h" />
     <ClInclude Include="GraphicSystem.h" />
-    <ClInclude Include="iLoadState.h" />
+    <ClInclude Include="ILoadScreen.h" />
     <ClInclude Include="InputSystem.h" />
-    <ClInclude Include="iGameObjectsListener.h" />
-    <ClInclude Include="iSystemsListener.h" />
-    <ClInclude Include="LoadState.h" />
+    <ClInclude Include="IGameObjectsListener.h" />
+    <ClInclude Include="ISystemsListener.h" />
+    <ClInclude Include="LoadScreen.h" />
     <ClInclude Include="LoseState.h" />
     <ClInclude Include="MainClass.h" />
     <ClInclude Include="MainSystem.h" />
     <ClInclude Include="PhysicsSystem.h" />
     <ClInclude Include="MainMenuState.h" />
-    <ClInclude Include="iState.h" />
+    <ClInclude Include="IState.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayGameState.h" />
+    <ClInclude Include="SplashState.h" />
     <ClInclude Include="StatesSystem.h" />
     <ClInclude Include="WinState.h" />
   </ItemGroup>

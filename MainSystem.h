@@ -1,15 +1,15 @@
 #ifndef MAINSYSTEM_H
 #define MAINSYSTEM_H
 
-#include "iSystemsListener.h"
+#include "ISystemsListener.h"
 #include "GraphicSystem.h"
 #include "PhysicsSystem.h"
 #include "InputSystem.h"
 #include "StatesSystem.h"
 
-#include "iState.h"
+#include "IState.h"
 
-class MainSystem : public iSystemsListener, public iCore
+class MainSystem : public ISystemsListener, public ICore
 {
 private:
 	GraphicSystem *mGraphicSystem;
@@ -26,11 +26,11 @@ public:
 	bool init();
 	void run();
 
-	void setLoadState(iLoadState *xLoadState);
-	void addNormalState(int xNumber, iState *xState);
+	void setLoadState(ILoadScreen *xLoadState);
+	void addNormalState(int xNumber, IState *xState);
 
 	//-------------------------------------------------------------
-	// iSystemsListener
+	// ISystemsListener
 	//-------------------------------------------------------------
 	virtual bool frameStarted(const Ogre::FrameEvent& evt);
 	virtual bool frameEnded(const Ogre::FrameEvent& evt);
@@ -46,7 +46,7 @@ public:
 	virtual void stateEndLoad();
 
 	//-------------------------------------------------------------
-	// iCore
+	// ICore
 	//-------------------------------------------------------------
 	virtual void needSwitchToStateId(int xStateId, bool xShowLoadState = false);
 	virtual void stateLoadProgress(int xProgressValue, std::string xText);

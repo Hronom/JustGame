@@ -1,22 +1,22 @@
 #ifndef STATESSYSTEM_H
 #define STATESSYSTEM_H
 
-#include "iSystemsListener.h"
-#include "iCore.h"
-#include "iLoadState.h"
-#include "iState.h"
+#include "ISystemsListener.h"
+#include "ICore.h"
+#include "ILoadScreen.h"
+#include "IState.h"
 
 class StatesSystem
 {
 private:
-	iSystemsListener *mMainListener;
+	ISystemsListener *mMainListener;
 
-	iLoadState *mLoadState;
-	iState *mCurrentState;
-	std::map<int, iState*> mStatesMap;
+	ILoadScreen *mLoadState;
+	IState *mCurrentState;
+	std::map<int, IState*> mStatesMap;
 
 public:
-	StatesSystem(iSystemsListener *xMainListener);
+	StatesSystem(ISystemsListener *xMainListener);
 	~StatesSystem();
 
 	bool init();
@@ -29,8 +29,8 @@ public:
 	virtual void injectKeyReleased(const OIS::KeyEvent& e);
 	virtual void injectStateLoadProgress(int xProgressValue, std::string xText);
 
-	void setLoadState(iLoadState *xLoadState);
-	void addNormalState(int xNumber, iState *xState);
+	void setLoadState(ILoadScreen *xLoadState);
+	void addNormalState(int xNumber, IState *xState);
 	void switchToState(int xStateId, bool xShowLoadState = false);
 };
 

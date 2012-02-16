@@ -1,15 +1,15 @@
-#ifndef LOADSTATE_H
-#define LOADSTATE_H
+#ifndef LOADSCREEN_H
+#define LOADSCREEN_H
 
 #include <MyGUI.h>
 
-#include "iCore.h"
-#include "iLoadState.h"
+#include "ICore.h"
+#include "ILoadScreen.h"
 
-class LoadState: public iLoadState
+class LoadScreen: public ILoadScreen
 {
 private:
-	iCore *mCore;
+	ICore *mCore;
 
 	MyGUI::VectorWidgetPtr mCurrentLayoutWidgets;
 
@@ -17,8 +17,8 @@ private:
 	MyGUI::ProgressBar *mProgressBar;
 
 public:
-	LoadState(iCore *xCore);
-	~LoadState();
+	LoadScreen(ICore *xCore);
+	~LoadScreen();
 
 	virtual void show();
 	virtual void hide();
