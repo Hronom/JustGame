@@ -1,8 +1,14 @@
 #include "GraphicSystem.h"
 
-GraphicSystem::GraphicSystem(ISystemsListener *xMainListener) 
+GraphicSystem::GraphicSystem(ISystemsListener *xMainListener, Ogre::String xOgreCfg, Ogre::String xPluginsCfg,	Ogre::String xResourcesCfg, Ogre::String xOgreLogFile, Ogre::String xMyGUILogFile) 
 { 
 	mMainListener = xMainListener;
+
+	mOgreCfg = xOgreCfg;
+	mPluginsCfg = xPluginsCfg;
+	mResourcesCfg = xResourcesCfg;
+	mOgreLogFile = xOgreLogFile;
+	mMyGUILogFile = xMyGUILogFile;
 } 
 
 GraphicSystem::~GraphicSystem()
@@ -28,15 +34,10 @@ GraphicSystem::~GraphicSystem()
 
 bool GraphicSystem::init()
 {
-	mOgreCfg = "ogre.cfg";
-	mResourcesCfg = "resources.cfg";
-	mPluginsCfg = "plugins.cfg";
-	mLogFileName = "ogre.log";
-
 	//-----------------------------------------------------
 	// 1 Создание рута
 	//-----------------------------------------------------
-	mRoot = new Ogre::Root();
+	mRoot = new Ogre::Root(mPluginsCfg, mOgreCfg, mOgreLogFile);
 
 	//-----------------------------------------------------
 	// 2 Настройка приложение и создание окна
@@ -59,20 +60,20 @@ bool GraphicSystem::init()
 	xConfigFile.load(mResourcesCfg);
 
 	// Проходим по всем секция в файле
-	Ogre::ConfigFile::SectionIterator seci = xConfigFile.getSectionIterator();
+	Ogre::ConfigFile::SectionIterator xSection = xConfigFile.getSectionIterator();
 
-	Ogre::String secName, typeName, archName;
-	while (seci.hasMoreElements())
+	Ogre::String xSecName, xTypeName, xArchName;
+	while (xSection.hasMoreElements())
 	{
-		secName = seci.peekNextKey();
-		Ogre::ConfigFile::SettingsMultiMap *settings = seci.getNext();
+		xSecName = xSection.peekNextKey();
+		Ogre::ConfigFile::SettingsMultiMap *settings = xSection.getNext();
 		Ogre::ConfigFile::SettingsMultiMap::iterator i;
 		for (i = settings->begin(); i != settings->end();   i++)
 		{
-			typeName = i->first;
-			archName = i->second;
+			xTypeName = i->first;
+			xArchName = i->second;
 			Ogre::ResourceGroupManager::getSingleton().addResourceLocation(
-				archName, typeName, secName);
+				xArchName, xTypeName, xSecName);
 		}
 	}
 
@@ -113,7 +114,7 @@ bool GraphicSystem::init()
 	// 7 Инициализация MyGUI
 	//----------------------------------------------------- 
 	mOgrePlatform = new MyGUI::OgrePlatform();
-	mOgrePlatform->initialise(mRenderWindow, mSceneManager); // mWindow is Ogre::RenderWindow*, mSceneManager is Ogre::SceneManager*
+	mOgrePlatform->initialise(mRenderWindow, mSceneManager, Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME, mMyGUILogFile); // mWindow is Ogre::RenderWindow*, mSceneManager is Ogre::SceneManager*
 	mMyGUI = new MyGUI::Gui();
 	mMyGUI->initialise();
 

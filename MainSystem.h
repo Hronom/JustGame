@@ -21,7 +21,11 @@ private:
 	bool mStateLoad;
 
 public:
-	MainSystem();
+	MainSystem(Ogre::String xOgreCfg = "Ogre.cfg",
+		Ogre::String xPluginsCfg = "Plugins.cfg",
+		Ogre::String xResourcesCfg = "Resources.cfg",
+		Ogre::String xOgreLogFile = "Ogre.log",
+		Ogre::String xMyGUILogFile = "MyGUI.log");
 	virtual ~MainSystem();
 	bool init();
 	void run();

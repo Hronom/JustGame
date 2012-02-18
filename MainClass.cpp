@@ -9,7 +9,10 @@
 
 MainClass::MainClass()
 {
-	mMainSystem = new MainSystem();
+	mMainSystem = new MainSystem("Ogre.cfg",
+		"Plugins.cfg",
+		"../Media/Resources.cfg",
+		"Ogre.log", "MyGUI.log");
 
 	mMainSystem->init();
 

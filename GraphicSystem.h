@@ -21,7 +21,8 @@ private:
 	Ogre::String mOgreCfg;
 	Ogre::String mPluginsCfg;
 	Ogre::String mResourcesCfg;
-	Ogre::String mLogFileName;
+	Ogre::String mOgreLogFile;
+	Ogre::String mMyGUILogFile;
 
 	Ogre::Root *mRoot;
 	Ogre::RenderWindow *mRenderWindow;
@@ -32,7 +33,12 @@ private:
 	MyGUI::Gui *mMyGUI;
 
 public: 
-	GraphicSystem(ISystemsListener *xMainListener);
+	GraphicSystem(ISystemsListener *xMainListener,
+		Ogre::String xOgreCfg,
+		Ogre::String xPluginsCfg,
+		Ogre::String xResourcesCfg,
+		Ogre::String xOgreLogFile,
+		Ogre::String xMyGUILogFile);
 	~GraphicSystem();
 	bool init();
 	void start();

@@ -36,11 +36,12 @@ void SplashState::prepareState()
 
 void SplashState::enter()
 {
-
+	MyGUI::PointerManager::getInstancePtr()->hide();
 }
 
 void SplashState::exit()
 {
+	MyGUI::PointerManager::getInstancePtr()->show();
 }
 
 void SplashState::needUpdate(const Ogre::FrameEvent& evt)

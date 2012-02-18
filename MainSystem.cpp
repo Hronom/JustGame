@@ -1,8 +1,8 @@
 #include "MainSystem.h"
 
-MainSystem::MainSystem()
+MainSystem::MainSystem( Ogre::String xOgreCfg, Ogre::String xPluginsCfg, Ogre::String xResourcesCfg, Ogre::String xOgreLogFile, Ogre::String xMyGUILogFile)
 {
-	mGraphicSystem = new GraphicSystem(this);
+	mGraphicSystem = new GraphicSystem(this, xOgreCfg, xPluginsCfg, xResourcesCfg, xOgreLogFile, xMyGUILogFile);
 	mPhysicsSystem = new PhysicsSystem(this);
 	mInputSystem = new InputSystem(this);
 	mStatesSystem = new StatesSystem(this);
