@@ -9,6 +9,9 @@ MainSystem::MainSystem( Ogre::String xOgreCfg, Ogre::String xPluginsCfg, Ogre::S
 
 	mNeedShutdown = false;
 	mStateLoad = false;
+
+	mCurrentStateName = "";
+	mShowLoadScreen = false;
 }
 
 MainSystem::~MainSystem()
@@ -39,9 +42,9 @@ void  MainSystem::setLoadState(ILoadScreen *xLoadState)
 	mStatesSystem->setLoadState(xLoadState);
 }
 
-void MainSystem::addNormalState(int xNumber, IState *xState)
+void MainSystem::addNormalState(std::string xStateName, IState *xState)
 {
-	mStatesSystem->addNormalState(xNumber, xState);
+	mStatesSystem->addNormalState(xStateName, xState);
 }
 
 //-------------------------------------------------------------
@@ -51,9 +54,16 @@ bool MainSystem::frameStarted(const Ogre::FrameEvent& evt)
 {
 	if(mStateLoad != true)
 	{
-		mPhysicsSystem->needUpdate(evt);
-		mInputSystem->needUpdate();
-		mStatesSystem->needUpdate(evt);
+		if(mStatesSystem->getCurrentStateName() != mCurrentStateName)
+		{
+			mStatesSystem->switchToState(mCurrentStateName, mShowLoadScreen);
+		}
+		else
+		{
+			mPhysicsSystem->needUpdate(evt);
+			mInputSystem->needUpdate();
+			mStatesSystem->needUpdate(evt);
+		}
 	}
 
 	return !mNeedShutdown;
@@ -117,9 +127,10 @@ void MainSystem::stateEndLoad()
 //-------------------------------------------------------------
 // ICore
 //-------------------------------------------------------------
-void MainSystem::needSwitchToStateId(int xStateId, bool xShowLoadState)
+void MainSystem::needSwitchToState(std::string xStateName, bool xShowLoadScreen)
 {
-	mStatesSystem->switchToState(xStateId, xShowLoadState);
+	mCurrentStateName = xStateName;
+	mShowLoadScreen = xShowLoadScreen;
 }
 
 void MainSystem::stateLoadProgress(int xProgressValue, std::string xText)

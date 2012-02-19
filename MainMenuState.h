@@ -23,8 +23,10 @@ public:
 	virtual void exit();
 
 	virtual	void keyPressed(const OIS::KeyEvent& e);
-	
-	void buttonClicked(MyGUI::WidgetPtr xSender);
+
+private:
+	void newGameClicked(MyGUI::Widget *xSender);
+	void exitClicked(MyGUI::Widget *xSender);
 };
 
 #endif

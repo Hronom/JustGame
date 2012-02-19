@@ -3,31 +3,24 @@
 MainMenuState::MainMenuState(ICore *xCore)
 {
 	mCore = xCore;
-
-	mCurrentLayoutWidgets = MyGUI::LayoutManager::getInstancePtr()->loadLayout("MainMenu.layout");
-	MyGUI::LayerManager::getInstancePtr()->resizeView(MyGUI::RenderManager::getInstancePtr()->getViewSize());
-
-	MyGUI::Button *xButton;
-	xButton = mCore->getGui()->findWidget<MyGUI::Button>("NewGameButton");
-	xButton->eventMouseButtonClick += MyGUI::newDelegate(this, &MainMenuState::buttonClicked);
-	xButton = mCore->getGui()->findWidget<MyGUI::Button>("ExitButton");
-	xButton->eventMouseButtonClick += MyGUI::newDelegate(this, &MainMenuState::buttonClicked);
-
-	mCurrentLayoutWidgets[0]->setVisible(false);
 }
 
 MainMenuState::~MainMenuState()
 {
-	if(mCurrentLayoutWidgets.size() != 0)
-	{
-		MyGUI::LayoutManager::getInstancePtr()->unloadLayout(mCurrentLayoutWidgets);
-		mCurrentLayoutWidgets.clear();
-	}
+	exit();
 }
 
 void MainMenuState::prepareState()
 {
+	mCurrentLayoutWidgets = MyGUI::LayoutManager::getInstancePtr()->loadLayout("MainMenu.layout");
+	MyGUI::LayerManager::getInstancePtr()->resizeView(MyGUI::RenderManager::getInstancePtr()->getViewSize());
+	mCurrentLayoutWidgets[0]->setVisible(false);
 
+	MyGUI::Button *xButton;
+	xButton = mCore->getGui()->findWidget<MyGUI::Button>("NewGameButton");
+	xButton->eventMouseButtonClick += MyGUI::newDelegate(this, &MainMenuState::newGameClicked);
+	xButton = mCore->getGui()->findWidget<MyGUI::Button>("ExitButton");
+	xButton->eventMouseButtonClick += MyGUI::newDelegate(this, &MainMenuState::exitClicked);	
 }
 
 void MainMenuState::enter()
@@ -37,7 +30,11 @@ void MainMenuState::enter()
 
 void MainMenuState::exit()
 {
-	mCurrentLayoutWidgets[0]->setVisible(false);
+	if(mCurrentLayoutWidgets.size() != 0)
+	{
+		MyGUI::LayoutManager::getInstancePtr()->unloadLayout(mCurrentLayoutWidgets);
+		mCurrentLayoutWidgets.clear();
+	}
 }
 
 void MainMenuState::keyPressed(const OIS::KeyEvent& e)
@@ -45,17 +42,12 @@ void MainMenuState::keyPressed(const OIS::KeyEvent& e)
 	if(e.key == OIS::KC_ESCAPE) mCore->needShutdown(); 
 }
 
-void MainMenuState::buttonClicked(MyGUI::WidgetPtr xSender)
+void MainMenuState::newGameClicked(MyGUI::Widget *xSender)
 {
-	if(xSender->getUserString("ButtonType") == "NewGame")
-	{
-		mCore->needSwitchToStateId(1, true);
-		return;
-	}
+	mCore->needSwitchToState("PlayGameState",true);
+}
 
-	if(xSender->getUserString("ButtonType") == "Exit")
-	{
-		mCore->needShutdown();
-		return;
-	}
+void MainMenuState::exitClicked(MyGUI::Widget *xSender)
+{
+	mCore->needShutdown();
 }

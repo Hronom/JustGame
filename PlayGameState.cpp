@@ -207,13 +207,13 @@ void PlayGameState::needUpdate(const Ogre::FrameEvent& evt)
 
 	if(mPlayer->getCurrentHealth() <= 0)
 	{
-		mCore->needSwitchToStateId(3);
+		mCore->needSwitchToState("LoseState");
 		return;
 	}
 
 	if(mUnits.size() <= 0)
 	{
-		mCore->needSwitchToStateId(2);
+		mCore->needSwitchToState("WinState");
 		return;
 	}
 }

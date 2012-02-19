@@ -13,6 +13,7 @@ private:
 
 	MyGUI::VectorWidgetPtr mCurrentLayoutWidgets;
 
+	MyGUI::Window *mWindow;
 	MyGUI::TextBox *mTextBox;
 	MyGUI::ProgressBar *mProgressBar;
 

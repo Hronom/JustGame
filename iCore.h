@@ -17,7 +17,7 @@ public:
 	ICore() {};
 	virtual ~ICore() {};
 
-	virtual void needSwitchToStateId(int xStateId, bool xShowLoadState = false) = 0;
+	virtual void needSwitchToState(std::string xStateName, bool xShowLoadScreen = false) = 0;
 	virtual void stateLoadProgress(int xProgressValue, std::string xText) = 0;
 	virtual void needShutdown() = 0;
 

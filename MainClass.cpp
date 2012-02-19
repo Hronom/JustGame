@@ -20,21 +20,21 @@ MainClass::MainClass()
 	mMainSystem->setLoadState(xLoadState);
 
 	SplashState *xSplashState = new SplashState(mMainSystem);
-	mMainSystem->addNormalState(-1, xSplashState);
+	mMainSystem->addNormalState("SplashState", xSplashState);
 
 	MainMenuState *xMainMenuState = new MainMenuState(mMainSystem);
-	mMainSystem->addNormalState(0, xMainMenuState);
+	mMainSystem->addNormalState("MainMenuState", xMainMenuState);
 	
 	PlayGameState *xPlayGameState = new PlayGameState(mMainSystem);
-	mMainSystem->addNormalState(1, xPlayGameState);
+	mMainSystem->addNormalState("PlayGameState", xPlayGameState);
 	
 	WinState *xWinState = new WinState(mMainSystem);
-	mMainSystem->addNormalState(2, xWinState);
+	mMainSystem->addNormalState("WinState", xWinState);
 	
 	LoseState *xLoseState = new LoseState(mMainSystem);
-	mMainSystem->addNormalState(3, xLoseState);
+	mMainSystem->addNormalState("LoseState", xLoseState);
 
-	mMainSystem->needSwitchToStateId(-1);
+	mMainSystem->needSwitchToState("SplashState");
 }
 
 

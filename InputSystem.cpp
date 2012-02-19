@@ -24,25 +24,13 @@ void InputSystem::init(unsigned int xWinHandle, unsigned int xWinWidth, unsigned
 	//---------------------------------------------------- 
 	// 7 Добавление OIS для перехвата событий 
 	//----------------------------------------------------
-	/*OIS::ParamList xParamList;
-	size_t windowHnd = 0;
-	std::ostringstream windowHndStr;
-
-	//говорим OIS какое окно надо отслеживать
-	mRenderWindow->getCustomAttribute("WINDOW", &windowHnd);
-	windowHndStr << windowHnd;
-	xParamList.insert(std::make_pair(Ogre::String("WINDOW"), windowHndStr.str()));*/
 
 	//Настройка менеджера, клавы и мыши для захвата
-	//mInputManager = OIS::InputManager::createInputSystem(xParamList);
 	mInputManager = OIS::InputManager::createInputSystem(xWinHandle);
-	mKeyboard = static_cast<OIS::Keyboard*>(mInputManager->createInputObject(OIS::OISKeyboard, true));
 	mMouse = static_cast<OIS::Mouse*>(mInputManager->createInputObject(OIS::OISMouse, true));
+	mKeyboard = static_cast<OIS::Keyboard*>(mInputManager->createInputObject(OIS::OISKeyboard, true));
 
 	//Говорим OIS о размерах нашего окна
-	/*unsigned int width, height, depth;
-	int top, left;
-	mRenderWindow->getMetrics(width, height, depth, left, top);*/
 	const OIS::MouseState &xMouseState = mMouse->getMouseState();
 	xMouseState.width = xWinWidth;
 	xMouseState.height = xWinHeight;
@@ -53,8 +41,8 @@ void InputSystem::init(unsigned int xWinHandle, unsigned int xWinWidth, unsigned
 
 void InputSystem::needUpdate()
 {
-	mKeyboard->capture();
 	mMouse->capture();
+	mKeyboard->capture();
 }
 
 void InputSystem::injectWindowResized(unsigned int xNewWidth, unsigned int xNewHeight)

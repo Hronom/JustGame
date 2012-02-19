@@ -16,9 +16,8 @@ private:
 	Ogre::Real mTimeToSwitch;
 	Ogre::Real mCurrentTime;
 
-	MyGUI::ImageBox *mOgreImage;
-	MyGUI::ImageBox *mBulletImage;
-	MyGUI::ImageBox *mHronoImage;
+	std::vector<MyGUI::Widget*> mCurrentLayoutWidgets;
+	std::vector<MyGUI::Widget*>::iterator mWidgetsIter;
 
 public:
 	SplashState(ICore *xCore);
@@ -29,7 +28,11 @@ public:
 	virtual void exit();
 
 	virtual void needUpdate(const Ogre::FrameEvent& evt);
+	virtual void mousePressed(const OIS::MouseEvent& e, OIS::MouseButtonID id);
 	virtual void keyPressed(const OIS::KeyEvent& e);
+
+private:
+	void skipCurrentLogo();
 };
 
 #endif

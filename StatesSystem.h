@@ -13,7 +13,9 @@ private:
 
 	ILoadScreen *mLoadState;
 	IState *mCurrentState;
-	std::map<int, IState*> mStatesMap;
+	std::map<std::string, IState*> mStatesMap;
+
+	std::string mCurrentStateName;
 
 public:
 	StatesSystem(ISystemsListener *xMainListener);
@@ -30,8 +32,9 @@ public:
 	virtual void injectStateLoadProgress(int xProgressValue, std::string xText);
 
 	void setLoadState(ILoadScreen *xLoadState);
-	void addNormalState(int xNumber, IState *xState);
-	void switchToState(int xStateId, bool xShowLoadState = false);
+	void addNormalState(std::string xStateName, IState *xState);
+	void switchToState(std::string xStateName, bool xShowLoadScreen = false);
+	std::string getCurrentStateName();
 };
 
 #endif

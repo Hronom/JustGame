@@ -4,13 +4,14 @@ LoadScreen::LoadScreen(ICore *xCore)
 {
 	mCore = xCore;
 
-	mCurrentLayoutWidgets = MyGUI::LayoutManager::getInstancePtr()->loadLayout("Loading.layout");
+	mWindow = MyGUI::Gui::getInstancePtr()->createWidget<MyGUI::Window>("Window", 65, 175, 510, 100, MyGUI::Align::Center, "Overlapped");
+
+	mTextBox = mWindow->createWidget<MyGUI::TextBox>("TextBox", 5, 5, 490, 25, MyGUI::Align::Center);
+	mProgressBar = mWindow->createWidget<MyGUI::ProgressBar>("ProgressBarFill", 5, 35, 490, 25, MyGUI::Align::Center);
+	mProgressBar->setProgressRange(100);
+
 	MyGUI::LayerManager::getInstancePtr()->resizeView(MyGUI::RenderManager::getInstancePtr()->getViewSize());
-
-	mCurrentLayoutWidgets[0]->setVisible(false);
-
-	mTextBox = mCore->getGui()->findWidget<MyGUI::TextBox>("LoadingText");
-	mProgressBar = mCore->getGui()->findWidget<MyGUI::ProgressBar>("LoadingProgress");
+	mWindow->setVisible(false);
 }
 
 
@@ -26,12 +27,12 @@ LoadScreen::~LoadScreen()
 void LoadScreen::show()
 {
 	MyGUI::PointerManager::getInstancePtr()->hide();
-	mCurrentLayoutWidgets[0]->setVisible(true);
+	mWindow->setVisible(true);
 }
 
 void LoadScreen::hide()
 {
-	mCurrentLayoutWidgets[0]->setVisible(false);
+	mWindow->setVisible(false);
 	MyGUI::PointerManager::getInstancePtr()->show();
 }
 

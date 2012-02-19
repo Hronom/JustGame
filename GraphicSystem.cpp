@@ -187,8 +187,11 @@ void GraphicSystem::injectKeyReleased( const OIS::KeyEvent &arg )
 
 void GraphicSystem::needSingleUpdate()
 {
-	mRoot->renderOneFrame();
 	Ogre::WindowEventUtilities::messagePump();
+	mRoot->renderOneFrame();
+
+	//MyGUI::InputManager::getInstancePtr()->resetMouseCaptureWidget();
+	//MyGUI::InputManager::getInstancePtr()->resetKeyFocusWidget();
 }
 
 size_t GraphicSystem::getWinHandle()

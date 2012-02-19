@@ -3,15 +3,6 @@
 LoseState::LoseState(ICore *xCore)
 {
 	mCore = xCore;
-
-	mCurrentLayoutWidgets = MyGUI::LayoutManager::getInstancePtr()->loadLayout("LoseMenu.layout");
-	MyGUI::LayerManager::getInstancePtr()->resizeView(MyGUI::RenderManager::getInstancePtr()->getViewSize());
-
-	MyGUI::Button *xButton;
-	xButton = mCore->getGui()->findWidget<MyGUI::Button>("OkButton2");
-	xButton->eventMouseButtonClick += MyGUI::newDelegate(this, &LoseState::buttonClicked);
-
-	mCurrentLayoutWidgets[0]->setVisible(false);
 }
 
 LoseState::~LoseState()
@@ -25,7 +16,14 @@ LoseState::~LoseState()
 
 void LoseState::prepareState()
 {
+	mCurrentLayoutWidgets = MyGUI::LayoutManager::getInstancePtr()->loadLayout("LoseMenu.layout");
+	MyGUI::LayerManager::getInstancePtr()->resizeView(MyGUI::RenderManager::getInstancePtr()->getViewSize());
 
+	MyGUI::Button *xButton;
+	xButton = mCore->getGui()->findWidget<MyGUI::Button>("OkButton2");
+	xButton->eventMouseButtonClick = MyGUI::newDelegate(this, &LoseState::buttonClicked);
+
+	mCurrentLayoutWidgets[0]->setVisible(false);
 }
 
 void LoseState::enter()
@@ -35,7 +33,11 @@ void LoseState::enter()
 
 void LoseState::exit()
 {
-	mCurrentLayoutWidgets[0]->setVisible(false);
+	if(mCurrentLayoutWidgets.size() != 0)
+	{
+		MyGUI::LayoutManager::getInstancePtr()->unloadLayout(mCurrentLayoutWidgets);
+		mCurrentLayoutWidgets.clear();
+	}
 }
 
 void LoseState::keyPressed(const OIS::KeyEvent& e)
@@ -45,6 +47,6 @@ void LoseState::keyPressed(const OIS::KeyEvent& e)
 
 void LoseState::buttonClicked(MyGUI::WidgetPtr xSender)
 {
-	mCore->needSwitchToStateId(0);
+	mCore->needSwitchToState("MainMenuState");
 }
 

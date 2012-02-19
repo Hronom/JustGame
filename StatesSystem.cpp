@@ -6,6 +6,8 @@ StatesSystem::StatesSystem(ISystemsListener *xMainListener)
 
 	mLoadState = 0;
 	mCurrentState = 0;
+
+	mCurrentStateName = "";
 }
 
 StatesSystem::~StatesSystem()
@@ -16,7 +18,7 @@ StatesSystem::~StatesSystem()
 		mLoadState = 0;
 	}
 
-	std::map<int, IState*>::iterator xElement;
+	std::map<std::string, IState*>::iterator xElement;
 	xElement = mStatesMap.begin();
 	while(xElement != mStatesMap.end())
 	{
@@ -33,8 +35,7 @@ bool StatesSystem::init()
 
 void StatesSystem::needUpdate(const Ogre::FrameEvent& evt)
 {
-	if(mCurrentState != 0)
-		mCurrentState->needUpdate(evt);
+	if(mCurrentState != 0) mCurrentState->needUpdate(evt);
 }
 
 void StatesSystem::injectMouseMoved(const OIS::MouseEvent& e)
@@ -64,8 +65,7 @@ void StatesSystem::injectKeyReleased(const OIS::KeyEvent& e)
 
 void StatesSystem::injectStateLoadProgress(int xProgressValue, std::string xText)
 {
-	if(mLoadState != 0) 
-		mLoadState->setProgress(xProgressValue, xText);
+	if(mLoadState != 0) mLoadState->setProgress(xProgressValue, xText);
 }
 
 void StatesSystem::setLoadState(ILoadScreen *xLoadState)
@@ -73,24 +73,27 @@ void StatesSystem::setLoadState(ILoadScreen *xLoadState)
 	mLoadState = xLoadState;
 }
 
-void StatesSystem::addNormalState(int xNumber, IState *xState)
+void StatesSystem::addNormalState(std::string xStateName, IState *xState)
 {
-	mStatesMap[xNumber] = xState;
+	mStatesMap[xStateName] = xState;
 }
 
-void StatesSystem::switchToState(int xStateId, bool xShowLoadState)
+void StatesSystem::switchToState(std::string xStateName, bool xShowLoadScreen)
 {
-	if(mStatesMap.count(xStateId) > 0)
+	mMainListener->stateStartLoad();
+
+	if(mStatesMap.count(xStateName) > 0)
 	{
 		if(mCurrentState != 0)
+		{
 			mCurrentState->exit();
+			mCurrentState = 0;
+		}
 
-		mMainListener->stateStartLoad();
-
-		if(xShowLoadState == true && mLoadState != 0)
+		if(xShowLoadScreen == true && mLoadState != 0)
 		{
 			mLoadState->show();
-			mCurrentState = mStatesMap[xStateId];
+			mCurrentState = mStatesMap[xStateName];
 			mCurrentState->prepareState();
 			mLoadState->hide();
 			
@@ -98,11 +101,18 @@ void StatesSystem::switchToState(int xStateId, bool xShowLoadState)
 		}
 		else
 		{
-			mCurrentState = mStatesMap[xStateId];
+			mCurrentState = mStatesMap[xStateName];
 			mCurrentState->prepareState();
 			mCurrentState->enter();
 		}
 
-		mMainListener->stateEndLoad();
+		mCurrentStateName = xStateName;
 	}
+
+	mMainListener->stateEndLoad();
+}
+
+std::string StatesSystem::getCurrentStateName()
+{
+	return mCurrentStateName;
 }

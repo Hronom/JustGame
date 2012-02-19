@@ -20,6 +20,10 @@ private:
 	bool mNeedShutdown;
 	bool mStateLoad;
 
+
+	std::string mCurrentStateName;
+	bool mShowLoadScreen;
+
 public:
 	MainSystem(Ogre::String xOgreCfg = "Ogre.cfg",
 		Ogre::String xPluginsCfg = "Plugins.cfg",
@@ -31,7 +35,7 @@ public:
 	void run();
 
 	void setLoadState(ILoadScreen *xLoadState);
-	void addNormalState(int xNumber, IState *xState);
+	void addNormalState(std::string xStateName, IState *xState);
 
 	//-------------------------------------------------------------
 	// ISystemsListener
@@ -52,7 +56,7 @@ public:
 	//-------------------------------------------------------------
 	// ICore
 	//-------------------------------------------------------------
-	virtual void needSwitchToStateId(int xStateId, bool xShowLoadState = false);
+	virtual void needSwitchToState(std::string xStateName, bool xShowLoadScreen = false);
 	virtual void stateLoadProgress(int xProgressValue, std::string xText);
 	virtual void needShutdown();
 
