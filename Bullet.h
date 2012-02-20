@@ -2,9 +2,8 @@
 #define BULLET_H
 
 #include <Ogre.h>
-
-#include "ICore.h"
-#include "GameObject.h"
+#include <ICore.h>
+#include <GameObject.h>
 
 class Bullet: public GameObject
 {

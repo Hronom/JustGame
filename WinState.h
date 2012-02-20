@@ -3,8 +3,8 @@
 
 #include <MyGUI.h>
 #include <OIS\OIS.h>
-#include "ICore.h"
-#include "IState.h"
+#include <ICore.h>
+#include <IState.h>
 
 class WinState: public IState
 {

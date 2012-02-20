@@ -5,10 +5,10 @@
 #include <MyGUI.h>
 #include <OIS\OIS.h>
 
-#include "ICore.h"
-#include "IState.h"
-#include "IGameObjectsListener.h"
-#include "GameObject.h"
+#include <ICore.h>
+#include <IState.h>
+#include <IGameObjectsListener.h>
+#include <GameObject.h>
 #include "Player.h"
 #include "Enemy.h"
 #include "Bullet.h"

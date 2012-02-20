@@ -1,14 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Interfaces">
-      <UniqueIdentifier>{9257a4f9-b293-4daa-991c-51ad9940b64d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="GameStates">
       <UniqueIdentifier>{abff0ec1-5877-4cfe-96a2-9daa063c6221}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Systems">
-      <UniqueIdentifier>{48d6e27c-a5fa-4126-8c0f-7968cb81df24}</UniqueIdentifier>
     </Filter>
     <Filter Include="Objects">
       <UniqueIdentifier>{1dc583d0-4cf7-493b-bc77-f876651f1243}</UniqueIdentifier>
@@ -34,29 +28,11 @@
     <ClCompile Include="Enemy.cpp">
       <Filter>Objects</Filter>
     </ClCompile>
-    <ClCompile Include="GameObject.cpp">
-      <Filter>Objects</Filter>
-    </ClCompile>
     <ClCompile Include="WinState.cpp">
       <Filter>GameStates</Filter>
     </ClCompile>
     <ClCompile Include="LoseState.cpp">
       <Filter>GameStates</Filter>
-    </ClCompile>
-    <ClCompile Include="GraphicSystem.cpp">
-      <Filter>Systems</Filter>
-    </ClCompile>
-    <ClCompile Include="InputSystem.cpp">
-      <Filter>Systems</Filter>
-    </ClCompile>
-    <ClCompile Include="MainSystem.cpp">
-      <Filter>Systems</Filter>
-    </ClCompile>
-    <ClCompile Include="PhysicsSystem.cpp">
-      <Filter>Systems</Filter>
-    </ClCompile>
-    <ClCompile Include="StatesSystem.cpp">
-      <Filter>Systems</Filter>
     </ClCompile>
     <ClCompile Include="MainClass.cpp" />
     <ClCompile Include="LoadScreen.cpp">
@@ -82,46 +58,13 @@
     <ClInclude Include="Enemy.h">
       <Filter>Objects</Filter>
     </ClInclude>
-    <ClInclude Include="GameObject.h">
-      <Filter>Objects</Filter>
-    </ClInclude>
     <ClInclude Include="WinState.h">
       <Filter>GameStates</Filter>
     </ClInclude>
     <ClInclude Include="LoseState.h">
       <Filter>GameStates</Filter>
     </ClInclude>
-    <ClInclude Include="GraphicSystem.h">
-      <Filter>Systems</Filter>
-    </ClInclude>
-    <ClInclude Include="InputSystem.h">
-      <Filter>Systems</Filter>
-    </ClInclude>
-    <ClInclude Include="MainSystem.h">
-      <Filter>Systems</Filter>
-    </ClInclude>
-    <ClInclude Include="PhysicsSystem.h">
-      <Filter>Systems</Filter>
-    </ClInclude>
-    <ClInclude Include="StatesSystem.h">
-      <Filter>Systems</Filter>
-    </ClInclude>
     <ClInclude Include="MainClass.h" />
-    <ClInclude Include="IState.h">
-      <Filter>Interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="ISystemsListener.h">
-      <Filter>Interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="IGameObjectsListener.h">
-      <Filter>Interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="ICore.h">
-      <Filter>Interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="ILoadScreen.h">
-      <Filter>Interfaces</Filter>
-    </ClInclude>
     <ClInclude Include="LoadScreen.h">
       <Filter>Other</Filter>
     </ClInclude>

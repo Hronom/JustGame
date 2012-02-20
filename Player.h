@@ -2,8 +2,8 @@
 #define PLAYER_H
 
 #include <Ogre.h>
-#include "ICore.h"
-#include "GameObject.h"
+#include <ICore.h>
+#include <GameObject.h>
 
 class Player: public GameObject
 {

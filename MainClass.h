@@ -1,7 +1,7 @@
 #ifndef MAINCLASS_H
 #define MAINCLASS_H
 
-#include "MainSystem.h"
+#include <MainSystem.h>
 
 class MainClass
 {

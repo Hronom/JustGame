@@ -4,8 +4,8 @@
 #include <MyGUI.h>
 #include <OIS\OIS.h>
 
-#include "IState.h"
-#include "ICore.h"
+#include <IState.h>
+#include <ICore.h>
 
 class MainMenuState: public IState
 {

@@ -2,9 +2,8 @@
 #define ENEMY_H
 
 #include <Ogre.h>
-
-#include "ICore.h"
-#include "GameObject.h"
+#include <ICore.h>
+#include <GameObject.h>
 
 class Enemy: public GameObject
 {

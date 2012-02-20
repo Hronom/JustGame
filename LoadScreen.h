@@ -3,8 +3,8 @@
 
 #include <MyGUI.h>
 
-#include "ICore.h"
-#include "ILoadScreen.h"
+#include <ICore.h>
+#include <ILoadScreen.h>
 
 class LoadScreen: public ILoadScreen
 {
