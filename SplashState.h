@@ -7,6 +7,8 @@
 #include <ICore.h>
 #include <IState.h>
 
+#include <SoundNode.h>
+
 class SplashState: public IState
 {
 private:
@@ -18,6 +20,8 @@ private:
 
 	std::vector<MyGUI::Widget*> mCurrentLayoutWidgets;
 	std::vector<MyGUI::Widget*>::iterator mWidgetsIter;
+
+	SoundNode *mSoundNode1;
 
 public:
 	SplashState(ICore *xCore);

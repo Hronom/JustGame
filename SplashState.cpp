@@ -44,6 +44,10 @@ void SplashState::prepareState()
 	mCurrentLayoutWidgets.push_back(mImageBox);
 
 	mWidgetsIter = mCurrentLayoutWidgets.begin();
+
+	mSoundNode1 = new SoundNode(alcOpenDevice(""));
+	mSoundNode1->open("wave1.wav",false,false);
+	mSoundNode1->move(0.0f,0.0f,0.0f);
 }
 
 void SplashState::enter()
@@ -71,6 +75,8 @@ void SplashState::needUpdate(const Ogre::FrameEvent& evt)
 		if(mCurrentIndex == 0)
 		{
 			if(evt.timeSinceLastFrame == 0) return;
+			
+			if((*mWidgetsIter)->getAlpha() == 0) mSoundNode1->play();
 
 			float xValue = (*mWidgetsIter)->getAlpha() + mFadeSpeed * evt.timeSinceLastFrame;
 
