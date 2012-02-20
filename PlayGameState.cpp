@@ -90,7 +90,7 @@ void PlayGameState::exit()
 		mPlayer = 0;
 	}
 
-	std::list<GameObject*>::iterator xElement;
+	std::list<MyGameObject*>::iterator xElement;
 
 	xElement = mUnits.begin();
 	while(xElement != mUnits.end())
@@ -129,7 +129,7 @@ void PlayGameState::needUpdate(const Ogre::FrameEvent& evt)
 	// Обновление игрока
 	mPlayer->update(evt);
 
-	std::list<GameObject*>::iterator xUnit;
+	std::list<MyGameObject*>::iterator xUnit;
 	xUnit = mUnits.begin();
 	// Обновление юнитов
 	while(xUnit != mUnits.end())
@@ -159,7 +159,7 @@ void PlayGameState::needUpdate(const Ogre::FrameEvent& evt)
 	}
 
 	// Обновление пуль
-	std::list<GameObject*>::iterator xBullet;
+	std::list<MyGameObject*>::iterator xBullet;
 	xBullet = mBullets.begin();
 	while(xBullet != mBullets.end())
 	{
@@ -182,15 +182,15 @@ void PlayGameState::needUpdate(const Ogre::FrameEvent& evt)
 		btCollisionObject* xObjA = static_cast<btCollisionObject*>(xContactManifold->getBody0());
 		btCollisionObject* xObjB = static_cast<btCollisionObject*>(xContactManifold->getBody1());
 
-		GameObject *xGameObjectA = static_cast<GameObject*>(xObjA->getUserPointer());
-		GameObject *xGameObjectB = static_cast<GameObject*>(xObjB->getUserPointer());
+		MyGameObject *xGameObjectA = static_cast<MyGameObject*>(xObjA->getUserPointer());
+		MyGameObject *xGameObjectB = static_cast<MyGameObject*>(xObjB->getUserPointer());
 
 		xGameObjectA->makeDamage(xGameObjectB->getDamage());
 		xGameObjectB->makeDamage(xGameObjectA->getDamage());
 	}
 
 	// Обновление объектов для удаления
-	std::list<GameObject*>::iterator xForDelete;
+	std::list<MyGameObject*>::iterator xForDelete;
 	xForDelete = mForDelete.begin();
 	while(xForDelete != mForDelete.end())
 	{

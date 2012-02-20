@@ -3,7 +3,7 @@
 #include <OgreBulletDynamicsRigidBody.h>
 #include <Shapes/OgreBulletCollisionsBoxShape.h>
 
-Bullet::Bullet(ICore *xCore, IGameObjectsListener *xGameObjectsListener, Ogre::String xObjectName, short xObjectCollideWith, Ogre::Vector2 xPos, Ogre::Vector2 xDestination): GameObject(xCore, xGameObjectsListener, xObjectName, xObjectCollideWith)
+Bullet::Bullet(ICore *xCore, IGameObjectsListener *xGameObjectsListener, Ogre::String xObjectName, short xObjectCollideWith, Ogre::Vector2 xPos, Ogre::Vector2 xDestination): MyGameObject(xCore, xGameObjectsListener, xObjectName, xObjectCollideWith)
 {
 	mHealthCount = 1;
 	mMakeDamage = 10;
@@ -13,8 +13,8 @@ Bullet::Bullet(ICore *xCore, IGameObjectsListener *xGameObjectsListener, Ogre::S
 	mShootDelay = 0;
 	mTimeSinceLastShot = mShootDelay;
 
-	GameObject::mDestinationDot = xDestination;
-	GameObject::mMoveDirection = Ogre::Vector3(1,0,0);
+	MyGameObject::mDestinationDot = xDestination;
+	MyGameObject::mMoveDirection = Ogre::Vector3(1,0,0);
 
 
 	Ogre::ColourValue xColor = Ogre::ColourValue(1.0, 0.0, 0.0, 0.0);
@@ -74,8 +74,8 @@ Bullet::Bullet(ICore *xCore, IGameObjectsListener *xGameObjectsListener, Ogre::S
 	mTimeBeforeDelete = 0.3f;
 
 	// ROTATE Ogre SceneNode
-	Ogre::Vector3 xDirection = Ogre::Vector3(GameObject::mDestinationDot.x, GameObject::mDestinationDot.y, 0) - GameObject::mSceneNode->getPosition();
-	Ogre::Vector3 xSrc = GameObject::mSceneNode->getOrientation() * Ogre::Vector3::UNIT_X;
+	Ogre::Vector3 xDirection = Ogre::Vector3(MyGameObject::mDestinationDot.x, MyGameObject::mDestinationDot.y, 0) - MyGameObject::mSceneNode->getPosition();
+	Ogre::Vector3 xSrc = MyGameObject::mSceneNode->getOrientation() * Ogre::Vector3::UNIT_X;
 	Ogre::Quaternion xQuat = xSrc.getRotationTo(xDirection);
 	mSceneNode->rotate(xQuat);
 

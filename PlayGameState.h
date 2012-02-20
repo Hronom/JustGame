@@ -7,8 +7,8 @@
 
 #include <ICore.h>
 #include <IState.h>
-#include <IGameObjectsListener.h>
-#include <GameObject.h>
+#include "IGameObjectsListener.h"
+#include "MyGameObject.h"
 #include "Player.h"
 #include "Enemy.h"
 #include "Bullet.h"
@@ -20,7 +20,7 @@ private:
 
 	ICore *mCore;
 
-	GameObject *mPlayer;
+	MyGameObject *mPlayer;
 
 	Ogre::ManualObject *mGridManualObject;
 	Ogre::SceneNode *mGridSceneNode;
@@ -28,10 +28,10 @@ private:
 	int mEnemyCount;
 	int mBulletsCount;
 
-	std::list<GameObject*> mUnits;
-	std::list<GameObject*> mBullets;
+	std::list<MyGameObject*> mUnits;
+	std::list<MyGameObject*> mBullets;
 
-	std::list<GameObject*> mForDelete;
+	std::list<MyGameObject*> mForDelete;
 
 public:
 	PlayGameState(ICore *xCore);

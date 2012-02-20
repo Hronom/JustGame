@@ -3,9 +3,9 @@
 
 #include <Ogre.h>
 #include <ICore.h>
-#include <GameObject.h>
+#include "MyGameObject.h"
 
-class Player: public GameObject
+class Player: public MyGameObject
 {
 private:
 	Ogre::ManualObject *mManualObject;
