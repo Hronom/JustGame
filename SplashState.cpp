@@ -31,6 +31,12 @@ void SplashState::prepareState()
 	mImageBox->setAlpha(0);
 	mCurrentLayoutWidgets.push_back(mImageBox);
 
+	mImageBox = mCore->getGui()->createWidget<MyGUI::ImageBox>("ImageBox",0,0,0,0, MyGUI::Align::Default, "Main", "OpenALLogo");
+	mImageBox->setRealCoord(0.0f,0.0f,1.0f,1.0f);
+	mImageBox->setImageTexture("openalLogo.png");
+	mImageBox->setAlpha(0);
+	mCurrentLayoutWidgets.push_back(mImageBox);
+
 	mImageBox = mCore->getGui()->createWidget<MyGUI::ImageBox>("ImageBox",0,0,0,0, MyGUI::Align::Default, "Main", "HronoLogo");
 	mImageBox->setRealCoord(0.0f,0.0f,1.0f,1.0f);
 	mImageBox->setImageTexture("HronoLogo.png");
