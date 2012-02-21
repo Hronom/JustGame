@@ -1,8 +1,7 @@
 #include "WinState.h"
 
-WinState::WinState(ICore *xCore)
+WinState::WinState()
 {
-	mCore = xCore;
 }
 
 WinState::~WinState()
@@ -16,8 +15,8 @@ void WinState::prepareState()
 	MyGUI::LayerManager::getInstancePtr()->resizeView(MyGUI::RenderManager::getInstancePtr()->getViewSize());
 
 	MyGUI::Button *xButton;
-	xButton = mCore->getGui()->findWidget<MyGUI::Button>("OkButton");
-	xButton->eventMouseButtonClick = MyGUI::newDelegate(this, &WinState::okClicked);
+	xButton = JGC::MainSystem::instance()->getGui()->findWidget<MyGUI::Button>("OkButton");
+	xButton->eventMouseButtonClick += MyGUI::newDelegate(this, &WinState::okClicked);
 
 	mCurrentLayoutWidgets[0]->setVisible(false);
 }
@@ -38,10 +37,10 @@ void WinState::exit()
 
 void WinState::keyPressed(const OIS::KeyEvent& e)
 {
-	if(e.key == OIS::KC_ESCAPE) mCore->needShutdown(); 
+	if(e.key == OIS::KC_ESCAPE) JGC::MainSystem::instance()->needShutdown(); 
 }
 
 void WinState::okClicked(MyGUI::WidgetPtr xSender)
 {
-	mCore->needSwitchToState("MainMenuState");
+	JGC::MainSystem::instance()->needSwitchToState("MainMenuState");
 }

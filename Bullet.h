@@ -2,7 +2,7 @@
 #define BULLET_H
 
 #include <Ogre.h>
-#include <ICore.h>
+#include <MainSystem.h>
 #include "MyGameObject.h"
 
 class Bullet: public MyGameObject
@@ -14,7 +14,7 @@ private:
 	Ogre::Real mTimeBeforeDelete;
 
 public:
-	Bullet(ICore *xCore, IGameObjectsListener *xGameObjectsListener, Ogre::String xObjectName, short xObjectCollideWith, Ogre::Vector2 xPos, Ogre::Vector2 xDestination);
+	Bullet(IGameObjectsListener *xGameObjectsListener, Ogre::String xObjectName, short xObjectCollideWith, Ogre::Vector2 xPos, Ogre::Vector2 xDestination);
 	~Bullet();
 
 	virtual void update(const Ogre::FrameEvent& evt);

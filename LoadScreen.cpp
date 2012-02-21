@@ -1,9 +1,7 @@
 #include "LoadScreen.h"
 
-LoadScreen::LoadScreen(ICore *xCore)
+LoadScreen::LoadScreen()
 {
-	mCore = xCore;
-
 	mWindow = MyGUI::Gui::getInstancePtr()->createWidget<MyGUI::Window>("Window", 65, 175, 510, 100, MyGUI::Align::Center, "Overlapped");
 
 	mTextBox = mWindow->createWidget<MyGUI::TextBox>("TextBox", 5, 5, 490, 25, MyGUI::Align::Center);
@@ -26,14 +24,14 @@ LoadScreen::~LoadScreen()
 
 void LoadScreen::show()
 {
-	MyGUI::PointerManager::getInstancePtr()->hide();
+	MyGUI::PointerManager::getInstancePtr()->setVisible(false);
 	mWindow->setVisible(true);
 }
 
 void LoadScreen::hide()
 {
 	mWindow->setVisible(false);
-	MyGUI::PointerManager::getInstancePtr()->show();
+	MyGUI::PointerManager::getInstancePtr()->setVisible(true);
 }
 
 void LoadScreen::setProgress(int xProgressValue, std::string xText)

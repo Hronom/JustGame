@@ -2,7 +2,7 @@
 #define PLAYER_H
 
 #include <Ogre.h>
-#include <ICore.h>
+#include <MainSystem.h>
 #include "MyGameObject.h"
 
 class Player: public MyGameObject
@@ -11,7 +11,7 @@ private:
 	Ogre::ManualObject *mManualObject;
 
 public:
-	Player(ICore *xCore, IGameObjectsListener *xGameObjectsListener, Ogre::String xObjectName, short xObjectCollideWith, Ogre::Vector2 xPos);
+	Player(IGameObjectsListener *xGameObjectsListener, Ogre::String xObjectName, short xObjectCollideWith, Ogre::Vector2 xPos);
 	~Player();
 
 	virtual void update(const Ogre::FrameEvent& evt);

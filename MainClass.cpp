@@ -9,42 +9,36 @@
 
 MainClass::MainClass()
 {
-	mMainSystem = new MainSystem("Ogre.cfg",
-		"Plugins.cfg",
-		"../Media/Resources.cfg",
-		"Ogre.log", "MyGUI.log");
+	JGC::MainSystem::initialize("Ogre.cfg","Plugins.cfg","../Media/Resources.cfg","Ogre.log", "MyGUI.log");
 
-	mMainSystem->init();
+	LoadScreen *xLoadState = new LoadScreen();
+	JGC::MainSystem::instance()->setLoadState(xLoadState);
 
-	LoadScreen *xLoadState = new LoadScreen(mMainSystem);
-	mMainSystem->setLoadState(xLoadState);
+	SplashState *xSplashState = new SplashState();
+	JGC::MainSystem::instance()->addNormalState("SplashState", xSplashState);
 
-	SplashState *xSplashState = new SplashState(mMainSystem);
-	mMainSystem->addNormalState("SplashState", xSplashState);
-
-	MainMenuState *xMainMenuState = new MainMenuState(mMainSystem);
-	mMainSystem->addNormalState("MainMenuState", xMainMenuState);
+	MainMenuState *xMainMenuState = new MainMenuState();
+	JGC::MainSystem::instance()->addNormalState("MainMenuState", xMainMenuState);
 	
-	PlayGameState *xPlayGameState = new PlayGameState(mMainSystem);
-	mMainSystem->addNormalState("PlayGameState", xPlayGameState);
+	PlayGameState *xPlayGameState = new PlayGameState();
+	JGC::MainSystem::instance()->addNormalState("PlayGameState", xPlayGameState);
 	
-	WinState *xWinState = new WinState(mMainSystem);
-	mMainSystem->addNormalState("WinState", xWinState);
+	WinState *xWinState = new WinState();
+	JGC::MainSystem::instance()->addNormalState("WinState", xWinState);
 	
-	LoseState *xLoseState = new LoseState(mMainSystem);
-	mMainSystem->addNormalState("LoseState", xLoseState);
+	LoseState *xLoseState = new LoseState();
+	JGC::MainSystem::instance()->addNormalState("LoseState", xLoseState);
 
-	mMainSystem->needSwitchToState("SplashState");
+	JGC::MainSystem::instance()->needSwitchToState("SplashState");
 }
 
 
 MainClass::~MainClass()
 {
-	delete mMainSystem;
-	mMainSystem=0;
+	JGC::MainSystem::shutdown();
 }
 
 void MainClass::start()
 {
-	mMainSystem->run();
+	JGC::MainSystem::instance()->run();
 }

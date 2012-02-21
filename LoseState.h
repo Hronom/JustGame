@@ -4,18 +4,16 @@
 #include <MyGUI.h>
 #include <OIS\OIS.h>
 
-#include <ICore.h>
+#include <MainSystem.h>
 #include <IState.h>
 
-class LoseState: public IState
+class LoseState: public JGC::IState
 {
 private:
-	ICore *mCore;
-
 	MyGUI::VectorWidgetPtr mCurrentLayoutWidgets;
 
 public:
-	LoseState(ICore *xCore);
+	LoseState();
 	~LoseState();
 
 	virtual void prepareState();

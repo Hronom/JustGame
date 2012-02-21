@@ -3,18 +3,16 @@
 
 #include <MyGUI.h>
 #include <OIS\OIS.h>
-#include <ICore.h>
+#include <MainSystem.h>
 #include <IState.h>
 
-class WinState: public IState
+class WinState: public JGC::IState
 {
 private:
-	ICore *mCore;
-
 	MyGUI::VectorWidgetPtr mCurrentLayoutWidgets;
 
 public:
-	WinState(ICore *xCore);
+	WinState();
 	~WinState();
 
 	virtual void prepareState();

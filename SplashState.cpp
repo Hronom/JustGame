@@ -1,8 +1,7 @@
 #include "SplashState.h"
 
-SplashState::SplashState(ICore *xCore)
+SplashState::SplashState()
 {
-	mCore = xCore;
 	mCurrentIndex = 0;
 	mFadeSpeed = 1.5f;
 	mTimeToSwitch = 3.0f;
@@ -19,31 +18,31 @@ void SplashState::prepareState()
 {
 	MyGUI::ImageBox *mImageBox;
 
-	mImageBox = mCore->getGui()->createWidget<MyGUI::ImageBox>("ImageBox",0,0,0,0, MyGUI::Align::Default,"Main", "OgreLogo");
+	mImageBox = JGC::MainSystem::instance()->getGui()->createWidget<MyGUI::ImageBox>("ImageBox",0,0,0,0, MyGUI::Align::Default,"Main", "OgreLogo");
 	mImageBox->setRealCoord(0.0f,0.0f,1.0f,1.0f);
 	mImageBox->setImageTexture("OgreLogo.png");
 	mImageBox->setAlpha(0);
 	mCurrentLayoutWidgets.push_back(mImageBox);
 
-	mImageBox = mCore->getGui()->createWidget<MyGUI::ImageBox>("ImageBox",0,0,0,0, MyGUI::Align::Default, "Main", "BulletLogo");
+	mImageBox = JGC::MainSystem::instance()->getGui()->createWidget<MyGUI::ImageBox>("ImageBox",0,0,0,0, MyGUI::Align::Default, "Main", "BulletLogo");
 	mImageBox->setRealCoord(0.0f,0.0f,1.0f,1.0f);
 	mImageBox->setImageTexture("BulletLogo.png");
 	mImageBox->setAlpha(0);
 	mCurrentLayoutWidgets.push_back(mImageBox);
 
-	mImageBox = mCore->getGui()->createWidget<MyGUI::ImageBox>("ImageBox",0,0,0,0, MyGUI::Align::Default, "Main", "OpenALLogo");
+	mImageBox = JGC::MainSystem::instance()->getGui()->createWidget<MyGUI::ImageBox>("ImageBox",0,0,0,0, MyGUI::Align::Default, "Main", "OpenALLogo");
 	mImageBox->setRealCoord(0.0f,0.0f,1.0f,1.0f);
 	mImageBox->setImageTexture("openalLogo.png");
 	mImageBox->setAlpha(0);
 	mCurrentLayoutWidgets.push_back(mImageBox);
 
-	mImageBox = mCore->getGui()->createWidget<MyGUI::ImageBox>("ImageBox",0,0,0,0, MyGUI::Align::Default, "Main", "HronoLogo");
+	mImageBox = JGC::MainSystem::instance()->getGui()->createWidget<MyGUI::ImageBox>("ImageBox",0,0,0,0, MyGUI::Align::Default, "Main", "HronoLogo");
 	mImageBox->setRealCoord(0.0f,0.0f,1.0f,1.0f);
 	mImageBox->setImageTexture("HronoLogo.png");
 	mImageBox->setAlpha(0);
 	mCurrentLayoutWidgets.push_back(mImageBox);
 
-	mImageBox = mCore->getGui()->createWidget<MyGUI::ImageBox>("ImageBox",0,0,0,0, MyGUI::Align::Default, "Main", "GameLogo");
+	mImageBox = JGC::MainSystem::instance()->getGui()->createWidget<MyGUI::ImageBox>("ImageBox",0,0,0,0, MyGUI::Align::Default, "Main", "GameLogo");
 	mImageBox->setRealCoord(0.0f,0.0f,1.0f,1.0f);
 	mImageBox->setImageTexture("JustGameLogo.png");
 	mImageBox->setAlpha(0);
@@ -51,14 +50,14 @@ void SplashState::prepareState()
 
 	mWidgetsIter = mCurrentLayoutWidgets.begin();
 
-	mSoundNode1 = new SoundNode(alcOpenDevice(""));
+	mSoundNode1 = new JGC::Sound::SoundNode(alcOpenDevice(""));
 	mSoundNode1->open("wave1.wav",false,false);
 	mSoundNode1->move(0.0f,0.0f,0.0f);
 }
 
 void SplashState::enter()
 {
-	MyGUI::PointerManager::getInstancePtr()->hide();
+	MyGUI::PointerManager::getInstancePtr()->setVisible(false);
 }
 
 void SplashState::exit()
@@ -71,7 +70,7 @@ void SplashState::exit()
 	}
 	mCurrentLayoutWidgets.clear();
 
-	MyGUI::PointerManager::getInstancePtr()->show();
+	MyGUI::PointerManager::getInstancePtr()->setVisible(true);
 }
 
 void SplashState::needUpdate(const Ogre::FrameEvent& evt)
@@ -127,7 +126,7 @@ void SplashState::needUpdate(const Ogre::FrameEvent& evt)
 	}
 	else
 	{
-		mCore->needSwitchToState("MainMenuState");
+		JGC::MainSystem::instance()->needSwitchToState("MainMenuState");
 	}
 }
 
@@ -139,7 +138,7 @@ void SplashState::mousePressed(const OIS::MouseEvent& e, OIS::MouseButtonID id)
 void SplashState::keyPressed(const OIS::KeyEvent& e)
 {
 	if(e.key == OIS::KC_ESCAPE)
-		mCore->needShutdown();
+		JGC::MainSystem::instance()->needShutdown();
 	else
 		skipCurrentLogo();
 }

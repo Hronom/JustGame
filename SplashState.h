@@ -4,15 +4,14 @@
 #include <MyGUI.h>
 #include <OIS\OIS.h>
 
-#include <ICore.h>
+#include <MainSystem.h>
 #include <IState.h>
 
 #include <SoundNode.h>
 
-class SplashState: public IState
+class SplashState: public JGC::IState
 {
 private:
-	ICore *mCore;
 	int mCurrentIndex;
 	float mFadeSpeed;
 	Ogre::Real mTimeToSwitch;
@@ -21,10 +20,10 @@ private:
 	std::vector<MyGUI::Widget*> mCurrentLayoutWidgets;
 	std::vector<MyGUI::Widget*>::iterator mWidgetsIter;
 
-	SoundNode *mSoundNode1;
+	JGC::Sound::SoundNode *mSoundNode1;
 
 public:
-	SplashState(ICore *xCore);
+	SplashState();
 	~SplashState();
 
 	virtual void prepareState();

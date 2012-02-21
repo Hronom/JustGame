@@ -5,8 +5,6 @@
 
 class MainClass
 {
-private:
-	MainSystem *mMainSystem;
 public:
 	MainClass();
 	~MainClass();

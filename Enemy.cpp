@@ -5,7 +5,7 @@
 #include <OgreBulletDynamicsRigidBody.h>
 #include <Shapes/OgreBulletCollisionsSphereShape.h>
 
-Enemy::Enemy(ICore *xCore, IGameObjectsListener *xGameObjectsListener, Ogre::String xObjectName, short xObjectCollideWith, Ogre::Vector2 xPos): MyGameObject(xCore, xGameObjectsListener, xObjectName, xObjectCollideWith)
+Enemy::Enemy(IGameObjectsListener *xGameObjectsListener, Ogre::String xObjectName, short xObjectCollideWith, Ogre::Vector2 xPos): MyGameObject(xGameObjectsListener, xObjectName, xObjectCollideWith)
 {
 	mHealthCount = 100;
 	mMoveSpeed = 15.0f;
@@ -37,9 +37,9 @@ Enemy::Enemy(ICore *xCore, IGameObjectsListener *xGameObjectsListener, Ogre::Str
 	mManualObject->convertToMesh(mObjectName+"_Mesh");
 
 	// create Entity
-	mEntity = mCore->getSceneManager()->createEntity(mObjectName+"_Entity", mObjectName+"_Mesh");
+	mEntity = JGC::MainSystem::instance()->getSceneManager()->createEntity(mObjectName+"_Entity", mObjectName+"_Mesh");
 	// connect Entity to Node
-	mSceneNode = mCore->getSceneManager()->getRootSceneNode()->createChildSceneNode(xObjectName+"_Node");
+	mSceneNode = JGC::MainSystem::instance()->getSceneManager()->getRootSceneNode()->createChildSceneNode(xObjectName+"_Node");
 	mSceneNode->attachObject(mEntity);
 
 	// create Physical Body
@@ -49,7 +49,7 @@ Enemy::Enemy(ICore *xCore, IGameObjectsListener *xGameObjectsListener, Ogre::Str
 	// after that create the Bullet shape with the calculated xSize
 	mCollisionShape = new OgreBulletCollisions::SphereCollisionShape(xObjectRadius);
 	// and the Bullet rigid body
-	mRigidBody = new OgreBulletDynamics::RigidBody(mObjectName+"_RigidBody", mCore->getDynamicsWorld(), ENEMY_GROUP, PLAYER_GROUP | ENEMY_GROUP | BULLET_GROUP);
+	mRigidBody = new OgreBulletDynamics::RigidBody(mObjectName+"_RigidBody", JGC::MainSystem::instance()->getDynamicsWorld(), ENEMY_GROUP, PLAYER_GROUP | ENEMY_GROUP | BULLET_GROUP);
 	mRigidBody->setShape(mSceneNode,
 		mCollisionShape,
 		0.0f,			// dynamic body restitution
@@ -67,7 +67,7 @@ Enemy::Enemy(ICore *xCore, IGameObjectsListener *xGameObjectsListener, Ogre::Str
 
 Enemy::~Enemy()
 {
-	mCore->getSceneManager()->destroyManualObject(mManualObject);
+	JGC::MainSystem::instance()->getSceneManager()->destroyManualObject(mManualObject);
 }
 
 void Enemy::update(const Ogre::FrameEvent& evt)

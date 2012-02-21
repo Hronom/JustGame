@@ -1,8 +1,7 @@
 #include "LoseState.h"
 
-LoseState::LoseState(ICore *xCore)
+LoseState::LoseState()
 {
-	mCore = xCore;
 }
 
 LoseState::~LoseState()
@@ -20,8 +19,8 @@ void LoseState::prepareState()
 	MyGUI::LayerManager::getInstancePtr()->resizeView(MyGUI::RenderManager::getInstancePtr()->getViewSize());
 
 	MyGUI::Button *xButton;
-	xButton = mCore->getGui()->findWidget<MyGUI::Button>("OkButton2");
-	xButton->eventMouseButtonClick = MyGUI::newDelegate(this, &LoseState::buttonClicked);
+	xButton = JGC::MainSystem::instance()->getGui()->findWidget<MyGUI::Button>("OkButton2");
+	xButton->eventMouseButtonClick += MyGUI::newDelegate(this, &LoseState::buttonClicked);
 
 	mCurrentLayoutWidgets[0]->setVisible(false);
 }
@@ -42,11 +41,11 @@ void LoseState::exit()
 
 void LoseState::keyPressed(const OIS::KeyEvent& e)
 {
-	if(e.key == OIS::KC_ESCAPE) mCore->needShutdown(); 
+	if(e.key == OIS::KC_ESCAPE) JGC::MainSystem::instance()->needShutdown(); 
 }
 
 void LoseState::buttonClicked(MyGUI::WidgetPtr xSender)
 {
-	mCore->needSwitchToState("MainMenuState");
+	JGC::MainSystem::instance()->needSwitchToState("MainMenuState");
 }
 

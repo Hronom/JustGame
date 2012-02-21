@@ -4,18 +4,16 @@
 #include <MyGUI.h>
 #include <OIS\OIS.h>
 
+#include <MainSystem.h>
 #include <IState.h>
-#include <ICore.h>
 
-class MainMenuState: public IState
+class MainMenuState: public JGC::IState
 {
 private:
-	ICore *mCore;
-
 	MyGUI::VectorWidgetPtr mCurrentLayoutWidgets;
 
 public:
-	MainMenuState(ICore *xCore);
+	MainMenuState();
 	~MainMenuState();
 
 	virtual void prepareState();

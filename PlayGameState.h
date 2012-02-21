@@ -5,7 +5,7 @@
 #include <MyGUI.h>
 #include <OIS\OIS.h>
 
-#include <ICore.h>
+#include <MainSystem.h>
 #include <IState.h>
 #include "IGameObjectsListener.h"
 #include "MyGameObject.h"
@@ -13,12 +13,10 @@
 #include "Enemy.h"
 #include "Bullet.h"
 
-class PlayGameState: public IState, public IGameObjectsListener
+class PlayGameState: public JGC::IState, public IGameObjectsListener
 {
 private:
 	bool isDebug;
-
-	ICore *mCore;
 
 	MyGameObject *mPlayer;
 
@@ -34,7 +32,7 @@ private:
 	std::list<MyGameObject*> mForDelete;
 
 public:
-	PlayGameState(ICore *xCore);
+	PlayGameState();
 	~PlayGameState();
 
 	virtual void prepareState();

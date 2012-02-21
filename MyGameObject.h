@@ -14,13 +14,12 @@ enum CollisionGroups
 #include <OgreBulletCollisionsShape.h>
 #include <OgreBulletDynamics.h>
 
-#include <ICore.h>
+#include <MainSystem.h>
 #include "IGameObjectsListener.h"
 
 class MyGameObject
 {
 protected:
-	ICore *mCore;
 	IGameObjectsListener *mGameObjectsListener;
 
 	Ogre::String mObjectName;
@@ -45,7 +44,7 @@ protected:
 	bool mNeedDelete;
 
 public:
-	MyGameObject(ICore *xCore, IGameObjectsListener *xGameObjectsListener, Ogre::String xObjectName, short xObjectCollideWith);
+	MyGameObject(IGameObjectsListener *xGameObjectsListener, Ogre::String xObjectName, short xObjectCollideWith);
 	virtual ~MyGameObject();
 
 	virtual void update(const Ogre::FrameEvent& evt);

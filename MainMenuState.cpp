@@ -1,8 +1,7 @@
 #include "MainMenuState.h"
 
-MainMenuState::MainMenuState(ICore *xCore)
+MainMenuState::MainMenuState()
 {
-	mCore = xCore;
 }
 
 MainMenuState::~MainMenuState()
@@ -17,9 +16,9 @@ void MainMenuState::prepareState()
 	mCurrentLayoutWidgets[0]->setVisible(false);
 
 	MyGUI::Button *xButton;
-	xButton = mCore->getGui()->findWidget<MyGUI::Button>("NewGameButton");
+	xButton = JGC::MainSystem::instance()->getGui()->findWidget<MyGUI::Button>("NewGameButton");
 	xButton->eventMouseButtonClick += MyGUI::newDelegate(this, &MainMenuState::newGameClicked);
-	xButton = mCore->getGui()->findWidget<MyGUI::Button>("ExitButton");
+	xButton = JGC::MainSystem::instance()->getGui()->findWidget<MyGUI::Button>("ExitButton");
 	xButton->eventMouseButtonClick += MyGUI::newDelegate(this, &MainMenuState::exitClicked);	
 }
 
@@ -39,15 +38,15 @@ void MainMenuState::exit()
 
 void MainMenuState::keyPressed(const OIS::KeyEvent& e)
 {
-	if(e.key == OIS::KC_ESCAPE) mCore->needShutdown(); 
+	if(e.key == OIS::KC_ESCAPE) JGC::MainSystem::instance()->needShutdown(); 
 }
 
 void MainMenuState::newGameClicked(MyGUI::Widget *xSender)
 {
-	mCore->needSwitchToState("PlayGameState",true);
+	JGC::MainSystem::instance()->needSwitchToState("PlayGameState",true);
 }
 
 void MainMenuState::exitClicked(MyGUI::Widget *xSender)
 {
-	mCore->needShutdown();
+	JGC::MainSystem::instance()->needShutdown();
 }

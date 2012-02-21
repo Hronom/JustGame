@@ -3,14 +3,12 @@
 
 #include <MyGUI.h>
 
-#include <ICore.h>
+#include <MainSystem.h>
 #include <ILoadScreen.h>
 
-class LoadScreen: public ILoadScreen
+class LoadScreen: public JGC::ILoadScreen
 {
 private:
-	ICore *mCore;
-
 	MyGUI::VectorWidgetPtr mCurrentLayoutWidgets;
 
 	MyGUI::Window *mWindow;
@@ -18,7 +16,7 @@ private:
 	MyGUI::ProgressBar *mProgressBar;
 
 public:
-	LoadScreen(ICore *xCore);
+	LoadScreen();
 	~LoadScreen();
 
 	virtual void show();

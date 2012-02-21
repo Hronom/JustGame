@@ -1,10 +1,8 @@
 #include "PlayGameState.h"
 
-PlayGameState::PlayGameState(ICore *xCore)
+PlayGameState::PlayGameState()
 {
 	isDebug = true;
-
-	mCore = xCore;
 
 	mPlayer = 0;
 	mGridManualObject = 0;
@@ -20,7 +18,7 @@ PlayGameState::~PlayGameState()
 
 void PlayGameState::prepareState()
 {
-	mCore->stateLoadProgress(0, "Loading world");
+	JGC::MainSystem::instance()->stateLoadProgress(0, "Loading world");
 	Ogre::ColourValue xColor = Ogre::ColourValue(0.104f, 0.234f, 0.140f, 0.0f);
 	// create ManualObject
 	mGridManualObject = new Ogre::ManualObject("grid_manual");
@@ -44,20 +42,20 @@ void PlayGameState::prepareState()
 		mGridManualObject->end();
 	}
 
-	mGridSceneNode = mCore->getSceneManager()->getRootSceneNode()->createChildSceneNode("grid_node");
+	mGridSceneNode = JGC::MainSystem::instance()->getSceneManager()->getRootSceneNode()->createChildSceneNode("grid_node");
 	mGridSceneNode->attachObject(mGridManualObject);
 
-	mCore->stateLoadProgress(50, "Loading player");
+	JGC::MainSystem::instance()->stateLoadProgress(50, "Loading player");
 
 	setPlayer(Ogre::Vector2(0,0));
 
-	mCore->stateLoadProgress(70, "Loading enemys");
+	JGC::MainSystem::instance()->stateLoadProgress(70, "Loading enemys");
 
 	Ogre::Vector2 xVectorPos(-100.0f,-100.0f);
 	for(int i=0; i<3; i++)
 		addEnemy(xVectorPos.randomDeviant(100));
 
-	mCore->stateLoadProgress(100, "Loading complete");
+	JGC::MainSystem::instance()->stateLoadProgress(100, "Loading complete");
 }
 
 void PlayGameState::enter()
@@ -69,14 +67,14 @@ void PlayGameState::exit()
 {
 	if(mGridManualObject != 0)
 	{
-		mCore->getSceneManager()->destroyManualObject(mGridManualObject);
+		JGC::MainSystem::instance()->getSceneManager()->destroyManualObject(mGridManualObject);
 		mGridManualObject = 0;
 	}
 
 	if(mGridSceneNode != 0)
 	{
 		mGridSceneNode->removeAndDestroyAllChildren();
-		mCore->getSceneManager()->destroySceneNode(mGridSceneNode);
+		JGC::MainSystem::instance()->getSceneManager()->destroySceneNode(mGridSceneNode);
 		//delete mGridSceneNode;
 		mGridSceneNode = 0;
 	}
@@ -121,7 +119,7 @@ void PlayGameState::needUpdate(const Ogre::FrameEvent& evt)
 {
 	MyGUI::IntPoint xMousePosition = MyGUI::InputManager::getInstancePtr()->getMousePosition();
 	MyGUI::IntSize xSize = MyGUI::RenderManager::getInstancePtr()->getViewSize();
-	Ogre::Ray xMouseRay =  mCore->getCamera()->getCameraToViewportRay(xMousePosition.left / float(xSize.width), xMousePosition.top / float(xSize.height));
+	Ogre::Ray xMouseRay =  JGC::MainSystem::instance()->getCamera()->getCameraToViewportRay(xMousePosition.left / float(xSize.width), xMousePosition.top / float(xSize.height));
 	Ogre::Vector3 xVector = xMouseRay.getPoint(100);//почему 100? –ассто€ние между камерой и нулевой точкой оси z равно 100
 
 	mPlayer->rotateTo(Ogre::Vector2(xVector.x, xVector.y));
@@ -175,10 +173,10 @@ void PlayGameState::needUpdate(const Ogre::FrameEvent& evt)
 	}
 	
 	// Ќанесение урона пул€ми
-	int xNumManifolds = mCore->getDynamicsWorld()->getBulletDynamicsWorld()->getDispatcher()->getNumManifolds();
+	int xNumManifolds = JGC::MainSystem::instance()->getDynamicsWorld()->getBulletDynamicsWorld()->getDispatcher()->getNumManifolds();
 	for (int i=0; i<xNumManifolds; i++)
 	{
-		btPersistentManifold* xContactManifold =  mCore->getDynamicsWorld()->getBulletDynamicsWorld()->getDispatcher()->getManifoldByIndexInternal(i);
+		btPersistentManifold* xContactManifold =  JGC::MainSystem::instance()->getDynamicsWorld()->getBulletDynamicsWorld()->getDispatcher()->getManifoldByIndexInternal(i);
 		btCollisionObject* xObjA = static_cast<btCollisionObject*>(xContactManifold->getBody0());
 		btCollisionObject* xObjB = static_cast<btCollisionObject*>(xContactManifold->getBody1());
 
@@ -207,13 +205,13 @@ void PlayGameState::needUpdate(const Ogre::FrameEvent& evt)
 
 	if(mPlayer->getCurrentHealth() <= 0)
 	{
-		mCore->needSwitchToState("LoseState");
+		JGC::MainSystem::instance()->needSwitchToState("LoseState");
 		return;
 	}
 
 	if(mUnits.size() <= 0)
 	{
-		mCore->needSwitchToState("WinState");
+		JGC::MainSystem::instance()->needSwitchToState("WinState");
 		return;
 	}
 }
@@ -223,7 +221,7 @@ void PlayGameState::mouseMoved(const OIS::MouseEvent& e)
 	/*
 	MyGUI::IntPoint xMousePosition = MyGUI::InputManager::getInstancePtr().getMousePosition();
 	MyGUI::IntSize xSize = MyGUI::RenderManager::getInstancePtr().getViewSize();
-	Ogre::Ray xMouseRay =  mCore->getCamera()->getCameraToViewportRay(xMousePosition.left / float(xSize.width), xMousePosition.top / float(xSize.height));
+	Ogre::Ray xMouseRay =  JGC::MainSystem::instance()->getCamera()->getCameraToViewportRay(xMousePosition.left / float(xSize.width), xMousePosition.top / float(xSize.height));
 	Ogre::Vector3 xVector = xMouseRay.getPoint(100);//почему 100? –ассто€ние между камерой и нулевой точкой оси z равно 100
 
 	mPlayer->rotateTo(Ogre::Vector2(xVector.x, xVector.y));*/
@@ -261,8 +259,8 @@ void PlayGameState::keyPressed(const OIS::KeyEvent& e)
 		addEnemy(xVectorPos.randomDeviant(100));
 		break;
 	case OIS::KC_Q:
-		mCore->getDynamicsWorld()->getDebugDrawer()->setDrawWireframe(isDebug);
-		mCore->getDynamicsWorld()->setShowDebugShapes(isDebug);
+		JGC::MainSystem::instance()->getDynamicsWorld()->getDebugDrawer()->setDrawWireframe(isDebug);
+		JGC::MainSystem::instance()->getDynamicsWorld()->setShowDebugShapes(isDebug);
 		isDebug = !isDebug;
 		break;
 	default: break;
@@ -286,7 +284,7 @@ void PlayGameState::keyReleased(const OIS::KeyEvent& e)
 		mPlayer->moveLeft(false); 
 		break;
 	case OIS::KC_ESCAPE:
-		mCore->needShutdown();
+		JGC::MainSystem::instance()->needShutdown();
 		break;
 	default: break;
 	}
@@ -294,7 +292,7 @@ void PlayGameState::keyReleased(const OIS::KeyEvent& e)
 
 void PlayGameState::setPlayer(Ogre::Vector2 xPos)
 {
-	mPlayer = new Player(mCore, this, "Player", PLAYER_GROUP, xPos);
+	mPlayer = new Player(this, "Player", PLAYER_GROUP, xPos);
 }
 
 void PlayGameState::addEnemy(Ogre::Vector2 xPos)
@@ -304,7 +302,7 @@ void PlayGameState::addEnemy(Ogre::Vector2 xPos)
 	xEnemyName = "Enemy" + Ogre::StringConverter::toString(mEnemyCount);
 
 	Enemy *xEnemy;
-	xEnemy = new Enemy(mCore, this, xEnemyName, ENEMY_GROUP, xPos);
+	xEnemy = new Enemy(this, xEnemyName, ENEMY_GROUP, xPos);
 	mUnits.push_back(xEnemy);
 }
 
@@ -315,6 +313,6 @@ void PlayGameState::addBullet(short xObjectCollideWith, Ogre::Vector2 xPos, Ogre
 	xBulletName = "Bullet" + Ogre::StringConverter::toString(mBulletsCount);
 
 	Bullet *xBullet;
-	xBullet = new Bullet(mCore, this, xBulletName, xObjectCollideWith, xPos, xDestination);
+	xBullet = new Bullet(this, xBulletName, xObjectCollideWith, xPos, xDestination);
 	mBullets.push_back(xBullet);
 }
