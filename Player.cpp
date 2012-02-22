@@ -63,10 +63,15 @@ Player::Player(IGameObjectsListener *xGameObjectsListener, Ogre::String xObjectN
 	mRigidBody->setCastShadows(false);
 
 	mRigidBody->getBulletRigidBody()->setUserPointer(this);
+	
+	mSoundListener = JGC::Sound::SoundSystem::instance()->getSoundListener();
+	mSoundListener->move(xPosition.x, xPosition.y, xPosition.z);
+	mSoundSource = JGC::Sound::SoundSystem::instance()->createSoundSource(xPosition.x, xPosition.y, xPosition.z, "../Media/Sound/impulse.wav", false);
 }
 
 Player::~Player()
 {
+	JGC::Sound::SoundSystem::instance()->destroySoundSource(mSoundSource);
 	JGC::MainSystem::instance()->getSceneManager()->destroyManualObject(mManualObject);
 }
 
@@ -81,6 +86,8 @@ void Player::update(const Ogre::FrameEvent& evt)
 	// Установка нового положения камеры
 	Ogre::Vector3 xPlayerPos;
 	xPlayerPos = mSceneNode->getPosition();
+
+	mSoundListener->move(xPlayerPos.x, xPlayerPos.y, xPlayerPos.z);
 
 	Ogre::Vector3 xNewCameraPos;
 	xNewCameraPos = JGC::MainSystem::instance()->getCamera()->getPosition();
@@ -146,6 +153,8 @@ void Player::playerShoot(Ogre::Real xTimeSinceLastFrame)
 			xPos.x = xPosObject.x;
 			xPos.y = xPosObject.y;
 			mGameObjectsListener->addBullet(ENEMY_GROUP, xPos, mDestinationDot);
+			mSoundSource->move(xPosObject.x,xPosObject.y,xPosObject.z);
+			mSoundSource->play();
 			mTimeSinceLastShot=0;
 		}
 		else

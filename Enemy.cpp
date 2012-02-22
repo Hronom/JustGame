@@ -63,10 +63,13 @@ Enemy::Enemy(IGameObjectsListener *xGameObjectsListener, Ogre::String xObjectNam
 	mRigidBody->setCastShadows(false);
 
 	mRigidBody->getBulletRigidBody()->setUserPointer(this);
+
+	mSoundSource = JGC::Sound::SoundSystem::instance()->createSoundSource(xPosition.x, xPosition.y, xPosition.z, "../Media/Sound/impulse.wav", false);
 }
 
 Enemy::~Enemy()
 {
+	JGC::Sound::SoundSystem::instance()->destroySoundSource(mSoundSource);
 	JGC::MainSystem::instance()->getSceneManager()->destroyManualObject(mManualObject);
 }
 
@@ -146,6 +149,8 @@ void Enemy::enemyShoot(Ogre::Real xTimeSinceLastFrame)
 			xPos.x = xPosObject.x;
 			xPos.y = xPosObject.y;
 			mGameObjectsListener->addBullet(PLAYER_GROUP, xPos, mDestinationDot);
+			mSoundSource->move(xPosObject.x,xPosObject.y,xPosObject.z);
+			mSoundSource->play();
 			mTimeSinceLastShot=0;
 		}
 		else

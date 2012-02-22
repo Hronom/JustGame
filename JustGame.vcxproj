@@ -106,7 +106,6 @@
     <ClCompile Include="LoadScreen.cpp" />
     <ClCompile Include="LoseState.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="MainClass.cpp" />
     <ClCompile Include="MainMenuState.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayGameState.cpp" />
@@ -120,7 +119,6 @@
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="LoadScreen.h" />
     <ClInclude Include="LoseState.h" />
-    <ClInclude Include="MainClass.h" />
     <ClInclude Include="MainMenuState.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayGameState.h" />

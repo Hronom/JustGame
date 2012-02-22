@@ -50,9 +50,7 @@ void SplashState::prepareState()
 
 	mWidgetsIter = mCurrentLayoutWidgets.begin();
 
-	mSoundNode1 = new JGC::Sound::SoundNode(alcOpenDevice(""));
-	mSoundNode1->open("wave1.wav",false,false);
-	mSoundNode1->move(0.0f,0.0f,0.0f);
+	mSoundNode1 = JGC::Sound::SoundSystem::instance()->createSoundSource(0.0f,0.0f,0.0f,"../Media/Sound/impulse.wav",false);
 }
 
 void SplashState::enter()

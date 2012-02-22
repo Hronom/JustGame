@@ -3,12 +3,17 @@
 
 #include <Ogre.h>
 #include <MainSystem.h>
+#include <SoundSystem.h>
+#include <SoundListener.h>
+#include <SoundSource.h>
 #include "MyGameObject.h"
 
 class Player: public MyGameObject
 {
 private:
 	Ogre::ManualObject *mManualObject;
+	JGC::Sound::SoundListener *mSoundListener;
+	JGC::Sound::SoundSource *mSoundSource;
 
 public:
 	Player(IGameObjectsListener *xGameObjectsListener, Ogre::String xObjectName, short xObjectCollideWith, Ogre::Vector2 xPos);

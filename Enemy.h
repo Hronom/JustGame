@@ -3,12 +3,16 @@
 
 #include <Ogre.h>
 #include <MainSystem.h>
+#include <SoundSystem.h>
+#include <SoundListener.h>
+#include <SoundSource.h>
 #include "MyGameObject.h"
 
 class Enemy: public MyGameObject
 {
 private:
 	Ogre::ManualObject *mManualObject;
+	JGC::Sound::SoundSource *mSoundSource;
 
 	Ogre::Real mTimeBeforeDelete;
 
