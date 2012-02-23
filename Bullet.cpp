@@ -1,4 +1,6 @@
 #include "Bullet.h"
+#include <GraphicSystem.h>
+#include <PhysicsSystem.h>
 
 #include <OgreBulletDynamicsRigidBody.h>
 #include <Shapes/OgreBulletCollisionsBoxShape.h>
@@ -34,9 +36,9 @@ Bullet::Bullet(IGameObjectsListener *xGameObjectsListener, Ogre::String xObjectN
 	mManualObject->convertToMesh(mObjectName+"_Mesh");
 
 	// create Entity
-	mEntity = JGC::MainSystem::instance()->getSceneManager()->createEntity(mObjectName+"_Entity", mObjectName+"_Mesh");
+	mEntity = JGC::Graphic::GraphicSystem::instance()->getSceneManager()->createEntity(mObjectName+"_Entity", mObjectName+"_Mesh");
 	// connect Entity to Node
-	mSceneNode = JGC::MainSystem::instance()->getSceneManager()->getRootSceneNode()->createChildSceneNode(xObjectName+"_Node");
+	mSceneNode = JGC::Graphic::GraphicSystem::instance()->getSceneManager()->getRootSceneNode()->createChildSceneNode(xObjectName+"_Node");
 	mSceneNode->attachObject(mEntity);
 
 	// create Physical Body
@@ -54,7 +56,7 @@ Bullet::Bullet(IGameObjectsListener *xGameObjectsListener, Ogre::String xObjectN
 	// after that create the Bullet shape with the calculated xSize
 	mCollisionShape = new OgreBulletCollisions::BoxCollisionShape(xSize);
 	// and the Bullet rigid body
-	mRigidBody = new OgreBulletDynamics::RigidBody(mObjectName+"_RigidBody", JGC::MainSystem::instance()->getDynamicsWorld(), BULLET_GROUP, mObjectCollideWith | BULLET_GROUP);
+	mRigidBody = new OgreBulletDynamics::RigidBody(mObjectName+"_RigidBody", JGC::Physics::PhysicsSystem::instance()->getDynamicsWorld(), BULLET_GROUP, mObjectCollideWith | BULLET_GROUP);
 
 	mRigidBody->setShape(mSceneNode,
 		mCollisionShape,
@@ -94,7 +96,7 @@ Bullet::Bullet(IGameObjectsListener *xGameObjectsListener, Ogre::String xObjectN
 
 Bullet::~Bullet()
 {
-	JGC::MainSystem::instance()->getSceneManager()->destroyManualObject(mManualObject);
+	JGC::Graphic::GraphicSystem::instance()->getSceneManager()->destroyManualObject(mManualObject);
 }
 
 void Bullet::update(const Ogre::FrameEvent& evt)

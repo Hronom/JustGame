@@ -1,4 +1,5 @@
 #include "WinState.h"
+#include <GraphicSystem.h>
 
 WinState::WinState()
 {
@@ -15,7 +16,7 @@ void WinState::prepareState()
 	MyGUI::LayerManager::getInstancePtr()->resizeView(MyGUI::RenderManager::getInstancePtr()->getViewSize());
 
 	MyGUI::Button *xButton;
-	xButton = JGC::MainSystem::instance()->getGui()->findWidget<MyGUI::Button>("OkButton");
+	xButton = JGC::Graphic::GraphicSystem::instance()->getGui()->findWidget<MyGUI::Button>("OkButton");
 	xButton->eventMouseButtonClick += MyGUI::newDelegate(this, &WinState::okClicked);
 
 	mCurrentLayoutWidgets[0]->setVisible(false);

@@ -1,4 +1,6 @@
 #include "PlayGameState.h"
+#include <GraphicSystem.h>
+#include <PhysicsSystem.h>
 
 PlayGameState::PlayGameState()
 {
@@ -42,7 +44,7 @@ void PlayGameState::prepareState()
 		mGridManualObject->end();
 	}
 
-	mGridSceneNode = JGC::MainSystem::instance()->getSceneManager()->getRootSceneNode()->createChildSceneNode("grid_node");
+	mGridSceneNode = JGC::Graphic::GraphicSystem::instance()->getSceneManager()->getRootSceneNode()->createChildSceneNode("grid_node");
 	mGridSceneNode->attachObject(mGridManualObject);
 
 	JGC::MainSystem::instance()->stateLoadProgress(50, "Loading player");
@@ -67,14 +69,14 @@ void PlayGameState::exit()
 {
 	if(mGridManualObject != 0)
 	{
-		JGC::MainSystem::instance()->getSceneManager()->destroyManualObject(mGridManualObject);
+		JGC::Graphic::GraphicSystem::instance()->getSceneManager()->destroyManualObject(mGridManualObject);
 		mGridManualObject = 0;
 	}
 
 	if(mGridSceneNode != 0)
 	{
 		mGridSceneNode->removeAndDestroyAllChildren();
-		JGC::MainSystem::instance()->getSceneManager()->destroySceneNode(mGridSceneNode);
+		JGC::Graphic::GraphicSystem::instance()->getSceneManager()->destroySceneNode(mGridSceneNode);
 		//delete mGridSceneNode;
 		mGridSceneNode = 0;
 	}
@@ -119,7 +121,7 @@ void PlayGameState::needUpdate(const Ogre::FrameEvent& evt)
 {
 	MyGUI::IntPoint xMousePosition = MyGUI::InputManager::getInstancePtr()->getMousePosition();
 	MyGUI::IntSize xSize = MyGUI::RenderManager::getInstancePtr()->getViewSize();
-	Ogre::Ray xMouseRay =  JGC::MainSystem::instance()->getCamera()->getCameraToViewportRay(xMousePosition.left / float(xSize.width), xMousePosition.top / float(xSize.height));
+	Ogre::Ray xMouseRay =  JGC::Graphic::GraphicSystem::instance()->getCamera()->getCameraToViewportRay(xMousePosition.left / float(xSize.width), xMousePosition.top / float(xSize.height));
 	Ogre::Vector3 xVector = xMouseRay.getPoint(100);//почему 100? –ассто€ние между камерой и нулевой точкой оси z равно 100
 
 	mPlayer->rotateTo(Ogre::Vector2(xVector.x, xVector.y));
@@ -173,10 +175,10 @@ void PlayGameState::needUpdate(const Ogre::FrameEvent& evt)
 	}
 	
 	// Ќанесение урона пул€ми
-	int xNumManifolds = JGC::MainSystem::instance()->getDynamicsWorld()->getBulletDynamicsWorld()->getDispatcher()->getNumManifolds();
+	int xNumManifolds = JGC::Physics::PhysicsSystem::instance()->getDynamicsWorld()->getBulletDynamicsWorld()->getDispatcher()->getNumManifolds();
 	for (int i=0; i<xNumManifolds; i++)
 	{
-		btPersistentManifold* xContactManifold =  JGC::MainSystem::instance()->getDynamicsWorld()->getBulletDynamicsWorld()->getDispatcher()->getManifoldByIndexInternal(i);
+		btPersistentManifold* xContactManifold =  JGC::Physics::PhysicsSystem::instance()->getDynamicsWorld()->getBulletDynamicsWorld()->getDispatcher()->getManifoldByIndexInternal(i);
 		btCollisionObject* xObjA = static_cast<btCollisionObject*>(xContactManifold->getBody0());
 		btCollisionObject* xObjB = static_cast<btCollisionObject*>(xContactManifold->getBody1());
 
@@ -259,8 +261,8 @@ void PlayGameState::keyPressed(const OIS::KeyEvent& e)
 		addEnemy(xVectorPos.randomDeviant(100));
 		break;
 	case OIS::KC_Q:
-		JGC::MainSystem::instance()->getDynamicsWorld()->getDebugDrawer()->setDrawWireframe(isDebug);
-		JGC::MainSystem::instance()->getDynamicsWorld()->setShowDebugShapes(isDebug);
+		JGC::Physics::PhysicsSystem::instance()->getDynamicsWorld()->getDebugDrawer()->setDrawWireframe(isDebug);
+		JGC::Physics::PhysicsSystem::instance()->getDynamicsWorld()->setShowDebugShapes(isDebug);
 		isDebug = !isDebug;
 		break;
 	default: break;

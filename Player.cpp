@@ -1,4 +1,6 @@
 #include "Player.h"
+#include <GraphicSystem.h>
+#include <PhysicsSystem.h>
 
 #include "IGameObjectsListener.h"
 
@@ -37,9 +39,9 @@ Player::Player(IGameObjectsListener *xGameObjectsListener, Ogre::String xObjectN
 	mManualObject->convertToMesh(mObjectName+"_Mesh");
 
 	// create Entity
-	mEntity = JGC::MainSystem::instance()->getSceneManager()->createEntity(mObjectName+"_Entity", mObjectName+"_Mesh");
+	mEntity = JGC::Graphic::GraphicSystem::instance()->getSceneManager()->createEntity(mObjectName+"_Entity", mObjectName+"_Mesh");
 	// connect Entity to Node
-	mSceneNode = JGC::MainSystem::instance()->getSceneManager()->getRootSceneNode()->createChildSceneNode(xObjectName+"_Node");
+	mSceneNode = JGC::Graphic::GraphicSystem::instance()->getSceneManager()->getRootSceneNode()->createChildSceneNode(xObjectName+"_Node");
 	mSceneNode->attachObject(mEntity);
 
 	// create Physical Body
@@ -49,7 +51,7 @@ Player::Player(IGameObjectsListener *xGameObjectsListener, Ogre::String xObjectN
 	// after that create the Bullet shape with the calculated xSize
 	mCollisionShape = new OgreBulletCollisions::SphereCollisionShape(xObjectRadius);
 	// and the Bullet rigid body
-	mRigidBody = new OgreBulletDynamics::RigidBody(mObjectName+"_RigidBody", JGC::MainSystem::instance()->getDynamicsWorld(), PLAYER_GROUP,  PLAYER_GROUP | ENEMY_GROUP | BULLET_GROUP);
+	mRigidBody = new OgreBulletDynamics::RigidBody(mObjectName+"_RigidBody", JGC::Physics::PhysicsSystem::instance()->getDynamicsWorld(), PLAYER_GROUP,  PLAYER_GROUP | ENEMY_GROUP | BULLET_GROUP);
 	mRigidBody->setShape(mSceneNode,
 		mCollisionShape,
 		0.0f,			// dynamic body restitution
@@ -72,7 +74,7 @@ Player::Player(IGameObjectsListener *xGameObjectsListener, Ogre::String xObjectN
 Player::~Player()
 {
 	JGC::Sound::SoundSystem::instance()->destroySoundSource(mSoundSource);
-	JGC::MainSystem::instance()->getSceneManager()->destroyManualObject(mManualObject);
+	JGC::Graphic::GraphicSystem::instance()->getSceneManager()->destroyManualObject(mManualObject);
 }
 
 void Player::update(const Ogre::FrameEvent& evt)
@@ -90,11 +92,11 @@ void Player::update(const Ogre::FrameEvent& evt)
 	mSoundListener->move(xPlayerPos.x, xPlayerPos.y, xPlayerPos.z);
 
 	Ogre::Vector3 xNewCameraPos;
-	xNewCameraPos = JGC::MainSystem::instance()->getCamera()->getPosition();
+	xNewCameraPos = JGC::Graphic::GraphicSystem::instance()->getCamera()->getPosition();
 	xNewCameraPos.x = xPlayerPos.x;
 	xNewCameraPos.y = xPlayerPos.y;
 
-	JGC::MainSystem::instance()->getCamera()->setPosition(xNewCameraPos);
+	JGC::Graphic::GraphicSystem::instance()->getCamera()->setPosition(xNewCameraPos);
 }
 
 void Player::rotatePlayer(Ogre::Real xTimeSinceLastFrame)

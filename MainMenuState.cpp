@@ -1,4 +1,5 @@
 #include "MainMenuState.h"
+#include <GraphicSystem.h>
 
 MainMenuState::MainMenuState()
 {
@@ -16,9 +17,9 @@ void MainMenuState::prepareState()
 	mCurrentLayoutWidgets[0]->setVisible(false);
 
 	MyGUI::Button *xButton;
-	xButton = JGC::MainSystem::instance()->getGui()->findWidget<MyGUI::Button>("NewGameButton");
+	xButton = JGC::Graphic::GraphicSystem::instance()->getGui()->findWidget<MyGUI::Button>("NewGameButton");
 	xButton->eventMouseButtonClick += MyGUI::newDelegate(this, &MainMenuState::newGameClicked);
-	xButton = JGC::MainSystem::instance()->getGui()->findWidget<MyGUI::Button>("ExitButton");
+	xButton = JGC::Graphic::GraphicSystem::instance()->getGui()->findWidget<MyGUI::Button>("ExitButton");
 	xButton->eventMouseButtonClick += MyGUI::newDelegate(this, &MainMenuState::exitClicked);	
 }
 

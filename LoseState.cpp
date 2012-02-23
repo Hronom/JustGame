@@ -1,4 +1,5 @@
 #include "LoseState.h"
+#include <GraphicSystem.h>
 
 LoseState::LoseState()
 {
@@ -19,7 +20,7 @@ void LoseState::prepareState()
 	MyGUI::LayerManager::getInstancePtr()->resizeView(MyGUI::RenderManager::getInstancePtr()->getViewSize());
 
 	MyGUI::Button *xButton;
-	xButton = JGC::MainSystem::instance()->getGui()->findWidget<MyGUI::Button>("OkButton2");
+	xButton = JGC::Graphic::GraphicSystem::instance()->getGui()->findWidget<MyGUI::Button>("OkButton2");
 	xButton->eventMouseButtonClick += MyGUI::newDelegate(this, &LoseState::buttonClicked);
 
 	mCurrentLayoutWidgets[0]->setVisible(false);

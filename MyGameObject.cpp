@@ -1,4 +1,6 @@
 #include "MyGameObject.h"
+#include <GraphicSystem.h>
+#include <PhysicsSystem.h>
 
 MyGameObject::MyGameObject(IGameObjectsListener *xGameObjectsListener, Ogre::String xObjectName, short xObjectCollideWith)
 {
@@ -30,7 +32,7 @@ MyGameObject::~MyGameObject()
 {
 	if(mRigidBody != 0)
 	{
-		JGC::MainSystem::instance()->getDynamicsWorld()->getBulletDynamicsWorld()->removeRigidBody(mRigidBody->getBulletRigidBody());
+		JGC::Physics::PhysicsSystem::instance()->getDynamicsWorld()->getBulletDynamicsWorld()->removeRigidBody(mRigidBody->getBulletRigidBody());
 		delete mRigidBody->getBulletRigidBody()->getMotionState();
 		delete mRigidBody->getBulletRigidBody();
 	}
@@ -39,12 +41,12 @@ MyGameObject::~MyGameObject()
 		delete mCollisionShape;
 
 	if(mEntity != 0) 
-		JGC::MainSystem::instance()->getSceneManager()->destroyEntity(mEntity);
+		JGC::Graphic::GraphicSystem::instance()->getSceneManager()->destroyEntity(mEntity);
 
 	if(mSceneNode != 0)
 	{
 		mSceneNode->removeAndDestroyAllChildren();
-		JGC::MainSystem::instance()->getSceneManager()->destroySceneNode(mSceneNode);
+		JGC::Graphic::GraphicSystem::instance()->getSceneManager()->destroySceneNode(mSceneNode);
 	}
 }
 

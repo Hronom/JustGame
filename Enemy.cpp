@@ -1,4 +1,6 @@
 #include "Enemy.h"
+#include <GraphicSystem.h>
+#include <PhysicsSystem.h>
 
 #include "IGameObjectsListener.h"
 
@@ -37,9 +39,9 @@ Enemy::Enemy(IGameObjectsListener *xGameObjectsListener, Ogre::String xObjectNam
 	mManualObject->convertToMesh(mObjectName+"_Mesh");
 
 	// create Entity
-	mEntity = JGC::MainSystem::instance()->getSceneManager()->createEntity(mObjectName+"_Entity", mObjectName+"_Mesh");
+	mEntity = JGC::Graphic::GraphicSystem::instance()->getSceneManager()->createEntity(mObjectName+"_Entity", mObjectName+"_Mesh");
 	// connect Entity to Node
-	mSceneNode = JGC::MainSystem::instance()->getSceneManager()->getRootSceneNode()->createChildSceneNode(xObjectName+"_Node");
+	mSceneNode = JGC::Graphic::GraphicSystem::instance()->getSceneManager()->getRootSceneNode()->createChildSceneNode(xObjectName+"_Node");
 	mSceneNode->attachObject(mEntity);
 
 	// create Physical Body
@@ -49,7 +51,7 @@ Enemy::Enemy(IGameObjectsListener *xGameObjectsListener, Ogre::String xObjectNam
 	// after that create the Bullet shape with the calculated xSize
 	mCollisionShape = new OgreBulletCollisions::SphereCollisionShape(xObjectRadius);
 	// and the Bullet rigid body
-	mRigidBody = new OgreBulletDynamics::RigidBody(mObjectName+"_RigidBody", JGC::MainSystem::instance()->getDynamicsWorld(), ENEMY_GROUP, PLAYER_GROUP | ENEMY_GROUP | BULLET_GROUP);
+	mRigidBody = new OgreBulletDynamics::RigidBody(mObjectName+"_RigidBody", JGC::Physics::PhysicsSystem::instance()->getDynamicsWorld(), ENEMY_GROUP, PLAYER_GROUP | ENEMY_GROUP | BULLET_GROUP);
 	mRigidBody->setShape(mSceneNode,
 		mCollisionShape,
 		0.0f,			// dynamic body restitution
@@ -70,7 +72,7 @@ Enemy::Enemy(IGameObjectsListener *xGameObjectsListener, Ogre::String xObjectNam
 Enemy::~Enemy()
 {
 	JGC::Sound::SoundSystem::instance()->destroySoundSource(mSoundSource);
-	JGC::MainSystem::instance()->getSceneManager()->destroyManualObject(mManualObject);
+	JGC::Graphic::GraphicSystem::instance()->getSceneManager()->destroyManualObject(mManualObject);
 }
 
 void Enemy::update(const Ogre::FrameEvent& evt)

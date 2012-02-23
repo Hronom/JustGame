@@ -7,8 +7,6 @@
 #include <MainSystem.h>
 #include <IState.h>
 
-#include <SoundSource.h>
-
 class SplashState: public JGC::IState
 {
 private:
@@ -19,8 +17,6 @@ private:
 
 	std::vector<MyGUI::Widget*> mCurrentLayoutWidgets;
 	std::vector<MyGUI::Widget*>::iterator mWidgetsIter;
-
-	JGC::Sound::SoundSource *mSoundNode1;
 
 public:
 	SplashState();

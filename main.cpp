@@ -1,4 +1,5 @@
 #include <MainSystem.h>
+#include <StatesSystem.h>
 #include "LoadScreen.h"
 #include "SplashState.h"
 #include "MainMenuState.h"
@@ -11,22 +12,22 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR strCmdLine, INT)
 	JGC::MainSystem::initialize("Ogre.cfg","Plugins.cfg","../Media/Resources.cfg","Ogre.log", "MyGUI.log");
 
 	LoadScreen *xLoadState = new LoadScreen();
-	JGC::MainSystem::instance()->setLoadState(xLoadState);
+	JGC::States::StatesSystem::instance()->setLoadState(xLoadState);
 
 	SplashState *xSplashState = new SplashState();
-	JGC::MainSystem::instance()->addNormalState("SplashState", xSplashState);
+	JGC::States::StatesSystem::instance()->addNormalState("SplashState", xSplashState);
 
 	MainMenuState *xMainMenuState = new MainMenuState();
-	JGC::MainSystem::instance()->addNormalState("MainMenuState", xMainMenuState);
+	JGC::States::StatesSystem::instance()->addNormalState("MainMenuState", xMainMenuState);
 	
 	PlayGameState *xPlayGameState = new PlayGameState();
-	JGC::MainSystem::instance()->addNormalState("PlayGameState", xPlayGameState);
+	JGC::States::StatesSystem::instance()->addNormalState("PlayGameState", xPlayGameState);
 	
 	WinState *xWinState = new WinState();
-	JGC::MainSystem::instance()->addNormalState("WinState", xWinState);
+	JGC::States::StatesSystem::instance()->addNormalState("WinState", xWinState);
 	
 	LoseState *xLoseState = new LoseState();
-	JGC::MainSystem::instance()->addNormalState("LoseState", xLoseState);
+	JGC::States::StatesSystem::instance()->addNormalState("LoseState", xLoseState);
 
 	JGC::MainSystem::instance()->needSwitchToState("SplashState");
 
