@@ -1,11 +1,10 @@
 #include "Enemy.h"
 #include <GraphicSystem.h>
 #include <PhysicsSystem.h>
+#include <Utils.h>
+#include <btBulletDynamicsCommon.h>
 
 #include "IGameObjectsListener.h"
-
-#include <OgreBulletDynamicsRigidBody.h>
-#include <Shapes/OgreBulletCollisionsSphereShape.h>
 
 Enemy::Enemy(IGameObjectsListener *xGameObjectsListener, Ogre::String xObjectName, short xObjectCollideWith, Ogre::Vector2 xPos): MyGameObject(xGameObjectsListener, xObjectName, xObjectCollideWith)
 {
@@ -47,24 +46,22 @@ Enemy::Enemy(IGameObjectsListener *xGameObjectsListener, Ogre::String xObjectNam
 	// create Physical Body
 	// starting xPosition of the box
 	Ogre::Vector3 xPosition = Ogre::Vector3(xPos.x, xPos.y, 0);
+	mSceneNode->setPosition(xPosition);
 
 	// after that create the Bullet shape with the calculated xSize
-	mCollisionShape = new OgreBulletCollisions::SphereCollisionShape(xObjectRadius);
+	mCollisionShape = new btSphereShape(xObjectRadius);
 	// and the Bullet rigid body
-	mRigidBody = new OgreBulletDynamics::RigidBody(mObjectName+"_RigidBody", JGC::Physics::PhysicsSystem::instance()->getDynamicsWorld(), ENEMY_GROUP, PLAYER_GROUP | ENEMY_GROUP | BULLET_GROUP);
-	mRigidBody->setShape(mSceneNode,
-		mCollisionShape,
-		0.0f,			// dynamic body restitution
-		0.5f,			// dynamic body friction
-		0.1f, 			// dynamic bodymass
-		xPosition,		// starting xPosition of the box
-		Ogre::Quaternion(0,0,0,1));// orientation of the box
+	mMyMotionState = new JGC::Physics::MyMotionState(
+		btTransform(JGC::toBulletQuaternion(Ogre::Quaternion(0,0,0,1)), JGC::toBulletVector3(xPosition)), mSceneNode);
+	mRigidBody = new btRigidBody(0.1f, mMyMotionState, mCollisionShape, btVector3(0,0,0));
+	mRigidBody->setRestitution(0.0f);
+	mRigidBody->setFriction(0.5f);
+	mRigidBody->setLinearFactor(btVector3(1,1,0));
+	mRigidBody->setAngularFactor(btVector3(0, 0, 1));
 
-	mRigidBody->getBulletRigidBody()->setLinearFactor(btVector3(1,1,0));
-	mRigidBody->getBulletRigidBody()->setAngularFactor(btVector3(0, 0, 1));
-	mRigidBody->setCastShadows(false);
+	mRigidBody->setUserPointer(this);
 
-	mRigidBody->getBulletRigidBody()->setUserPointer(this);
+	JGC::Physics::PhysicsSystem::instance()->getDynamicsWorld()->addRigidBody(mRigidBody, ENEMY_GROUP, PLAYER_GROUP | ENEMY_GROUP | BULLET_GROUP);
 
 	mSoundSource = JGC::Sound::SoundSystem::instance()->createSoundSource(xPosition.x, xPosition.y, xPosition.z, "../Media/Sound/impulse.wav", false);
 }
@@ -83,7 +80,7 @@ void Enemy::update(const Ogre::FrameEvent& evt)
 		moveEnemy(evt.timeSinceLastFrame);
 		enemyShoot(evt.timeSinceLastFrame);
 
-		mRigidBody->enableActiveState();
+		mRigidBody->activate();
 	}
 	else
 	{
@@ -114,9 +111,9 @@ void Enemy::rotateEnemy(Ogre::Real xTimeSinceLastFrame)
 	mSceneNode->rotate(xQuat);
 
 	// APPLY ROTATE to Bullet RigidBody
-	btTransform xRigidBodyTransform = mRigidBody->getBulletRigidBody()->getWorldTransform();
-	xRigidBodyTransform.setRotation(OgreBulletCollisions::OgreBtConverter::to(mSceneNode->getOrientation()));
-	mRigidBody->getBulletRigidBody()->setWorldTransform(xRigidBodyTransform);
+	btTransform xRigidBodyTransform = mRigidBody->getWorldTransform();
+	xRigidBodyTransform.setRotation(JGC::toBulletQuaternion(mSceneNode->getOrientation()));
+	mRigidBody->setWorldTransform(xRigidBodyTransform);
 }
 
 void Enemy::moveEnemy(Ogre::Real xTimeSinceLastFrame)
@@ -128,15 +125,15 @@ void Enemy::moveEnemy(Ogre::Real xTimeSinceLastFrame)
 	xVector = mMoveDirection * xMove;
 	xVector =  mSceneNode->getOrientation() * xVector;
 
-	mRigidBody->getBulletRigidBody()->applyCentralImpulse(OgreBulletCollisions::OgreBtConverter::to(xVector));
+	mRigidBody->applyCentralImpulse(JGC::toBulletVector3(xVector));
 
 	// mRigidBody is the spaceship's btRigidBody
-    btVector3 xCurrentVelocity = mRigidBody->getBulletRigidBody()->getLinearVelocity();
+    btVector3 xCurrentVelocity = mRigidBody->getLinearVelocity();
     btScalar xCurrentSpeed = xCurrentVelocity.length();
     if(xCurrentSpeed > mMoveSpeed) 
 	{
         xCurrentVelocity *= mMoveSpeed/xCurrentSpeed;
-        mRigidBody->getBulletRigidBody()->setLinearVelocity(xCurrentVelocity);
+        mRigidBody->setLinearVelocity(xCurrentVelocity);
     }
 }
 

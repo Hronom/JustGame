@@ -16,8 +16,6 @@
 class PlayGameState: public JGC::IState, public IGameObjectsListener
 {
 private:
-	bool isDebug;
-
 	MyGameObject *mPlayer;
 
 	Ogre::ManualObject *mGridManualObject;

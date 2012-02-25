@@ -32,9 +32,9 @@ MyGameObject::~MyGameObject()
 {
 	if(mRigidBody != 0)
 	{
-		JGC::Physics::PhysicsSystem::instance()->getDynamicsWorld()->getBulletDynamicsWorld()->removeRigidBody(mRigidBody->getBulletRigidBody());
-		delete mRigidBody->getBulletRigidBody()->getMotionState();
-		delete mRigidBody->getBulletRigidBody();
+		JGC::Physics::PhysicsSystem::instance()->getDynamicsWorld()->removeRigidBody(mRigidBody);
+		delete mRigidBody->getMotionState();
+		delete mRigidBody;
 	}
 
 	if(mCollisionShape != 0)

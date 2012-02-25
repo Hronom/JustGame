@@ -4,8 +4,6 @@
 
 PlayGameState::PlayGameState()
 {
-	isDebug = true;
-
 	mPlayer = 0;
 	mGridManualObject = 0;
 	mGridSceneNode = 0;
@@ -175,10 +173,10 @@ void PlayGameState::needUpdate(const Ogre::FrameEvent& evt)
 	}
 	
 	// Нанесение урона пулями
-	int xNumManifolds = JGC::Physics::PhysicsSystem::instance()->getDynamicsWorld()->getBulletDynamicsWorld()->getDispatcher()->getNumManifolds();
+	int xNumManifolds = JGC::Physics::PhysicsSystem::instance()->getDynamicsWorld()->getDispatcher()->getNumManifolds();
 	for (int i=0; i<xNumManifolds; i++)
 	{
-		btPersistentManifold* xContactManifold =  JGC::Physics::PhysicsSystem::instance()->getDynamicsWorld()->getBulletDynamicsWorld()->getDispatcher()->getManifoldByIndexInternal(i);
+		btPersistentManifold* xContactManifold =  JGC::Physics::PhysicsSystem::instance()->getDynamicsWorld()->getDispatcher()->getManifoldByIndexInternal(i);
 		btCollisionObject* xObjA = static_cast<btCollisionObject*>(xContactManifold->getBody0());
 		btCollisionObject* xObjB = static_cast<btCollisionObject*>(xContactManifold->getBody1());
 
@@ -259,11 +257,6 @@ void PlayGameState::keyPressed(const OIS::KeyEvent& e)
 		break;
 	case OIS::KC_E:
 		addEnemy(xVectorPos.randomDeviant(100));
-		break;
-	case OIS::KC_Q:
-		JGC::Physics::PhysicsSystem::instance()->getDynamicsWorld()->getDebugDrawer()->setDrawWireframe(isDebug);
-		JGC::Physics::PhysicsSystem::instance()->getDynamicsWorld()->setShowDebugShapes(isDebug);
-		isDebug = !isDebug;
 		break;
 	default: break;
 	}

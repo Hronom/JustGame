@@ -11,10 +11,10 @@ enum CollisionGroups
 };
 
 #include <Ogre.h>
-#include <OgreBulletCollisionsShape.h>
-#include <OgreBulletDynamics.h>
-
+#include <btBulletDynamicsCommon.h>
 #include <MainSystem.h>
+#include <MyMotionState.h>
+
 #include "IGameObjectsListener.h"
 
 class MyGameObject
@@ -35,8 +35,9 @@ protected:
 	Ogre::SceneNode *mSceneNode;
 	
 	// Phys
-	OgreBulletCollisions::CollisionShape *mCollisionShape;
-	OgreBulletDynamics::RigidBody *mRigidBody;
+	btCollisionShape *mCollisionShape;
+	btRigidBody *mRigidBody;
+	JGC::Physics::MyMotionState *mMyMotionState;
 
 	bool mShoot;
 	Ogre::Real mShootDelay;
