@@ -52,7 +52,7 @@ Enemy::Enemy(IGameObjectsListener *xGameObjectsListener, Ogre::String xObjectNam
 	mCollisionShape = new btSphereShape(xObjectRadius);
 	// and the Bullet rigid body
 	mMyMotionState = new JGC::Physics::MyMotionState(
-		btTransform(JGC::toBulletQuaternion(Ogre::Quaternion(0,0,0,1)), JGC::toBulletVector3(xPosition)), mSceneNode);
+		btTransform(JGC::toBtQuaternion(Ogre::Quaternion(0,0,0,1)), JGC::toBtVector3(xPosition)), mSceneNode);
 	mRigidBody = new btRigidBody(0.1f, mMyMotionState, mCollisionShape, btVector3(0,0,0));
 	mRigidBody->setRestitution(0.0f);
 	mRigidBody->setFriction(0.5f);
@@ -112,7 +112,7 @@ void Enemy::rotateEnemy(Ogre::Real xTimeSinceLastFrame)
 
 	// APPLY ROTATE to Bullet RigidBody
 	btTransform xRigidBodyTransform = mRigidBody->getWorldTransform();
-	xRigidBodyTransform.setRotation(JGC::toBulletQuaternion(mSceneNode->getOrientation()));
+	xRigidBodyTransform.setRotation(JGC::toBtQuaternion(mSceneNode->getOrientation()));
 	mRigidBody->setWorldTransform(xRigidBodyTransform);
 }
 
@@ -125,7 +125,7 @@ void Enemy::moveEnemy(Ogre::Real xTimeSinceLastFrame)
 	xVector = mMoveDirection * xMove;
 	xVector =  mSceneNode->getOrientation() * xVector;
 
-	mRigidBody->applyCentralImpulse(JGC::toBulletVector3(xVector));
+	mRigidBody->applyCentralImpulse(JGC::toBtVector3(xVector));
 
 	// mRigidBody is the spaceship's btRigidBody
     btVector3 xCurrentVelocity = mRigidBody->getLinearVelocity();
