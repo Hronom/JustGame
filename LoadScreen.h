@@ -6,11 +6,9 @@
 #include <MainSystem.h>
 #include <ILoadScreen.h>
 
-class LoadScreen: public JGC::ILoadScreen
+class LoadScreen: public JGC::States::ILoadScreen
 {
 private:
-	MyGUI::VectorWidgetPtr mCurrentLayoutWidgets;
-
 	MyGUI::Window *mWindow;
 	MyGUI::TextBox *mTextBox;
 	MyGUI::ProgressBar *mProgressBar;

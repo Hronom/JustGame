@@ -20,7 +20,7 @@ public:
 	Enemy(IGameObjectsListener *xGameObjectsListener, Ogre::String xObjectName, short xObjectCollideWith, Ogre::Vector2 xPos);
 	~Enemy();
 
-	virtual void update(const Ogre::FrameEvent& evt);
+	virtual void update(const float& xTimeSinceLastFrame);
 
 private:
 	void rotateEnemy(Ogre::Real xTimeSinceLastFrame);

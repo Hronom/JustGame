@@ -17,7 +17,7 @@ public:
 	Bullet(IGameObjectsListener *xGameObjectsListener, Ogre::String xObjectName, short xObjectCollideWith, Ogre::Vector2 xPos, Ogre::Vector2 xDestination);
 	~Bullet();
 
-	virtual void update(const Ogre::FrameEvent& evt);
+	virtual void update(const float& xTimeSinceLastFrame);
 	virtual int getDamage();
 };
 

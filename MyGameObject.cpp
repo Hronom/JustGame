@@ -50,7 +50,7 @@ MyGameObject::~MyGameObject()
 	}
 }
 
-void MyGameObject::update(const Ogre::FrameEvent& evt)
+void MyGameObject::update(const float& xTimeSinceLastFrame)
 {
 
 }

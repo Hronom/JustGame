@@ -6,7 +6,7 @@
 #include <MainSystem.h>
 #include <IState.h>
 
-class WinState: public JGC::IState
+class WinState: public JGC::States::IState
 {
 private:
 	MyGUI::VectorWidgetPtr mCurrentLayoutWidgets;
@@ -19,7 +19,7 @@ public:
 	virtual void enter();
 	virtual void exit();
 
-	virtual	void keyPressed(const OIS::KeyEvent& e);
+	virtual	void injectKeyPressed(const OIS::KeyEvent& e);
 
 private:
 	void okClicked(MyGUI::WidgetPtr xSender);

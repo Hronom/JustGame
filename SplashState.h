@@ -7,7 +7,7 @@
 #include <MainSystem.h>
 #include <IState.h>
 
-class SplashState: public JGC::IState
+class SplashState: public JGC::States::IState
 {
 private:
 	int mCurrentIndex;
@@ -26,9 +26,9 @@ public:
 	virtual void enter();
 	virtual void exit();
 
-	virtual void needUpdate(const Ogre::FrameEvent& evt);
-	virtual void mousePressed(const OIS::MouseEvent& e, OIS::MouseButtonID id);
-	virtual void keyPressed(const OIS::KeyEvent& e);
+	virtual void injectUpdate(const float& xTimeSinceLastFrame);
+	virtual void injectMousePressed(const OIS::MouseEvent& e, OIS::MouseButtonID id);
+	virtual void injectKeyPressed(const OIS::KeyEvent& e);
 
 private:
 	void skipCurrentLogo();

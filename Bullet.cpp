@@ -97,13 +97,13 @@ Bullet::~Bullet()
 	JGC::Graphic::GraphicSystem::instance()->getSceneManager()->destroyManualObject(mManualObject);
 }
 
-void Bullet::update(const Ogre::FrameEvent& evt)
+void Bullet::update(const float& xTimeSinceLastFrame)
 {
 	if(mHealthCount > 0)
 	{
 		if(mLiveTime > 0)
 		{
-			mLiveTime -= evt.timeSinceLastFrame;
+			mLiveTime -= xTimeSinceLastFrame;
 		}
 		else
 		{
@@ -116,7 +116,7 @@ void Bullet::update(const Ogre::FrameEvent& evt)
 		if(mTimeBeforeDelete <= 0) 
 			mNeedDelete = true;
 		else
-			mTimeBeforeDelete -= evt.timeSinceLastFrame;
+			mTimeBeforeDelete -= xTimeSinceLastFrame;
 	}
 }
 

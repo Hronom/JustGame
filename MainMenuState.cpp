@@ -1,5 +1,6 @@
 #include "MainMenuState.h"
 #include <GraphicSystem.h>
+#include <StatesSystem.h>
 
 MainMenuState::MainMenuState()
 {
@@ -37,14 +38,14 @@ void MainMenuState::exit()
 	}
 }
 
-void MainMenuState::keyPressed(const OIS::KeyEvent& e)
+void MainMenuState::injectKeyPressed(const OIS::KeyEvent& e)
 {
 	if(e.key == OIS::KC_ESCAPE) JGC::MainSystem::instance()->needShutdown(); 
 }
 
 void MainMenuState::newGameClicked(MyGUI::Widget *xSender)
 {
-	JGC::MainSystem::instance()->needSwitchToState("PlayGameState",true);
+	JGC::States::StatesSystem::instance()->needSwitchToState("PlayGameState",true);
 }
 
 void MainMenuState::exitClicked(MyGUI::Widget *xSender)

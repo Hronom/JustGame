@@ -29,7 +29,7 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR strCmdLine, INT)
 	LoseState *xLoseState = new LoseState();
 	JGC::States::StatesSystem::instance()->addNormalState("LoseState", xLoseState);
 
-	JGC::MainSystem::instance()->needSwitchToState("SplashState");
+	JGC::States::StatesSystem::instance()->needSwitchToState("SplashState");
 
 	JGC::MainSystem::instance()->run();
 	JGC::MainSystem::shutdown();

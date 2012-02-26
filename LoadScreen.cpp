@@ -15,11 +15,9 @@ LoadScreen::LoadScreen()
 
 LoadScreen::~LoadScreen()
 {
-	if(mCurrentLayoutWidgets.size() != 0)
-	{
-		MyGUI::LayoutManager::getInstancePtr()->unloadLayout(mCurrentLayoutWidgets);
-		mCurrentLayoutWidgets.clear();
-	}
+	MyGUI::WidgetManager::getInstancePtr()->destroyWidget(mProgressBar);
+	MyGUI::WidgetManager::getInstancePtr()->destroyWidget(mTextBox);
+	MyGUI::WidgetManager::getInstancePtr()->destroyWidget(mWindow);
 }
 
 void LoadScreen::show()

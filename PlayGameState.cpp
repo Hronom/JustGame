@@ -1,6 +1,7 @@
 #include "PlayGameState.h"
 #include <GraphicSystem.h>
 #include <PhysicsSystem.h>
+#include <StatesSystem.h>
 
 PlayGameState::PlayGameState()
 {
@@ -115,7 +116,7 @@ void PlayGameState::exit()
 	mForDelete.clear();
 }
 
-void PlayGameState::needUpdate(const Ogre::FrameEvent& evt)
+void PlayGameState::injectUpdate(const float& xTimeSinceLastFrame)
 {
 	MyGUI::IntPoint xMousePosition = MyGUI::InputManager::getInstancePtr()->getMousePosition();
 	MyGUI::IntSize xSize = MyGUI::RenderManager::getInstancePtr()->getViewSize();
@@ -125,14 +126,14 @@ void PlayGameState::needUpdate(const Ogre::FrameEvent& evt)
 	mPlayer->rotateTo(Ogre::Vector2(xVector.x, xVector.y));
 
 	// Обновление игрока
-	mPlayer->update(evt);
+	mPlayer->update(xTimeSinceLastFrame);
 
 	std::list<MyGameObject*>::iterator xUnit;
 	xUnit = mUnits.begin();
 	// Обновление юнитов
 	while(xUnit != mUnits.end())
 	{
-		(*xUnit)->update(evt);
+		(*xUnit)->update(xTimeSinceLastFrame);
 
 		(*xUnit)->rotateTo(mPlayer->getCurrentPos());
 
@@ -161,7 +162,7 @@ void PlayGameState::needUpdate(const Ogre::FrameEvent& evt)
 	xBullet = mBullets.begin();
 	while(xBullet != mBullets.end())
 	{
-		(*xBullet)->update(evt);
+		(*xBullet)->update(xTimeSinceLastFrame);
 
 		if((*xBullet)->getCurrentHealth() <= 0)
 		{
@@ -192,7 +193,7 @@ void PlayGameState::needUpdate(const Ogre::FrameEvent& evt)
 	xForDelete = mForDelete.begin();
 	while(xForDelete != mForDelete.end())
 	{
-		(*xForDelete)->update(evt);
+		(*xForDelete)->update(xTimeSinceLastFrame);
 
 		if((*xForDelete)->isNeedDelete() == true) 
 		{
@@ -205,18 +206,18 @@ void PlayGameState::needUpdate(const Ogre::FrameEvent& evt)
 
 	if(mPlayer->getCurrentHealth() <= 0)
 	{
-		JGC::MainSystem::instance()->needSwitchToState("LoseState");
+		JGC::States::StatesSystem::instance()->needSwitchToState("LoseState");
 		return;
 	}
 
 	if(mUnits.size() <= 0)
 	{
-		JGC::MainSystem::instance()->needSwitchToState("WinState");
+		JGC::States::StatesSystem::instance()->needSwitchToState("WinState");
 		return;
 	}
 }
 
-void PlayGameState::mouseMoved(const OIS::MouseEvent& e)
+void PlayGameState::injectMouseMoved(const OIS::MouseEvent& e)
 {
 	/*
 	MyGUI::IntPoint xMousePosition = MyGUI::InputManager::getInstancePtr().getMousePosition();
@@ -227,17 +228,17 @@ void PlayGameState::mouseMoved(const OIS::MouseEvent& e)
 	mPlayer->rotateTo(Ogre::Vector2(xVector.x, xVector.y));*/
 }
 
-void PlayGameState::mousePressed(const OIS::MouseEvent& e, OIS::MouseButtonID id)
+void PlayGameState::injectMousePressed(const OIS::MouseEvent& e, OIS::MouseButtonID id)
 {
 	if(id == OIS::MB_Left) mPlayer->shoot(true);
 }
 
-void PlayGameState::mouseReleased(const OIS::MouseEvent& e, OIS::MouseButtonID id)
+void PlayGameState::injectMouseReleased(const OIS::MouseEvent& e, OIS::MouseButtonID id)
 {
 	if(id == OIS::MB_Left) mPlayer->shoot(false);
 }
 
-void PlayGameState::keyPressed(const OIS::KeyEvent& e)
+void PlayGameState::injectKeyPressed(const OIS::KeyEvent& e)
 {
 	Ogre::Vector2 xVectorPos(-100.0f,-100.0f);
 
@@ -262,7 +263,7 @@ void PlayGameState::keyPressed(const OIS::KeyEvent& e)
 	}
 }
 
-void PlayGameState::keyReleased(const OIS::KeyEvent& e)
+void PlayGameState::injectKeyReleased(const OIS::KeyEvent& e)
 {
 	switch (e.key)
 	{

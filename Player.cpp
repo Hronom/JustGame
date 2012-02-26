@@ -74,11 +74,11 @@ Player::~Player()
 	JGC::Graphic::GraphicSystem::instance()->getSceneManager()->destroyManualObject(mManualObject);
 }
 
-void Player::update(const Ogre::FrameEvent& evt)
+void Player::update(const float& xTimeSinceLastFrame)
 {
-	rotatePlayer(evt.timeSinceLastFrame);
-	movePlayer(evt.timeSinceLastFrame);
-	playerShoot(evt.timeSinceLastFrame);
+	rotatePlayer(xTimeSinceLastFrame);
+	movePlayer(xTimeSinceLastFrame);
+	playerShoot(xTimeSinceLastFrame);
 
 	mRigidBody->activate();
 

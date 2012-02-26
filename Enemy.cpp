@@ -72,13 +72,13 @@ Enemy::~Enemy()
 	JGC::Graphic::GraphicSystem::instance()->getSceneManager()->destroyManualObject(mManualObject);
 }
 
-void Enemy::update(const Ogre::FrameEvent& evt)
+void Enemy::update(const float& xTimeSinceLastFrame)
 {
 	if(mHealthCount > 0)
 	{
-		rotateEnemy(evt.timeSinceLastFrame);
-		moveEnemy(evt.timeSinceLastFrame);
-		enemyShoot(evt.timeSinceLastFrame);
+		rotateEnemy(xTimeSinceLastFrame);
+		moveEnemy(xTimeSinceLastFrame);
+		enemyShoot(xTimeSinceLastFrame);
 
 		mRigidBody->activate();
 	}
@@ -87,7 +87,7 @@ void Enemy::update(const Ogre::FrameEvent& evt)
 		if(mTimeBeforeDelete <=0) 
 			mNeedDelete = true;
 		else 
-			mTimeBeforeDelete -= evt.timeSinceLastFrame;
+			mTimeBeforeDelete -= xTimeSinceLastFrame;
 	}
 }
 

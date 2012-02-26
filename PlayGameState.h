@@ -13,7 +13,7 @@
 #include "Enemy.h"
 #include "Bullet.h"
 
-class PlayGameState: public JGC::IState, public IGameObjectsListener
+class PlayGameState: public JGC::States::IState, public IGameObjectsListener
 {
 private:
 	MyGameObject *mPlayer;
@@ -37,12 +37,12 @@ public:
 	virtual void enter();
 	virtual void exit();
 
-	virtual void needUpdate(const Ogre::FrameEvent& evt);
-	virtual	void mouseMoved(const OIS::MouseEvent& e);
-	virtual void mousePressed(const OIS::MouseEvent& e, OIS::MouseButtonID id);
-	virtual void mouseReleased(const OIS::MouseEvent& e, OIS::MouseButtonID id);
-	virtual	void keyPressed(const OIS::KeyEvent& e);
-	virtual void keyReleased(const OIS::KeyEvent& e);
+	virtual void injectUpdate(const float& xTimeSinceLastFrame);
+	virtual	void injectMouseMoved(const OIS::MouseEvent& e);
+	virtual void injectMousePressed(const OIS::MouseEvent& e, OIS::MouseButtonID id);
+	virtual void injectMouseReleased(const OIS::MouseEvent& e, OIS::MouseButtonID id);
+	virtual	void injectKeyPressed(const OIS::KeyEvent& e);
+	virtual void injectKeyReleased(const OIS::KeyEvent& e);
 
 	void setPlayer(Ogre::Vector2 xPos);
 	void addEnemy(Ogre::Vector2 xPos);

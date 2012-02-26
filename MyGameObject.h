@@ -48,7 +48,7 @@ public:
 	MyGameObject(IGameObjectsListener *xGameObjectsListener, Ogre::String xObjectName, short xObjectCollideWith);
 	virtual ~MyGameObject();
 
-	virtual void update(const Ogre::FrameEvent& evt);
+	virtual void update(const float& xTimeSinceLastFrame);
 
 	virtual Ogre::String getObjectName();
 	virtual int getCurrentHealth();

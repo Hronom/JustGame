@@ -1,5 +1,6 @@
 #include "LoseState.h"
 #include <GraphicSystem.h>
+#include <StatesSystem.h>
 
 LoseState::LoseState()
 {
@@ -40,13 +41,13 @@ void LoseState::exit()
 	}
 }
 
-void LoseState::keyPressed(const OIS::KeyEvent& e)
+void LoseState::injectKeyPressed(const OIS::KeyEvent& e)
 {
 	if(e.key == OIS::KC_ESCAPE) JGC::MainSystem::instance()->needShutdown(); 
 }
 
 void LoseState::buttonClicked(MyGUI::WidgetPtr xSender)
 {
-	JGC::MainSystem::instance()->needSwitchToState("MainMenuState");
+	JGC::States::StatesSystem::instance()->needSwitchToState("MainMenuState");
 }
 

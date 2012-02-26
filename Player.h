@@ -19,7 +19,7 @@ public:
 	Player(IGameObjectsListener *xGameObjectsListener, Ogre::String xObjectName, short xObjectCollideWith, Ogre::Vector2 xPos);
 	~Player();
 
-	virtual void update(const Ogre::FrameEvent& evt);
+	virtual void update(const float& xTimeSinceLastFrame);
 
 private:
 	void rotatePlayer(Ogre::Real xTimeSinceLastFrame);

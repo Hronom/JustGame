@@ -1,5 +1,6 @@
 #include "SplashState.h"
 #include <GraphicSystem.h>
+#include <StatesSystem.h>
 
 SplashState::SplashState()
 {
@@ -71,15 +72,15 @@ void SplashState::exit()
 	MyGUI::PointerManager::getInstancePtr()->setVisible(true);
 }
 
-void SplashState::needUpdate(const Ogre::FrameEvent& evt)
+void SplashState::injectUpdate(const float& xTimeSinceLastFrame)
 {
 	if(mWidgetsIter != mCurrentLayoutWidgets.end())
 	{
 		if(mCurrentIndex == 0)
 		{
-			if(evt.timeSinceLastFrame == 0) return;
+			if(xTimeSinceLastFrame == 0) return;
 
-			float xValue = (*mWidgetsIter)->getAlpha() + mFadeSpeed * evt.timeSinceLastFrame;
+			float xValue = (*mWidgetsIter)->getAlpha() + mFadeSpeed * xTimeSinceLastFrame;
 
 			if(xValue < 1.0f)
 				(*mWidgetsIter)->setAlpha(xValue);
@@ -93,7 +94,7 @@ void SplashState::needUpdate(const Ogre::FrameEvent& evt)
 		if(mCurrentIndex == 1)
 		{
 			if(mCurrentTime <= mTimeToSwitch)
-				mCurrentTime += evt.timeSinceLastFrame;
+				mCurrentTime += xTimeSinceLastFrame;
 			else
 			{
 				mCurrentTime = 0;
@@ -103,7 +104,7 @@ void SplashState::needUpdate(const Ogre::FrameEvent& evt)
 
 		if(mCurrentIndex == 2)
 		{
-			float xValue = (*mWidgetsIter)->getAlpha() - mFadeSpeed * evt.timeSinceLastFrame;
+			float xValue = (*mWidgetsIter)->getAlpha() - mFadeSpeed * xTimeSinceLastFrame;
 
 			if(xValue > 0.0f)
 				(*mWidgetsIter)->setAlpha(xValue);
@@ -122,16 +123,16 @@ void SplashState::needUpdate(const Ogre::FrameEvent& evt)
 	}
 	else
 	{
-		JGC::MainSystem::instance()->needSwitchToState("MainMenuState");
+		JGC::States::StatesSystem::instance()->needSwitchToState("MainMenuState");
 	}
 }
 
-void SplashState::mousePressed(const OIS::MouseEvent& e, OIS::MouseButtonID id)
+void SplashState::injectMousePressed(const OIS::MouseEvent& e, OIS::MouseButtonID id)
 {
 	skipCurrentLogo();
 }
 
-void SplashState::keyPressed(const OIS::KeyEvent& e)
+void SplashState::injectKeyPressed(const OIS::KeyEvent& e)
 {
 	if(e.key == OIS::KC_ESCAPE)
 		JGC::MainSystem::instance()->needShutdown();

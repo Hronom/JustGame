@@ -1,5 +1,6 @@
 #include "WinState.h"
 #include <GraphicSystem.h>
+#include <StatesSystem.h>
 
 WinState::WinState()
 {
@@ -36,12 +37,12 @@ void WinState::exit()
 	}
 }
 
-void WinState::keyPressed(const OIS::KeyEvent& e)
+void WinState::injectKeyPressed(const OIS::KeyEvent& e)
 {
 	if(e.key == OIS::KC_ESCAPE) JGC::MainSystem::instance()->needShutdown(); 
 }
 
 void WinState::okClicked(MyGUI::WidgetPtr xSender)
 {
-	JGC::MainSystem::instance()->needSwitchToState("MainMenuState");
+	JGC::States::StatesSystem::instance()->needSwitchToState("MainMenuState");
 }
