@@ -38,9 +38,9 @@ Enemy::Enemy(IGameObjectsListener *xGameObjectsListener, Ogre::String xObjectNam
 	mManualObject->convertToMesh(mObjectName+"_Mesh");
 
 	// create Entity
-	mEntity = JGC::Graphic::GraphicSystem::instance()->getSceneManager()->createEntity(mObjectName+"_Entity", mObjectName+"_Mesh");
+	mEntity = JGC::GraphicSystem::instance()->getSceneManager()->createEntity(mObjectName+"_Entity", mObjectName+"_Mesh");
 	// connect Entity to Node
-	mSceneNode = JGC::Graphic::GraphicSystem::instance()->getSceneManager()->getRootSceneNode()->createChildSceneNode(xObjectName+"_Node");
+	mSceneNode = JGC::GraphicSystem::instance()->getSceneManager()->getRootSceneNode()->createChildSceneNode(xObjectName+"_Node");
 	mSceneNode->attachObject(mEntity);
 
 	// create Physical Body
@@ -51,8 +51,8 @@ Enemy::Enemy(IGameObjectsListener *xGameObjectsListener, Ogre::String xObjectNam
 	// after that create the Bullet shape with the calculated xSize
 	mCollisionShape = new btSphereShape(xObjectRadius);
 	// and the Bullet rigid body
-	mMyMotionState = new JGC::Physics::MyMotionState(
-		btTransform(JGC::toBtQuaternion(Ogre::Quaternion(0,0,0,1)), JGC::toBtVector3(xPosition)), mSceneNode);
+	mMyMotionState = new JGC::MyMotionState(
+		btTransform(JGC::Utils::toBtQuaternion(Ogre::Quaternion(0,0,0,1)), JGC::Utils::toBtVector3(xPosition)), mSceneNode);
 	mRigidBody = new btRigidBody(0.1f, mMyMotionState, mCollisionShape, btVector3(0,0,0));
 	mRigidBody->setRestitution(0.0f);
 	mRigidBody->setFriction(0.5f);
@@ -61,15 +61,15 @@ Enemy::Enemy(IGameObjectsListener *xGameObjectsListener, Ogre::String xObjectNam
 
 	mRigidBody->setUserPointer(this);
 
-	JGC::Physics::PhysicsSystem::instance()->getDynamicsWorld()->addRigidBody(mRigidBody, ENEMY_GROUP, PLAYER_GROUP | ENEMY_GROUP | BULLET_GROUP);
+	JGC::PhysicsSystem::instance()->getDynamicsWorld()->addRigidBody(mRigidBody, ENEMY_GROUP, PLAYER_GROUP | ENEMY_GROUP | BULLET_GROUP);
 
-	mSoundSource = JGC::Sound::SoundSystem::instance()->createSoundSource(xPosition.x, xPosition.y, xPosition.z, "../Media/Sound/impulse.wav", false);
+	mSoundSource = JGC::SoundSystem::instance()->createSoundSource(xPosition.x, xPosition.y, xPosition.z, "../Media/Sound/impulse.wav", false);
 }
 
 Enemy::~Enemy()
 {
-	JGC::Sound::SoundSystem::instance()->destroySoundSource(mSoundSource);
-	JGC::Graphic::GraphicSystem::instance()->getSceneManager()->destroyManualObject(mManualObject);
+	JGC::SoundSystem::instance()->destroySoundSource(mSoundSource);
+	JGC::GraphicSystem::instance()->getSceneManager()->destroyManualObject(mManualObject);
 }
 
 void Enemy::update(const float& xTimeSinceLastFrame)
@@ -112,7 +112,7 @@ void Enemy::rotateEnemy(Ogre::Real xTimeSinceLastFrame)
 
 	// APPLY ROTATE to Bullet RigidBody
 	btTransform xRigidBodyTransform = mRigidBody->getWorldTransform();
-	xRigidBodyTransform.setRotation(JGC::toBtQuaternion(mSceneNode->getOrientation()));
+	xRigidBodyTransform.setRotation(JGC::Utils::toBtQuaternion(mSceneNode->getOrientation()));
 	mRigidBody->setWorldTransform(xRigidBodyTransform);
 }
 
@@ -125,7 +125,7 @@ void Enemy::moveEnemy(Ogre::Real xTimeSinceLastFrame)
 	xVector = mMoveDirection * xMove;
 	xVector =  mSceneNode->getOrientation() * xVector;
 
-	mRigidBody->applyCentralImpulse(JGC::toBtVector3(xVector));
+	mRigidBody->applyCentralImpulse(JGC::Utils::toBtVector3(xVector));
 
 	// mRigidBody is the spaceship's btRigidBody
     btVector3 xCurrentVelocity = mRigidBody->getLinearVelocity();

@@ -21,7 +21,7 @@ void LoseState::prepareState()
 	MyGUI::LayerManager::getInstancePtr()->resizeView(MyGUI::RenderManager::getInstancePtr()->getViewSize());
 
 	MyGUI::Button *xButton;
-	xButton = JGC::Graphic::GraphicSystem::instance()->getGui()->findWidget<MyGUI::Button>("OkButton2");
+	xButton = JGC::GraphicSystem::instance()->getGui()->findWidget<MyGUI::Button>("OkButton2");
 	xButton->eventMouseButtonClick += MyGUI::newDelegate(this, &LoseState::buttonClicked);
 
 	mCurrentLayoutWidgets[0]->setVisible(false);
@@ -48,6 +48,6 @@ void LoseState::injectKeyPressed(const OIS::KeyEvent& e)
 
 void LoseState::buttonClicked(MyGUI::WidgetPtr xSender)
 {
-	JGC::States::StatesSystem::instance()->needSwitchToState("MainMenuState");
+	JGC::StatesSystem::instance()->needSwitchToState("MainMenuState");
 }
 

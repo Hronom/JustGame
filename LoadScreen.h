@@ -6,7 +6,7 @@
 #include <MainSystem.h>
 #include <ILoadScreen.h>
 
-class LoadScreen: public JGC::States::ILoadScreen
+class LoadScreen: public JGC::ILoadScreen
 {
 private:
 	MyGUI::Window *mWindow;

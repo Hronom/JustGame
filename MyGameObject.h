@@ -37,7 +37,7 @@ protected:
 	// Phys
 	btCollisionShape *mCollisionShape;
 	btRigidBody *mRigidBody;
-	JGC::Physics::MyMotionState *mMyMotionState;
+	JGC::MyMotionState *mMyMotionState;
 
 	bool mShoot;
 	Ogre::Real mShootDelay;

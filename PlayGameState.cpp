@@ -19,7 +19,7 @@ PlayGameState::~PlayGameState()
 
 void PlayGameState::prepareState()
 {
-	JGC::MainSystem::instance()->stateLoadProgress(0, "Loading world");
+	JGC::StatesSystem::instance()->injectStateLoadProgress(0, "Loading world");
 	Ogre::ColourValue xColor = Ogre::ColourValue(0.104f, 0.234f, 0.140f, 0.0f);
 	// create ManualObject
 	mGridManualObject = new Ogre::ManualObject("grid_manual");
@@ -43,20 +43,20 @@ void PlayGameState::prepareState()
 		mGridManualObject->end();
 	}
 
-	mGridSceneNode = JGC::Graphic::GraphicSystem::instance()->getSceneManager()->getRootSceneNode()->createChildSceneNode("grid_node");
+	mGridSceneNode = JGC::GraphicSystem::instance()->getSceneManager()->getRootSceneNode()->createChildSceneNode("grid_node");
 	mGridSceneNode->attachObject(mGridManualObject);
 
-	JGC::MainSystem::instance()->stateLoadProgress(50, "Loading player");
+	JGC::StatesSystem::instance()->injectStateLoadProgress(50, "Loading player");
 
 	setPlayer(Ogre::Vector2(0,0));
 
-	JGC::MainSystem::instance()->stateLoadProgress(70, "Loading enemys");
+	JGC::StatesSystem::instance()->injectStateLoadProgress(70, "Loading enemys");
 
 	Ogre::Vector2 xVectorPos(-100.0f,-100.0f);
 	for(int i=0; i<3; i++)
 		addEnemy(xVectorPos.randomDeviant(100));
 
-	JGC::MainSystem::instance()->stateLoadProgress(100, "Loading complete");
+	JGC::StatesSystem::instance()->injectStateLoadProgress(100, "Loading complete");
 }
 
 void PlayGameState::enter()
@@ -68,14 +68,14 @@ void PlayGameState::exit()
 {
 	if(mGridManualObject != 0)
 	{
-		JGC::Graphic::GraphicSystem::instance()->getSceneManager()->destroyManualObject(mGridManualObject);
+		JGC::GraphicSystem::instance()->getSceneManager()->destroyManualObject(mGridManualObject);
 		mGridManualObject = 0;
 	}
 
 	if(mGridSceneNode != 0)
 	{
 		mGridSceneNode->removeAndDestroyAllChildren();
-		JGC::Graphic::GraphicSystem::instance()->getSceneManager()->destroySceneNode(mGridSceneNode);
+		JGC::GraphicSystem::instance()->getSceneManager()->destroySceneNode(mGridSceneNode);
 		//delete mGridSceneNode;
 		mGridSceneNode = 0;
 	}
@@ -120,7 +120,7 @@ void PlayGameState::injectUpdate(const float& xTimeSinceLastFrame)
 {
 	MyGUI::IntPoint xMousePosition = MyGUI::InputManager::getInstancePtr()->getMousePosition();
 	MyGUI::IntSize xSize = MyGUI::RenderManager::getInstancePtr()->getViewSize();
-	Ogre::Ray xMouseRay =  JGC::Graphic::GraphicSystem::instance()->getCamera()->getCameraToViewportRay(xMousePosition.left / float(xSize.width), xMousePosition.top / float(xSize.height));
+	Ogre::Ray xMouseRay =  JGC::GraphicSystem::instance()->getCamera()->getCameraToViewportRay(xMousePosition.left / float(xSize.width), xMousePosition.top / float(xSize.height));
 	Ogre::Vector3 xVector = xMouseRay.getPoint(100);//почему 100? –ассто€ние между камерой и нулевой точкой оси z равно 100
 
 	mPlayer->rotateTo(Ogre::Vector2(xVector.x, xVector.y));
@@ -174,10 +174,10 @@ void PlayGameState::injectUpdate(const float& xTimeSinceLastFrame)
 	}
 	
 	// Ќанесение урона пул€ми
-	int xNumManifolds = JGC::Physics::PhysicsSystem::instance()->getDynamicsWorld()->getDispatcher()->getNumManifolds();
+	int xNumManifolds = JGC::PhysicsSystem::instance()->getDynamicsWorld()->getDispatcher()->getNumManifolds();
 	for (int i=0; i<xNumManifolds; i++)
 	{
-		btPersistentManifold* xContactManifold =  JGC::Physics::PhysicsSystem::instance()->getDynamicsWorld()->getDispatcher()->getManifoldByIndexInternal(i);
+		btPersistentManifold* xContactManifold =  JGC::PhysicsSystem::instance()->getDynamicsWorld()->getDispatcher()->getManifoldByIndexInternal(i);
 		btCollisionObject* xObjA = static_cast<btCollisionObject*>(xContactManifold->getBody0());
 		btCollisionObject* xObjB = static_cast<btCollisionObject*>(xContactManifold->getBody1());
 
@@ -206,13 +206,13 @@ void PlayGameState::injectUpdate(const float& xTimeSinceLastFrame)
 
 	if(mPlayer->getCurrentHealth() <= 0)
 	{
-		JGC::States::StatesSystem::instance()->needSwitchToState("LoseState");
+		JGC::StatesSystem::instance()->needSwitchToState("LoseState");
 		return;
 	}
 
 	if(mUnits.size() <= 0)
 	{
-		JGC::States::StatesSystem::instance()->needSwitchToState("WinState");
+		JGC::StatesSystem::instance()->needSwitchToState("WinState");
 		return;
 	}
 }

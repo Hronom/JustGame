@@ -12,7 +12,7 @@ class Enemy: public MyGameObject
 {
 private:
 	Ogre::ManualObject *mManualObject;
-	JGC::Sound::SoundSource *mSoundSource;
+	JGC::SoundSource *mSoundSource;
 
 	Ogre::Real mTimeBeforeDelete;
 

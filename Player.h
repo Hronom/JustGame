@@ -12,8 +12,8 @@ class Player: public MyGameObject
 {
 private:
 	Ogre::ManualObject *mManualObject;
-	JGC::Sound::SoundListener *mSoundListener;
-	JGC::Sound::SoundSource *mSoundSource;
+	JGC::SoundListener *mSoundListener;
+	JGC::SoundSource *mSoundSource;
 
 public:
 	Player(IGameObjectsListener *xGameObjectsListener, Ogre::String xObjectName, short xObjectCollideWith, Ogre::Vector2 xPos);

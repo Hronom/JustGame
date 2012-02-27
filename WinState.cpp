@@ -17,7 +17,7 @@ void WinState::prepareState()
 	MyGUI::LayerManager::getInstancePtr()->resizeView(MyGUI::RenderManager::getInstancePtr()->getViewSize());
 
 	MyGUI::Button *xButton;
-	xButton = JGC::Graphic::GraphicSystem::instance()->getGui()->findWidget<MyGUI::Button>("OkButton");
+	xButton = JGC::GraphicSystem::instance()->getGui()->findWidget<MyGUI::Button>("OkButton");
 	xButton->eventMouseButtonClick += MyGUI::newDelegate(this, &WinState::okClicked);
 
 	mCurrentLayoutWidgets[0]->setVisible(false);
@@ -44,5 +44,5 @@ void WinState::injectKeyPressed(const OIS::KeyEvent& e)
 
 void WinState::okClicked(MyGUI::WidgetPtr xSender)
 {
-	JGC::States::StatesSystem::instance()->needSwitchToState("MainMenuState");
+	JGC::StatesSystem::instance()->needSwitchToState("MainMenuState");
 }

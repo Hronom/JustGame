@@ -13,7 +13,7 @@
 #include "Enemy.h"
 #include "Bullet.h"
 
-class PlayGameState: public JGC::States::IState, public IGameObjectsListener
+class PlayGameState: public JGC::IState, public IGameObjectsListener
 {
 private:
 	MyGameObject *mPlayer;

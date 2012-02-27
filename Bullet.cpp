@@ -35,9 +35,9 @@ Bullet::Bullet(IGameObjectsListener *xGameObjectsListener, Ogre::String xObjectN
 	mManualObject->convertToMesh(mObjectName+"_Mesh");
 
 	// create Entity
-	mEntity = JGC::Graphic::GraphicSystem::instance()->getSceneManager()->createEntity(mObjectName+"_Entity", mObjectName+"_Mesh");
+	mEntity = JGC::GraphicSystem::instance()->getSceneManager()->createEntity(mObjectName+"_Entity", mObjectName+"_Mesh");
 	// connect Entity to Node
-	mSceneNode = JGC::Graphic::GraphicSystem::instance()->getSceneManager()->getRootSceneNode()->createChildSceneNode(xObjectName+"_Node");
+	mSceneNode = JGC::GraphicSystem::instance()->getSceneManager()->getRootSceneNode()->createChildSceneNode(xObjectName+"_Node");
 	mSceneNode->attachObject(mEntity);
 
 	// create Physical Body
@@ -54,10 +54,10 @@ Bullet::Bullet(IGameObjectsListener *xGameObjectsListener, Ogre::String xObjectN
 	mSceneNode->setPosition(xPosition);
 
 	// after that create the Bullet shape with the calculated xSize
-	mCollisionShape = new btBoxShape(JGC::toBtVector3(xSize));
+	mCollisionShape = new btBoxShape(JGC::Utils::toBtVector3(xSize));
 	// and the Bullet rigid body
-	mMyMotionState = new JGC::Physics::MyMotionState(
-		btTransform(JGC::toBtQuaternion(Ogre::Quaternion(0,0,0,1)), JGC::toBtVector3(xPosition)), mSceneNode);
+	mMyMotionState = new JGC::MyMotionState(
+		btTransform(JGC::Utils::toBtQuaternion(Ogre::Quaternion(0,0,0,1)), JGC::Utils::toBtVector3(xPosition)), mSceneNode);
 	mRigidBody = new btRigidBody(0.1f, mMyMotionState, mCollisionShape, btVector3(0,0,0));
 	mRigidBody->setRestitution(0.0f);
 	mRigidBody->setFriction(0.5f);
@@ -66,7 +66,7 @@ Bullet::Bullet(IGameObjectsListener *xGameObjectsListener, Ogre::String xObjectN
 
 	mRigidBody->setUserPointer(this);
 
-	JGC::Physics::PhysicsSystem::instance()->getDynamicsWorld()->addRigidBody(mRigidBody, BULLET_GROUP, mObjectCollideWith | BULLET_GROUP);
+	JGC::PhysicsSystem::instance()->getDynamicsWorld()->addRigidBody(mRigidBody, BULLET_GROUP, mObjectCollideWith | BULLET_GROUP);
 
 
 
@@ -81,7 +81,7 @@ Bullet::Bullet(IGameObjectsListener *xGameObjectsListener, Ogre::String xObjectN
 
 	// APPLY ROTATE to Bullet RigidBody
 	btTransform xRigidBodyTransform = mRigidBody->getWorldTransform();
-	xRigidBodyTransform.setRotation(JGC::toBtQuaternion(mSceneNode->getOrientation()));
+	xRigidBodyTransform.setRotation(JGC::Utils::toBtQuaternion(mSceneNode->getOrientation()));
 	mRigidBody->setWorldTransform(xRigidBodyTransform);
 
 	// MOVE
@@ -89,12 +89,12 @@ Bullet::Bullet(IGameObjectsListener *xGameObjectsListener, Ogre::String xObjectN
 	xVector = mMoveDirection * mMoveSpeed;
 	xVector =  mSceneNode->getOrientation() * xVector;
 
-	mRigidBody->applyCentralImpulse(JGC::toBtVector3(xVector));
+	mRigidBody->applyCentralImpulse(JGC::Utils::toBtVector3(xVector));
 }
 
 Bullet::~Bullet()
 {
-	JGC::Graphic::GraphicSystem::instance()->getSceneManager()->destroyManualObject(mManualObject);
+	JGC::GraphicSystem::instance()->getSceneManager()->destroyManualObject(mManualObject);
 }
 
 void Bullet::update(const float& xTimeSinceLastFrame)

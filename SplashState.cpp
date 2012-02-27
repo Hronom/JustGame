@@ -19,7 +19,7 @@ SplashState::~SplashState()
 void SplashState::prepareState()
 {
 	MyGUI::ImageBox *mImageBox;
-	MyGUI::Gui *xGUI = JGC::Graphic::GraphicSystem::instance()->getGui();
+	MyGUI::Gui *xGUI = JGC::GraphicSystem::instance()->getGui();
 
 	mImageBox = xGUI->createWidget<MyGUI::ImageBox>("ImageBox",0,0,0,0, MyGUI::Align::Default,"Main", "OgreLogo");
 	mImageBox->setRealCoord(0.0f,0.0f,1.0f,1.0f);
@@ -123,7 +123,7 @@ void SplashState::injectUpdate(const float& xTimeSinceLastFrame)
 	}
 	else
 	{
-		JGC::States::StatesSystem::instance()->needSwitchToState("MainMenuState");
+		JGC::StatesSystem::instance()->needSwitchToState("MainMenuState");
 	}
 }
 

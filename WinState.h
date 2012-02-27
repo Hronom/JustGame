@@ -6,7 +6,7 @@
 #include <MainSystem.h>
 #include <IState.h>
 
-class WinState: public JGC::States::IState
+class WinState: public JGC::IState
 {
 private:
 	MyGUI::VectorWidgetPtr mCurrentLayoutWidgets;

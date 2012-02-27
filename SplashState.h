@@ -7,7 +7,7 @@
 #include <MainSystem.h>
 #include <IState.h>
 
-class SplashState: public JGC::States::IState
+class SplashState: public JGC::IState
 {
 private:
 	int mCurrentIndex;

@@ -18,9 +18,9 @@ void MainMenuState::prepareState()
 	mCurrentLayoutWidgets[0]->setVisible(false);
 
 	MyGUI::Button *xButton;
-	xButton = JGC::Graphic::GraphicSystem::instance()->getGui()->findWidget<MyGUI::Button>("NewGameButton");
+	xButton = JGC::GraphicSystem::instance()->getGui()->findWidget<MyGUI::Button>("NewGameButton");
 	xButton->eventMouseButtonClick += MyGUI::newDelegate(this, &MainMenuState::newGameClicked);
-	xButton = JGC::Graphic::GraphicSystem::instance()->getGui()->findWidget<MyGUI::Button>("ExitButton");
+	xButton = JGC::GraphicSystem::instance()->getGui()->findWidget<MyGUI::Button>("ExitButton");
 	xButton->eventMouseButtonClick += MyGUI::newDelegate(this, &MainMenuState::exitClicked);	
 }
 
@@ -45,7 +45,7 @@ void MainMenuState::injectKeyPressed(const OIS::KeyEvent& e)
 
 void MainMenuState::newGameClicked(MyGUI::Widget *xSender)
 {
-	JGC::States::StatesSystem::instance()->needSwitchToState("PlayGameState",true);
+	JGC::StatesSystem::instance()->needSwitchToState("PlayGameState",true);
 }
 
 void MainMenuState::exitClicked(MyGUI::Widget *xSender)

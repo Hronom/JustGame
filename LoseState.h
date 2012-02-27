@@ -7,7 +7,7 @@
 #include <MainSystem.h>
 #include <IState.h>
 
-class LoseState: public JGC::States::IState
+class LoseState: public JGC::IState
 {
 private:
 	MyGUI::VectorWidgetPtr mCurrentLayoutWidgets;

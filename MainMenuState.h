@@ -7,7 +7,7 @@
 #include <MainSystem.h>
 #include <IState.h>
 
-class MainMenuState: public JGC::States::IState
+class MainMenuState: public JGC::IState
 {
 private:
 	MyGUI::VectorWidgetPtr mCurrentLayoutWidgets;

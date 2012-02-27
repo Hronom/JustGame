@@ -32,7 +32,7 @@ MyGameObject::~MyGameObject()
 {
 	if(mRigidBody != 0)
 	{
-		JGC::Physics::PhysicsSystem::instance()->getDynamicsWorld()->removeRigidBody(mRigidBody);
+		JGC::PhysicsSystem::instance()->getDynamicsWorld()->removeRigidBody(mRigidBody);
 		delete mRigidBody->getMotionState();
 		delete mRigidBody;
 	}
@@ -41,12 +41,12 @@ MyGameObject::~MyGameObject()
 		delete mCollisionShape;
 
 	if(mEntity != 0) 
-		JGC::Graphic::GraphicSystem::instance()->getSceneManager()->destroyEntity(mEntity);
+		JGC::GraphicSystem::instance()->getSceneManager()->destroyEntity(mEntity);
 
 	if(mSceneNode != 0)
 	{
 		mSceneNode->removeAndDestroyAllChildren();
-		JGC::Graphic::GraphicSystem::instance()->getSceneManager()->destroySceneNode(mSceneNode);
+		JGC::GraphicSystem::instance()->getSceneManager()->destroySceneNode(mSceneNode);
 	}
 }
 
