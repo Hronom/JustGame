@@ -16,6 +16,9 @@
 class PlayGameState: public JGC::IState, public IGameObjectsListener
 {
 private:
+	MyGUI::VectorWidgetPtr mCurrentLayoutWidgets;
+	Ogre::RaySceneQuery* mRaySceneQuery;
+
 	MyGameObject *mPlayer;
 
 	Ogre::ManualObject *mGridManualObject;

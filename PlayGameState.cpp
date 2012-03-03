@@ -5,6 +5,7 @@
 
 PlayGameState::PlayGameState()
 {
+	mRaySceneQuery = 0;
 	mPlayer = 0;
 	mGridManualObject = 0;
 	mGridSceneNode = 0;
@@ -19,6 +20,13 @@ PlayGameState::~PlayGameState()
 
 void PlayGameState::prepareState()
 {
+	JGC::StatesSystem::instance()->injectStateLoadProgress(0, "Loading game UI");
+	mCurrentLayoutWidgets = MyGUI::LayoutManager::getInstancePtr()->loadLayout("GameUI.layout");
+	MyGUI::LayerManager::getInstancePtr()->resizeView(MyGUI::RenderManager::getInstancePtr()->getViewSize());
+	mCurrentLayoutWidgets[0]->setVisible(false);
+
+	mRaySceneQuery = JGC::GraphicSystem::instance()->getSceneManager()->createRayQuery(Ogre::Ray());
+
 	JGC::StatesSystem::instance()->injectStateLoadProgress(0, "Loading world");
 	Ogre::ColourValue xColor = Ogre::ColourValue(0.104f, 0.234f, 0.140f, 0.0f);
 	// create ManualObject
@@ -49,6 +57,10 @@ void PlayGameState::prepareState()
 	JGC::StatesSystem::instance()->injectStateLoadProgress(50, "Loading player");
 
 	setPlayer(Ogre::Vector2(0,0));
+	MyGUI::ProgressBar *xProgressBar;
+	xProgressBar = JGC::GraphicSystem::instance()->getGui()->findWidget<MyGUI::ProgressBar>("PlayerHealthBar");
+	xProgressBar->setProgressRange(mPlayer->getCurrentHealth());
+	xProgressBar->setProgressPosition(mPlayer->getCurrentHealth());
 
 	JGC::StatesSystem::instance()->injectStateLoadProgress(70, "Loading enemys");
 
@@ -61,11 +73,25 @@ void PlayGameState::prepareState()
 
 void PlayGameState::enter()
 {
-	
+	mCurrentLayoutWidgets[0]->setVisible(true);
 }
 
 void PlayGameState::exit()
 {
+    MyGUI::PointerManager::getInstancePtr()->setPointer("arrow");
+
+	if(mCurrentLayoutWidgets.size() != 0)
+	{
+		MyGUI::LayoutManager::getInstancePtr()->unloadLayout(mCurrentLayoutWidgets);
+		mCurrentLayoutWidgets.clear();
+	}
+
+	if(mRaySceneQuery != 0)
+	{
+		JGC::GraphicSystem::instance()->getSceneManager()->destroyQuery(mRaySceneQuery);
+		mRaySceneQuery = 0;
+	}
+
 	if(mGridManualObject != 0)
 	{
 		JGC::GraphicSystem::instance()->getSceneManager()->destroyManualObject(mGridManualObject);
@@ -76,7 +102,6 @@ void PlayGameState::exit()
 	{
 		mGridSceneNode->removeAndDestroyAllChildren();
 		JGC::GraphicSystem::instance()->getSceneManager()->destroySceneNode(mGridSceneNode);
-		//delete mGridSceneNode;
 		mGridSceneNode = 0;
 	}
 
@@ -128,9 +153,9 @@ void PlayGameState::injectUpdate(const float& xTimeSinceLastFrame)
 	// Обновление игрока
 	mPlayer->update(xTimeSinceLastFrame);
 
+	// Обновление юнитов
 	std::list<MyGameObject*>::iterator xUnit;
 	xUnit = mUnits.begin();
-	// Обновление юнитов
 	while(xUnit != mUnits.end())
 	{
 		(*xUnit)->update(xTimeSinceLastFrame);
@@ -188,6 +213,11 @@ void PlayGameState::injectUpdate(const float& xTimeSinceLastFrame)
 		xGameObjectB->makeDamage(xGameObjectA->getDamage());
 	}
 
+	// Обновление отображения здоровья игрока
+	MyGUI::ProgressBar *xProgressBar;
+	xProgressBar = JGC::GraphicSystem::instance()->getGui()->findWidget<MyGUI::ProgressBar>("PlayerHealthBar");
+	xProgressBar->setProgressPosition(mPlayer->getCurrentHealth());
+
 	// Обновление объектов для удаления
 	std::list<MyGameObject*>::iterator xForDelete;
 	xForDelete = mForDelete.begin();
@@ -219,13 +249,24 @@ void PlayGameState::injectUpdate(const float& xTimeSinceLastFrame)
 
 void PlayGameState::injectMouseMoved(const OIS::MouseEvent& e)
 {
-	/*
-	MyGUI::IntPoint xMousePosition = MyGUI::InputManager::getInstancePtr().getMousePosition();
-	MyGUI::IntSize xSize = MyGUI::RenderManager::getInstancePtr().getViewSize();
-	Ogre::Ray xMouseRay =  JGC::MainSystem::instance()->getCamera()->getCameraToViewportRay(xMousePosition.left / float(xSize.width), xMousePosition.top / float(xSize.height));
-	Ogre::Vector3 xVector = xMouseRay.getPoint(100);//почему 100? Расстояние между камерой и нулевой точкой оси z равно 100
-
-	mPlayer->rotateTo(Ogre::Vector2(xVector.x, xVector.y));*/
+	MyGUI::PointerManager::getInstancePtr()->setPointer("arrow");
+	std::string xString;
+	MyGUI::IntPoint xMousePosition = MyGUI::InputManager::getInstancePtr()->getMousePosition();
+	MyGUI::IntSize xSize = MyGUI::RenderManager::getInstance().getViewSize();
+	Ogre::Ray ray = JGC::GraphicSystem::instance()->getCamera()->getCameraToViewportRay(xMousePosition.left/float(xSize.width), xMousePosition.top/float(xSize.height));
+	mRaySceneQuery->setRay(ray);
+	mRaySceneQuery->setSortByDistance(true);
+	Ogre::RaySceneQueryResult& xResult = mRaySceneQuery->execute();
+	for (Ogre::RaySceneQueryResult::iterator xIter = xResult.begin(); xIter != xResult.end(); ++xIter)
+	{
+		if (xIter->movable != 0)
+		{
+			Ogre::Any xAny = xIter->movable->getUserAny();
+			int *x = Ogre::any_cast<int*>(xAny);
+			if ((*x) == 1)
+				MyGUI::PointerManager::getInstancePtr()->setPointer("hand");
+		}
+	}
 }
 
 void PlayGameState::injectMousePressed(const OIS::MouseEvent& e, OIS::MouseButtonID id)

@@ -39,6 +39,7 @@ Enemy::Enemy(IGameObjectsListener *xGameObjectsListener, Ogre::String xObjectNam
 
 	// create Entity
 	mEntity = JGC::GraphicSystem::instance()->getSceneManager()->createEntity(mObjectName+"_Entity", mObjectName+"_Mesh");
+	mEntity->setUserAny(Ogre::Any(new int(1)));
 	// connect Entity to Node
 	mSceneNode = JGC::GraphicSystem::instance()->getSceneManager()->getRootSceneNode()->createChildSceneNode(xObjectName+"_Node");
 	mSceneNode->attachObject(mEntity);
