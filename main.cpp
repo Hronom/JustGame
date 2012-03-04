@@ -9,7 +9,7 @@
 
 int WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR strCmdLine, INT)
 {
-	JGC::MainSystem::initialize("Ogre.cfg","Plugins.cfg","../Media/Resources.cfg","Ogre.log", "MyGUI.log");
+    JGC::MainSystem::initialize("Ogre.cfg","Plugins.cfg","../Media/Resources.cfg","Ogre.log", "MyGUI.log");
 
 	LoadScreen *xLoadState = new LoadScreen();
 	JGC::StatesSystem::instance()->setLoadState(xLoadState);

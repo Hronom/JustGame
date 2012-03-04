@@ -23,8 +23,12 @@ public:
 	virtual	void injectKeyPressed(const OIS::KeyEvent& e);
 
 private:
+    void prepareMainMenu();
+    void prepareAboutProgram();
 	void newGameClicked(MyGUI::Widget *xSender);
+    void aboutProgramClicked(MyGUI::Widget *xSender);
 	void exitClicked(MyGUI::Widget *xSender);
+    void backToMainMenuClicked(MyGUI::Widget *xSender);
 };
 
 #endif
