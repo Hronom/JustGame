@@ -1,9 +1,11 @@
 cmake_minimum_required (VERSION 2.8)
 
 set(PROJECT JustGame)
-
 project(${PROJECT})
  
+######################################################################
+# Setting source files for this project
+######################################################################
 set(HEADERS
 ./Bullet.h
 ./Enemy.h
@@ -32,7 +34,9 @@ set(SOURCES
 ./WinState.cpp
 )
 
-#Ќастройка подключени€ Qt
+######################################################################
+# Setting Qt packages
+######################################################################
 set(QT_ROOT $ENV{QT_ROOT})
 set(QT_QMAKE_EXECUTABLE ${QT_ROOT}/bin/qmake)
 set(QT_MOC_EXECUTABLE ${QT_ROOT}/bin/moc)
@@ -45,72 +49,112 @@ find_package(Qt4 REQUIRED)
 include(${QT_USE_FILE})
 ADD_DEFINITIONS(${QT_DEFINITIONS})
 
-#√енераци€ мок файлов Qt
 qt4_wrap_cpp(HEADERS_MOC ${HEADERS})
 
-#”казание используемых модулей Qt
 set(QT_DONT_USE_QTGUI true)
 
-#”казание директорий с хеадерами зависимостей
+######################################################################
+# Setting the directories of dependencies
+######################################################################
+set(OPENAL_SDK_DIR CACHE PATH FORCE)
+if(OPENAL_SDK_DIR STREQUAL "")
+message(SEND_ERROR "Please set directory where OpenAl sdk")
+endif(OPENAL_SDK_DIR STREQUAL "")
+
+set(FREEALUT_DIR CACHE PATH FORCE)
+if(FREEALUT_DIR STREQUAL "")
+message(SEND_ERROR "Please set directory where Freealut bin")
+endif(FREEALUT_DIR STREQUAL "")
+
+set(OGRE_INSTALL_DIR CACHE PATH FORCE)
+if(OGRE_INSTALL_DIR STREQUAL "")
+message(SEND_ERROR "Please set directory where Ogre install")
+endif(OGRE_INSTALL_DIR STREQUAL "")
+
+set(MYGUI_INSTALL_DIR CACHE PATH FORCE)
+if(MYGUI_INSTALL_DIR STREQUAL "")
+message(SEND_ERROR "Please set directory where MyGUI install")
+endif(MYGUI_INSTALL_DIR STREQUAL "")
+
+set(BULLET_INSTALL_DIR CACHE PATH FORCE)
+if(BULLET_INSTALL_DIR STREQUAL "")
+message(SEND_ERROR "Please set directory where Bullet install")
+endif(BULLET_INSTALL_DIR STREQUAL "")
+
+set(JUSTGAMECORE_INSTALL_DIR CACHE PATH FORCE)
+if(JUSTGAMECORE_INSTALL_DIR STREQUAL "")
+message(SEND_ERROR "Please set directory where JustGameCore install")
+endif(JUSTGAMECORE_INSTALL_DIR STREQUAL "")
+
+######################################################################
+# Setting includes of dependencies
+######################################################################
 include_directories(
-D:/Dev/JustGameProject/ExternalDependencies/OpenAL_1.1_SDK/include
-D:/Dev/JustGameProject/ExternalDependencies/freealut-1.1.0-bin/include
-D:/Dev/JustGameProject/ExternalDependencies/freealut-1.1.0-bin/include/al
-D:/Dev/JustGameProject/ExternalDependencies/Ogre_install/include
-D:/Dev/JustGameProject/ExternalDependencies/Ogre_install/include/OIS
-D:/Dev/JustGameProject/ExternalDependencies/Ogre_install/include/OGRE
-D:/Dev/JustGameProject/ExternalDependencies/MyGUI_install/include/MYGUI
-D:/Dev/JustGameProject/ExternalDependencies/Bullet/src
-D:/Dev/JustGameProject/JustGameCore_sources
+${OPENAL_SDK_DIR}/include
+${FREEALUT_DIR}/include
+${FREEALUT_DIR}/include/al
+${OGRE_INSTALL_DIR}/include
+${OGRE_INSTALL_DIR}/include/OIS
+${OGRE_INSTALL_DIR}/include/OGRE
+${MYGUI_INSTALL_DIR}/include/MYGUI
+${BULLET_INSTALL_DIR}/include/bullet
+${JUSTGAMECORE_INSTALL_DIR}/include
 )
 
-#”казание либ зависимостей дл€ дебага
+######################################################################
+# Setting libs of dependencies
+######################################################################
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
 set(LIBRARIES
-D:/Dev/JustGameProject/JustGameCore_installed/lib/Debug/libJustGameCore_d.a
-D:/Dev/JustGameProject/ExternalDependencies/OpenAL_1.1_SDK/libs/Win32/OpenAL32.lib
-D:/Dev/JustGameProject/ExternalDependencies/freealut-1.1.0-bin/lib/alut.lib
-D:/Dev/JustGameProject/ExternalDependencies/MyGUI_install/lib/Debug/libMyGUI.OgrePlatform_d.a
-D:/Dev/JustGameProject/ExternalDependencies/MyGUI_install/lib/Debug/libMyGUIEngine_d.dll.a
-D:/Dev/JustGameProject/ExternalDependencies/Ogre_install/lib/debug/libOgreMain_d.dll.a
-D:/Dev/JustGameProject/ExternalDependencies/Ogre_install/lib/debug/libOIS_d.dll.a
-D:/Dev/JustGameProject/ExternalDependencies/Bullet_build/lib/libBulletSoftBody_Debug.a
-D:/Dev/JustGameProject/ExternalDependencies/Bullet_build/lib/libBulletDynamics_Debug.a
-D:/Dev/JustGameProject/ExternalDependencies/Bullet_build/lib/libBulletCollision_Debug.a
-D:/Dev/JustGameProject/ExternalDependencies/Bullet_build/lib/libLinearMath_Debug.a
+${JUSTGAMECORE_INSTALL_DIR}/lib/Debug/libJustGameCore_d.a
+${OPENAL_SDK_DIR}/libs/Win32/OpenAL32.lib
+${FREEALUT_DIR}/lib/alut.lib
+${MYGUI_INSTALL_DIR}/lib/Debug/libMyGUI.OgrePlatform_d.a
+${MYGUI_INSTALL_DIR}/lib/Debug/libMyGUIEngine_d.dll.a
+${OGRE_INSTALL_DIR}/lib/debug/libOgreMain_d.dll.a
+${OGRE_INSTALL_DIR}/lib/debug/libOIS_d.dll.a
+${BULLET_INSTALL_DIR}/lib/libBulletSoftBody_Debug.a
+${BULLET_INSTALL_DIR}/lib/libBulletDynamics_Debug.a
+${BULLET_INSTALL_DIR}/lib/libBulletCollision_Debug.a
+${BULLET_INSTALL_DIR}/lib/libLinearMath_Debug.a
 )
 endif(CMAKE_BUILD_TYPE STREQUAL "Debug")
 
-#”казание либ зависимостей дл€ релиза
 if(CMAKE_BUILD_TYPE STREQUAL "Release")
 set(LIBRARIES
-D:/Dev/JustGameProject/JustGameCore_installed/lib/Release/libJustGameCore.a
-D:/Dev/JustGameProject/ExternalDependencies/OpenAL_1.1_SDK/libs/Win32/OpenAL32.lib
-D:/Dev/JustGameProject/ExternalDependencies/freealut-1.1.0-bin/lib/alut.lib
-D:/Dev/JustGameProject/ExternalDependencies/MyGUI_install/lib/Release/libMyGUI.OgrePlatform.a
-D:/Dev/JustGameProject/ExternalDependencies/MyGUI_install/lib/Release/libMyGUIEngine.dll.a
-D:/Dev/JustGameProject/ExternalDependencies/Ogre_install/lib/release/libOgreMain.dll.a
-D:/Dev/JustGameProject/ExternalDependencies/Ogre_install/lib/release/libOIS.dll.a
-D:/Dev/JustGameProject/ExternalDependencies/Bullet_build/lib/libBulletSoftBody.a
-D:/Dev/JustGameProject/ExternalDependencies/Bullet_build/lib/libBulletDynamics.a
-D:/Dev/JustGameProject/ExternalDependencies/Bullet_build/lib/libBulletCollision.a
-D:/Dev/JustGameProject/ExternalDependencies/Bullet_build/lib/libLinearMath.a
+${JUSTGAMECORE_INSTALL_DIR}/lib/Release/libJustGameCore.a
+${OPENAL_SDK_DIR}/libs/Win32/OpenAL32.lib
+${FREEALUT_DIR}/lib/alut.lib
+${MYGUI_INSTALL_DIR}/lib/Release/libMyGUI.OgrePlatform.a
+${MYGUI_INSTALL_DIR}/lib/Release/libMyGUIEngine.dll.a
+${OGRE_INSTALL_DIR}/lib/release/libOgreMain.dll.a
+${OGRE_INSTALL_DIR}/lib/release/libOIS.dll.a
+${BULLET_INSTALL_DIR}/lib/libBulletSoftBody.a
+${BULLET_INSTALL_DIR}/lib/libBulletDynamics.a
+${BULLET_INSTALL_DIR}/lib/libBulletCollision.a
+${BULLET_INSTALL_DIR}/lib/libLinearMath.a
 )
 endif(CMAKE_BUILD_TYPE STREQUAL "Release")
 
-#”казание пути где будут размещены бинарнике после билда
+######################################################################
+# Setting build options
+######################################################################
+if(CMAKE_BUILD_TYPE STREQUAL "")
+set(CMAKE_BUILD_TYPE "Debug")
+message(STATUS "Setting CMAKE_BUILD_TYPE to Debug")
+endif(CMAKE_BUILD_TYPE STREQUAL "")
+
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin/${CMAKE_BUILD_TYPE})
-#”казание из чего будет построен бинарник
 add_executable(${PROJECT} WIN32 ${SOURCES} ${HEADERS_MOC})
-#”казание библиотек которые необходимо прилинковать
 target_link_libraries(${PROJECT} ${LIBRARIES} ${QT_LIBRARIES})
 
-#”казание действий при инстале в дебаге
+######################################################################
+# Setting install rules
+######################################################################
 INSTALL(TARGETS ${PROJECT}
 RUNTIME DESTINATION bin/Debug
 CONFIGURATIONS Debug)
 
-#”казание действий при инстале в релизе
 INSTALL(TARGETS ${PROJECT}
 RUNTIME DESTINATION bin/Release
 CONFIGURATIONS Release)
