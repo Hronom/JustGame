@@ -203,8 +203,8 @@ void PlayGameState::injectUpdate(const float& xTimeSinceLastFrame)
 	for (int i=0; i<xNumManifolds; i++)
 	{
 		btPersistentManifold* xContactManifold =  JGC::PhysicsSystem::instance()->getDynamicsWorld()->getDispatcher()->getManifoldByIndexInternal(i);
-		btCollisionObject* xObjA = static_cast<btCollisionObject*>(xContactManifold->getBody0());
-		btCollisionObject* xObjB = static_cast<btCollisionObject*>(xContactManifold->getBody1());
+        const btCollisionObject* xObjA = static_cast<const btCollisionObject*>(xContactManifold->getBody0());
+        const btCollisionObject* xObjB = static_cast<const btCollisionObject*>(xContactManifold->getBody1());
 
 		MyGameObject *xGameObjectA = static_cast<MyGameObject*>(xObjA->getUserPointer());
 		MyGameObject *xGameObjectB = static_cast<MyGameObject*>(xObjB->getUserPointer());
