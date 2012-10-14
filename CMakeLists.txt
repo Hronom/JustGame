@@ -34,6 +34,10 @@ set(SOURCES
 ./WinState.cpp
 )
 
+set(CONFIGS
+./configs/Plugins.cfg
+)
+
 ######################################################################
 # Setting Qt packages
 ######################################################################
@@ -85,6 +89,11 @@ set(JUSTGAMECORE_INSTALL_DIR CACHE PATH FORCE)
 if(JUSTGAMECORE_INSTALL_DIR STREQUAL "")
 message(SEND_ERROR "Please set directory where JustGameCore install")
 endif(JUSTGAMECORE_INSTALL_DIR STREQUAL "")
+
+set(JUSTGAMEMEDIA_DIR CACHE PATH FORCE)
+if(JUSTGAMEMEDIA_DIR STREQUAL "")
+message(SEND_ERROR "Please set directory where JustGameMedia")
+endif(JUSTGAMEMEDIA_DIR STREQUAL "")
 
 ######################################################################
 # Setting includes of dependencies
@@ -151,10 +160,49 @@ target_link_libraries(${PROJECT} ${LIBRARIES} ${QT_LIBRARIES})
 ######################################################################
 # Setting install rules
 ######################################################################
-INSTALL(TARGETS ${PROJECT}
-RUNTIME DESTINATION bin/Debug
-CONFIGURATIONS Debug)
+#all
+INSTALL(DIRECTORY ${JUSTGAMEMEDIA_DIR}/
+DESTINATION bin/Media
+COMPONENT myinstall
+PATTERN .git EXCLUDE
+)
 
-INSTALL(TARGETS ${PROJECT}
+#Debug
+INSTALL(
+FILES
+${CONFIGS}
+${OGRE_INSTALL_DIR}/bin/debug/OgreMain_d.dll
+${OGRE_INSTALL_DIR}/bin/debug/RenderSystem_GL_d.dll
+${OGRE_INSTALL_DIR}/bin/debug/OIS_d.dll
+${OGRE_INSTALL_DIR}/bin/debug/cg.dll
+${MYGUI_INSTALL_DIR}/bin/debug/libMyGUIEngine_d.dll
+${FREEALUT_DIR}/lib/alut.dll
+DESTINATION bin/Debug
+CONFIGURATIONS Debug
+)
+
+INSTALL(
+TARGETS ${PROJECT}
+RUNTIME DESTINATION bin/Debug
+CONFIGURATIONS Debug
+)
+
+#Release
+INSTALL(
+FILES
+${CONFIGS}
+${OGRE_INSTALL_DIR}/bin/release/OgreMain.dll
+${OGRE_INSTALL_DIR}/bin/release/RenderSystem_GL.dll
+${OGRE_INSTALL_DIR}/bin/release/OIS.dll
+${OGRE_INSTALL_DIR}/bin/release/cg.dll
+${MYGUI_INSTALL_DIR}/bin/release/libMyGUIEngine.dll
+${FREEALUT_DIR}/lib/alut.dll
+DESTINATION bin/Release
+CONFIGURATIONS Release
+)
+
+INSTALL(
+TARGETS ${PROJECT}
 RUNTIME DESTINATION bin/Release
-CONFIGURATIONS Release)
+CONFIGURATIONS Release
+)
