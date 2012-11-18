@@ -10,32 +10,38 @@ set(HEADERS
 ./src/Bullet.h
 ./src/Enemy.h
 ./src/IGameObjectsListener.h
-./src/LoadScreen.h
-./src/LoseState.h
-./src/MainMenuState.h
 ./src/MyGameObject.h
 ./src/Player.h
 ./src/PlayGameState.h
-./src/SplashState.h
-./src/WinState.h
+./src/creators/ComponentsCreators.h
+./src/components/GraphBody.h
+./src/components/PhysBody.h
+./src/components/Health.h
+./src/components/PlayerControllable.h
+./src/components/AIControllable.h
+./src/components/CameraTrackable.h
+./src/components/Weapon.h
+./src/components/DoDamage.h
+./src/systems/PlayerControl.h
+./src/systems/PhysGraphSync.h
+./src/systems/PlayerCameraSync.h
 )
  
 set(SOURCES
 ./src/Bullet.cpp
 ./src/Enemy.cpp
-./src/LoadScreen.cpp
-./src/LoseState.cpp
 ./src/main.cpp
-./src/MainMenuState.cpp
 ./src/MyGameObject.cpp
 ./src/Player.cpp
 ./src/PlayGameState.cpp
-./src/SplashState.cpp
-./src/WinState.cpp
+./src/creators/ComponentsCreators.cpp
+./src/systems/PlayerControl.cpp
+./src/systems/PhysGraphSync.cpp
+./src/systems/PlayerCameraSync.cpp
 )
 
 set(CONFIGS
-./configs/Plugins.cfg
+./configs
 )
 
 ######################################################################
@@ -84,6 +90,11 @@ set(BULLET_INSTALL_DIR CACHE PATH FORCE)
 if(BULLET_INSTALL_DIR STREQUAL "")
 message(SEND_ERROR "Please set directory where Bullet install")
 endif(BULLET_INSTALL_DIR STREQUAL "")
+
+set(QT_INSTALL_DIR CACHE PATH FORCE)
+if(QT_INSTALL_DIR STREQUAL "")
+message(SEND_ERROR "Please set directory where Qt install")
+endif(QT_INSTALL_DIR STREQUAL "")
 
 set(JUSTGAMECORE_INSTALL_DIR CACHE PATH FORCE)
 if(JUSTGAMECORE_INSTALL_DIR STREQUAL "")
@@ -154,7 +165,7 @@ message(STATUS "Setting CMAKE_BUILD_TYPE to Debug")
 endif(CMAKE_BUILD_TYPE STREQUAL "")
 
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin/${CMAKE_BUILD_TYPE})
-add_executable(${PROJECT} WIN32 ${SOURCES} ${HEADERS_MOC})
+add_executable(${PROJECT} WIN32 ${HEADERS} ${SOURCES} ${HEADERS_MOC})
 target_link_libraries(${PROJECT} ${LIBRARIES} ${QT_LIBRARIES})
 
 ######################################################################
@@ -170,13 +181,14 @@ PATTERN .git EXCLUDE
 #Debug
 INSTALL(
 FILES
-${CONFIGS}
+${CONFIGS}/debug/Plugins.cfg
 ${OGRE_INSTALL_DIR}/bin/debug/OgreMain_d.dll
 ${OGRE_INSTALL_DIR}/bin/debug/RenderSystem_GL_d.dll
 ${OGRE_INSTALL_DIR}/bin/debug/OIS_d.dll
 ${OGRE_INSTALL_DIR}/bin/debug/cg.dll
 ${MYGUI_INSTALL_DIR}/bin/debug/libMyGUIEngine_d.dll
 ${FREEALUT_DIR}/lib/alut.dll
+${QT_INSTALL_DIR}/bin/QtCored4.dll
 DESTINATION bin/Debug
 CONFIGURATIONS Debug
 )
@@ -190,13 +202,14 @@ CONFIGURATIONS Debug
 #Release
 INSTALL(
 FILES
-${CONFIGS}
+${CONFIGS}/release/Plugins.cfg
 ${OGRE_INSTALL_DIR}/bin/release/OgreMain.dll
 ${OGRE_INSTALL_DIR}/bin/release/RenderSystem_GL.dll
 ${OGRE_INSTALL_DIR}/bin/release/OIS.dll
 ${OGRE_INSTALL_DIR}/bin/release/cg.dll
 ${MYGUI_INSTALL_DIR}/bin/release/libMyGUIEngine.dll
 ${FREEALUT_DIR}/lib/alut.dll
+${QT_INSTALL_DIR}/bin/QtCore4.dll
 DESTINATION bin/Release
 CONFIGURATIONS Release
 )

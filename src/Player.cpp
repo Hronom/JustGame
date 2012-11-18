@@ -90,11 +90,11 @@ void Player::update(const float& xTimeSinceLastFrame)
 	mSoundListener->move(xPlayerPos.x, xPlayerPos.y, xPlayerPos.z);
 
 	Ogre::Vector3 xNewCameraPos;
-	xNewCameraPos = JGC::GraphicSystem::instance()->getCamera()->getPosition();
+//	xNewCameraPos = JGC::GraphicSystem::instance()->getCamera()->getPosition();
 	xNewCameraPos.x = xPlayerPos.x;
 	xNewCameraPos.y = xPlayerPos.y;
 
-	JGC::GraphicSystem::instance()->getCamera()->setPosition(xNewCameraPos);
+//	JGC::GraphicSystem::instance()->getCamera()->setPosition(xNewCameraPos);
 }
 
 void Player::rotatePlayer(Ogre::Real xTimeSinceLastFrame)
@@ -125,7 +125,6 @@ void Player::movePlayer(Ogre::Real xTimeSinceLastFrame)
 {
 	// MOVE Ogre SceneNode
 	Ogre::Real xMove = mMoveSpeed * xTimeSinceLastFrame;
-	//Ogre::Real xMove = mMoveSpeed;
 	Ogre::Vector3 xVector;
 	xVector = mMoveDirection * xMove;
 	xVector =  mSceneNode->getOrientation() * xVector;

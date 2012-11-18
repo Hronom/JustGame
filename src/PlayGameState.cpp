@@ -145,10 +145,10 @@ void PlayGameState::injectUpdate(const float& xTimeSinceLastFrame)
 {
 	MyGUI::IntPoint xMousePosition = MyGUI::InputManager::getInstancePtr()->getMousePosition();
 	MyGUI::IntSize xSize = MyGUI::RenderManager::getInstancePtr()->getViewSize();
-	Ogre::Ray xMouseRay =  JGC::GraphicSystem::instance()->getCamera()->getCameraToViewportRay(xMousePosition.left / float(xSize.width), xMousePosition.top / float(xSize.height));
-	Ogre::Vector3 xVector = xMouseRay.getPoint(100);//почему 100? –ассто€ние между камерой и нулевой точкой оси z равно 100
+//	Ogre::Ray xMouseRay =  JGC::GraphicSystem::instance()->getCamera()->getCameraToViewportRay(xMousePosition.left / float(xSize.width), xMousePosition.top / float(xSize.height));
+//	Ogre::Vector3 xVector = xMouseRay.getPoint(100);//почему 100? –ассто€ние между камерой и нулевой точкой оси z равно 100
 
-	mPlayer->rotateTo(Ogre::Vector2(xVector.x, xVector.y));
+//	mPlayer->rotateTo(Ogre::Vector2(xVector.x, xVector.y));
 
 	// ќбновление игрока
 	mPlayer->update(xTimeSinceLastFrame);
@@ -253,8 +253,8 @@ void PlayGameState::injectMouseMoved(const OIS::MouseEvent& e)
 	std::string xString;
 	MyGUI::IntPoint xMousePosition = MyGUI::InputManager::getInstancePtr()->getMousePosition();
 	MyGUI::IntSize xSize = MyGUI::RenderManager::getInstance().getViewSize();
-	Ogre::Ray ray = JGC::GraphicSystem::instance()->getCamera()->getCameraToViewportRay(xMousePosition.left/float(xSize.width), xMousePosition.top/float(xSize.height));
-	mRaySceneQuery->setRay(ray);
+//	Ogre::Ray ray = JGC::GraphicSystem::instance()->getCamera()->getCameraToViewportRay(xMousePosition.left/float(xSize.width), xMousePosition.top/float(xSize.height));
+//	mRaySceneQuery->setRay(ray);
 	mRaySceneQuery->setSortByDistance(true);
 	Ogre::RaySceneQueryResult& xResult = mRaySceneQuery->execute();
 	for (Ogre::RaySceneQueryResult::iterator xIter = xResult.begin(); xIter != xResult.end(); ++xIter)

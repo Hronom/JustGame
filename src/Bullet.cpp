@@ -67,7 +67,7 @@ Bullet::Bullet(IGameObjectsListener *xGameObjectsListener, Ogre::String xObjectN
 
 	mRigidBody->setUserPointer(this);
 
-	JGC::PhysicsSystem::instance()->getDynamicsWorld()->addRigidBody(mRigidBody, BULLET_GROUP, mObjectCollideWith | BULLET_GROUP);
+    JGC::PhysicsSystem::instance()->getDynamicsWorld()->addRigidBody(mRigidBody, BULLET_GROUP, mObjectCollideWith | BULLET_GROUP);
 
 
 
