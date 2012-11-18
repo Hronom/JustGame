@@ -2,9 +2,58 @@
 
 #include <GraphicSystem.h>
 #include <PhysicsSystem.h>
+#include <Utils.h>
 
 namespace JG
 {
+    GraphBody* cBackgroundGraphBody(QString xComponentName)
+    {
+        // create ManualObject
+        Ogre::ManualObject *xManualObject;
+        xManualObject = new Ogre::ManualObject((xComponentName+"_Manual").toStdString());
+
+        Ogre::ColourValue xColor = Ogre::ColourValue(0.104f, 0.234f, 0.140f, 0.0f);
+        Ogre::Real xGridDistance = 10.0f;
+        for (Ogre::Real i = -50.0f; i < 50.0f; i+=1.0f)
+        {
+            // Draw vertical line
+            xManualObject->begin("BaseWhiteNoLighting", Ogre::RenderOperation::OT_LINE_LIST);
+            xManualObject->position(i * xGridDistance, -500.0f, -100.0f);
+            xManualObject->colour(xColor);
+            xManualObject->position(i * xGridDistance, +500.0f, -100.0f);
+            xManualObject->colour(xColor);
+            xManualObject->end();
+            // Draw gorizontal line
+            xManualObject->begin("BaseWhiteNoLighting", Ogre::RenderOperation::OT_LINE_LIST);
+            xManualObject->position(-500.0f, i * xGridDistance, -100.0f);
+            xManualObject->colour(xColor);
+            xManualObject->position(+500.0f, i * xGridDistance, -100.0f);
+            xManualObject->colour(xColor);
+            xManualObject->end();
+        }
+        xManualObject->convertToMesh((xComponentName+"_Mesh").toStdString());
+
+        // create Entity
+        Ogre::Entity *xEntity;
+        xEntity = JGC::GraphicSystem::instance()->getSceneManager()->createEntity((xComponentName+"_Entity").toStdString(), (xComponentName+"_Mesh").toStdString());
+
+        // create SceneNode
+        Ogre::SceneNode *xSceneNode;
+        xSceneNode = JGC::GraphicSystem::instance()->getSceneManager()->getRootSceneNode()->createChildSceneNode((xComponentName+"_Node").toStdString());
+        // connect Entity to Node
+        xSceneNode->attachObject(xEntity);
+
+        // create component
+        GraphBody* xGraphBody;
+        xGraphBody = new GraphBody();
+
+        xGraphBody->mManualObject = xManualObject;
+        xGraphBody->mEntity = xEntity;
+        xGraphBody->mSceneNode = xSceneNode;
+
+        return xGraphBody;
+    }
+
     GraphBody* cPlayerGraphBody(QString xComponentName)
     {
         Ogre::ColourValue xColor = Ogre::ColourValue(1.0, 1.0, 1.0, 0.0);
@@ -156,6 +205,12 @@ namespace JG
         return xGraphBody;
     }
 
+    void dBulletGraphBody(GraphBody* xGraphBody)
+    {
+        mBulletsCount--;
+        dGraphBody(xGraphBody);
+    }
+
     void dGraphBody(GraphBody* xGraphBody)
     {
         JGC::GraphicSystem::instance()->getSceneManager()->destroyManualObject(xGraphBody->mManualObject);
@@ -242,14 +297,14 @@ namespace JG
         xRigidBody->setLinearFactor(btVector3(1,1,0));
         xRigidBody->setAngularFactor(btVector3(0, 0, 1));
 
-        /*
-        // APPLY ROTATE to Bullet RigidBody
-        btTransform xRigidBodyTransform = mRigidBody->getWorldTransform();
-        xRigidBodyTransform.setRotation(JGC::Utils::toBtQuaternion(mSceneNode->getOrientation()));
-        mRigidBody->setWorldTransform(xRigidBodyTransform);
-*/
-
         JGC::PhysicsSystem::instance()->getDynamicsWorld()->addRigidBody(xRigidBody, BULLET_GROUP, xObjectCollideWith | BULLET_GROUP);
+
+        // MOVE
+        Ogre::Vector3 xVector;
+        float xMoveSpeed = 5.0f;
+        xVector = Ogre::Vector3(1,0,0) * xMoveSpeed;
+        xVector =  JGC::Utils::toOgreQuaternion(xOrientation) * xVector;
+        xRigidBody->applyCentralImpulse(JGC::Utils::toBtVector3(xVector));
 
         // create component
         PhysBody* xPhysBody;
@@ -324,7 +379,7 @@ namespace JG
         return xPlayerControllable;
     }
 
-    Weapon* cWeapon(float xShootDelay)
+    Weapon *cWeapon(float xShootDelay)
     {
         // create component
         Weapon* xWeapon;
@@ -334,5 +389,21 @@ namespace JG
 
         return xWeapon;
     }
+
+     Bullet* cBullet(float xTotalLiveTime)
+     {
+         // create component
+         Bullet* xBullet;
+         xBullet = new Bullet();
+         xBullet->mTotalLiveTime = xTotalLiveTime;
+         xBullet->mLiveTime = 0;
+
+         return xBullet;
+     }
+
+     void dBullet(Bullet *xBullet)
+     {
+         delete xBullet;
+     }
 }
 

@@ -11,6 +11,7 @@
 #include "../components/GraphBody.h"
 #include "../components/PhysBody.h"
 #include "../components/Weapon.h"
+#include "../components/Bullet.h"
 
 #include "../creators/ComponentsCreators.h"
 
@@ -108,16 +109,15 @@ void PlayerControl::proceedEntitys(QVector<JGC::Entity*> xEntitys, const float &
 
             if(xShoot == true && xWeapon->mTimeSinceLastShot >= xWeapon->mShootDelay)
             {
+                Bullet *xBullet = JG::cBullet(1);
+                JGC::EntitySystem::instance()->addComponent("Bullet", xBullet);
+
                 Ogre::Vector3 xPosObject = xSceneNode->getPosition();
-                GraphBody* xGraphBody = JG::cBulletGraphBody("BulletTest", xPosObject, xDestinationDot);
-                JGC::EntitySystem::instance()->addComponent("BulletTest", xGraphBody);
+                GraphBody* xGraphBody = JG::cBulletGraphBody("Bullet", xPosObject, xDestinationDot);
+                JGC::EntitySystem::instance()->addComponent("Bullet", xGraphBody);
 
                 PhysBody* xPhysBody = JG::cBulletPhysBody(ENEMY_GROUP, JGC::Utils::toBtVector3(xPosObject), JGC::Utils::toBtQuaternion(xGraphBody->mSceneNode->getOrientation()));
-                btTransform xTransform;
-                xTransform.setOrigin(JGC::Utils::toBtVector3(xGraphBody->mSceneNode->getPosition()));
-                xTransform.setRotation(JGC::Utils::toBtQuaternion(xGraphBody->mSceneNode->getOrientation()));
-                //xPhysBody->mRigidBody->setw
-                JGC::EntitySystem::instance()->addComponent("BulletTest", xPhysBody);
+                JGC::EntitySystem::instance()->addComponent("Bullet", xPhysBody);
 
                 //mGameObjectsListener->addBullet(ENEMY_GROUP, xPos, xDestinationDot);
                 //mSoundSource->move(xPosObject.x,xPosObject.y,xPosObject.z);

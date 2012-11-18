@@ -1,35 +1,17 @@
 #include <MainSystem.h>
-//#include <StatesSystem.h>
-//#include "PlayGameState.h"
-#include "EntitySystem.h"
+#include <EntitySystem.h>
+
 #include "creators/ComponentsCreators.h"
 #include "systems/PlayerControl.h"
 #include "systems/PhysGraphSync.h"
 #include "systems/PlayerCameraSync.h"
+#include "systems/Bullets.h"
 
 int WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR strCmdLine, INT)
 {
     JGC::MainSystem::initialize("Ogre.cfg","Plugins.cfg","../Media/Resources.cfg","Ogre.log", "MyGUI.log");
 
-    /*LoadScreen *xLoadState = new LoadScreen();
-	JGC::StatesSystem::instance()->setLoadState(xLoadState);
 
-	SplashState *xSplashState = new SplashState();
-	JGC::StatesSystem::instance()->addNormalState("SplashState", xSplashState);
-
-	MainMenuState *xMainMenuState = new MainMenuState();
-	JGC::StatesSystem::instance()->addNormalState("MainMenuState", xMainMenuState);
-
-	PlayGameState *xPlayGameState = new PlayGameState();
-	JGC::StatesSystem::instance()->addNormalState("PlayGameState", xPlayGameState);
-
-	WinState *xWinState = new WinState();
-	JGC::StatesSystem::instance()->addNormalState("WinState", xWinState);
-	
-	LoseState *xLoseState = new LoseState();
-	JGC::StatesSystem::instance()->addNormalState("LoseState", xLoseState);
-
-    JGC::StatesSystem::instance()->needSwitchToState("SplashState");*/
 
     JGC::EntitySystem::instance()->addComponentToNode("PlayerControl", "GraphBody");
     JGC::EntitySystem::instance()->addComponentToNode("PlayerControl", "PhysBody");
@@ -42,7 +24,14 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR strCmdLine, INT)
     JGC::EntitySystem::instance()->addComponentToNode("PlayerCameraSync", "GraphBody");
     JGC::EntitySystem::instance()->addComponentToNode("PlayerCameraSync", "CameraTrackable");
 
+    JGC::EntitySystem::instance()->addComponentToNode("Bullets", "Bullet");
+    JGC::EntitySystem::instance()->addComponentToNode("Bullets", "GraphBody");
+    JGC::EntitySystem::instance()->addComponentToNode("Bullets", "PhysBody");
 
+
+
+    GraphBody* xBackgroundGraphBody = JG::cBackgroundGraphBody("Background");
+    JGC::EntitySystem::instance()->addComponent("Background", xBackgroundGraphBody);
 
     GraphBody* xGraphBody = JG::cPlayerGraphBody("PlayerGraphBody");
     JGC::EntitySystem::instance()->addComponent("Player", xGraphBody);
@@ -73,6 +62,10 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR strCmdLine, INT)
     PlayerCameraSync *xPlayerCameraSync;
     xPlayerCameraSync = new PlayerCameraSync();
     JGC::EntitySystem::instance()->addSystem(3, xPlayerCameraSync);
+
+    Bullets *xBullets;
+    xBullets = new Bullets();
+    JGC::EntitySystem::instance()->addSystem(4, xBullets);
 
 
 

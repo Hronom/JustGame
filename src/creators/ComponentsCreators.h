@@ -8,6 +8,7 @@
 #include "../components/DoDamage.h"
 #include "../components/PlayerControllable.h"
 #include "../components/Weapon.h"
+#include "../components/Bullet.h"
 
 #include "QString"
 
@@ -27,9 +28,11 @@ namespace JG
 
     static unsigned int mBulletsCount = 0;
 
+    GraphBody* cBackgroundGraphBody(QString xComponentName);
     GraphBody* cPlayerGraphBody(QString xComponentName);
     GraphBody* cEnemyGraphBody(QString xComponentName);
     GraphBody* cBulletGraphBody(QString xComponentSuffix, Ogre::Vector3 xPosition, Ogre::Vector3 xDestination);
+    void dBulletGraphBody(GraphBody* xGraphBody);
     void dGraphBody(GraphBody* xGraphBody);
 
 
@@ -59,6 +62,11 @@ namespace JG
 
 
     Weapon* cWeapon(float xShootDelay);
+
+
+
+    Bullet* cBullet(float xTotalLiveTime);
+    void dBullet(Bullet* xBullet);
 }
 
 #endif

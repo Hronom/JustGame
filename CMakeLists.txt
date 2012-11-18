@@ -7,12 +7,6 @@ project(${PROJECT})
 # Setting source files for this project
 ######################################################################
 set(HEADERS
-./src/Bullet.h
-./src/Enemy.h
-./src/IGameObjectsListener.h
-./src/MyGameObject.h
-./src/Player.h
-./src/PlayGameState.h
 ./src/creators/ComponentsCreators.h
 ./src/components/GraphBody.h
 ./src/components/PhysBody.h
@@ -22,19 +16,17 @@ set(HEADERS
 ./src/components/CameraTrackable.h
 ./src/components/Weapon.h
 ./src/components/DoDamage.h
+./src/components/Bullet.h
+./src/systems/Bullets.h
 ./src/systems/PlayerControl.h
 ./src/systems/PhysGraphSync.h
 ./src/systems/PlayerCameraSync.h
 )
  
 set(SOURCES
-./src/Bullet.cpp
-./src/Enemy.cpp
 ./src/main.cpp
-./src/MyGameObject.cpp
-./src/Player.cpp
-./src/PlayGameState.cpp
 ./src/creators/ComponentsCreators.cpp
+./src/systems/Bullets.cpp
 ./src/systems/PlayerControl.cpp
 ./src/systems/PhysGraphSync.cpp
 ./src/systems/PlayerCameraSync.cpp
