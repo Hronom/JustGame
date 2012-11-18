@@ -4,6 +4,8 @@
 #include <PhysicsSystem.h>
 #include <Utils.h>
 
+#include <QDebug>
+
 namespace JG
 {
     GraphBody* cBackgroundGraphBody(QString xComponentName)
@@ -104,8 +106,13 @@ namespace JG
         return xGraphBody;
     }
 
-    GraphBody* cEnemyGraphBody(QString xComponentName)
+    GraphBody* cEnemyGraphBody(QString xComponentSuffix, Ogre::Vector3 xPosition)
     {
+        QString xComponentName;
+        xComponentName = xComponentSuffix;
+        xComponentName += QString::number(mEnemysCount);
+        mEnemysCount++;
+
         Ogre::ColourValue xColor = Ogre::ColourValue(1.0, 1.0, 1.0, 0.0);
         // create ManualObject
         Ogre::ManualObject *xManualObject;
@@ -134,11 +141,11 @@ namespace JG
         // create SceneNode
         Ogre::SceneNode *xSceneNode;
         xSceneNode = JGC::GraphicSystem::instance()->getSceneManager()->getRootSceneNode()->createChildSceneNode((xComponentName+"_Node").toStdString());
+        // Set position of SceneNode
+        xSceneNode->setPosition(xPosition);
+
         // connect Entity to Node
         xSceneNode->attachObject(xEntity);
-
-        //Ogre::Vector3 xPosition = Ogre::Vector3(xPos.x, xPos.y, 0);
-        //mSceneNode->setPosition(xPosition);
 
         // create component
         GraphBody* xGraphBody;
@@ -154,8 +161,7 @@ namespace JG
     GraphBody* cBulletGraphBody(QString xComponentSuffix, Ogre::Vector3 xPosition, Ogre::Vector3 xDestination)
     {
         QString xComponentName;
-        xComponentName = xComponentSuffix;
-        xComponentName += QString::number(mBulletsCount);
+        xComponentName = xComponentSuffix + QString::number(mBulletsCount);
         mBulletsCount++;
 
         Ogre::ColourValue xColor = Ogre::ColourValue(1.0, 0.0, 0.0, 0.0);
@@ -182,17 +188,16 @@ namespace JG
         // create SceneNode
         Ogre::SceneNode *xSceneNode;
         xSceneNode = JGC::GraphicSystem::instance()->getSceneManager()->getRootSceneNode()->createChildSceneNode((xComponentName+"_Node").toStdString());
-        // connect Entity to Node
-        xSceneNode->attachObject(xEntity);
-
         // Set position of SceneNode
         xSceneNode->setPosition(xPosition);
-
         // Rotate SceneNode
         Ogre::Vector3 xDirection = xDestination - xPosition;
         Ogre::Vector3 xSrc = xSceneNode->getOrientation() * Ogre::Vector3::UNIT_X;
         Ogre::Quaternion xQuat = xSrc.getRotationTo(xDirection);
         xSceneNode->rotate(xQuat);
+
+        // connect Entity to Node
+        xSceneNode->attachObject(xEntity);
 
         // create component
         GraphBody* xGraphBody;
@@ -224,10 +229,10 @@ namespace JG
     PhysBody* cPlayerPhysBody()
     {
         // after that create the Bullet shape with the calculated xSize
-        btVector3 xSize;
+        float xObjectRadius = 5;
 
         btCollisionShape *xCollisionShape;
-        xCollisionShape = new btBoxShape(xSize);
+        xCollisionShape = new btSphereShape(xObjectRadius);
         // and the Bullet rigid body
         btDefaultMotionState* xMotionState = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1), btVector3(0,0,0)));
         btRigidBody *xRigidBody;
@@ -251,15 +256,15 @@ namespace JG
         return xPhysBody;
     }
 
-    PhysBody* cEnemyPhysBody()
+    PhysBody* cEnemyPhysBody(btVector3 xPosition)
     {
         // after that create the Bullet shape with the calculated xSize
-        btVector3 xSize;
+        float xObjectRadius = 7;
 
         btCollisionShape *xCollisionShape;
-        xCollisionShape = new btBoxShape(xSize);
+        xCollisionShape = new btSphereShape(xObjectRadius);
         // and the Bullet rigid body
-        btDefaultMotionState* xMotionState = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1), btVector3(0,-1,0)));
+        btDefaultMotionState* xMotionState = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1), xPosition));
         btRigidBody *xRigidBody;
         xRigidBody = new btRigidBody(0.1f, xMotionState, xCollisionShape, btVector3(0,0,0));
         xRigidBody->setRestitution(0.0f);
@@ -283,8 +288,14 @@ namespace JG
 
     PhysBody* cBulletPhysBody(short xObjectCollideWith, btVector3 xPosition, btQuaternion xOrientation)
     {
+        Ogre::Vector3 xBoundingBoxSize = Ogre::Vector3(3.5f, 3.5f, 0);	// xSize of the box
+        xBoundingBoxSize.z = 3.0f;
+        xBoundingBoxSize /= 2.0f; // only the half needed
+        xBoundingBoxSize *= 0.95f;	// Bullet margin is a bit bigger so we need a smaller xSize
+
         // after that create the Bullet shape with the calculated xSize
         btVector3 xSize;
+        xSize = JGC::Utils::toBtVector3(xBoundingBoxSize);
 
         btCollisionShape *xCollisionShape;
         xCollisionShape = new btBoxShape(xSize);
@@ -390,20 +401,20 @@ namespace JG
         return xWeapon;
     }
 
-     Bullet* cBullet(float xTotalLiveTime)
-     {
-         // create component
-         Bullet* xBullet;
-         xBullet = new Bullet();
-         xBullet->mTotalLiveTime = xTotalLiveTime;
-         xBullet->mLiveTime = 0;
+    Bullet* cBullet(float xTotalLiveTime)
+    {
+        // create component
+        Bullet* xBullet;
+        xBullet = new Bullet();
+        xBullet->mTotalLiveTime = xTotalLiveTime;
+        xBullet->mLiveTime = 0;
 
-         return xBullet;
-     }
+        return xBullet;
+    }
 
-     void dBullet(Bullet *xBullet)
-     {
-         delete xBullet;
-     }
+    void dBullet(Bullet *xBullet)
+    {
+        delete xBullet;
+    }
 }
 

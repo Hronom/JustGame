@@ -83,7 +83,7 @@ void PlayerControl::proceedEntitys(QVector<JGC::Entity*> xEntitys, const float &
         // Move
         {
             // Get Ogre::SceneNode orientation
-            btScalar xMoveSpeed = 7;
+            btScalar xMoveSpeed = 17;
             Ogre::Real xMove = xMoveSpeed * xTimeSinceLastUpdate;
             Ogre::Vector3 xVector;
             xVector = xMoveDirection * xMove;
@@ -109,23 +109,26 @@ void PlayerControl::proceedEntitys(QVector<JGC::Entity*> xEntitys, const float &
 
             if(xShoot == true && xWeapon->mTimeSinceLastShot >= xWeapon->mShootDelay)
             {
+                QString xBulletEntityName;
+                xBulletEntityName = "Bullet" + QString::number(mBulletsEntityCounts);
+                mBulletsEntityCounts++;
+
                 Bullet *xBullet = JG::cBullet(1);
-                JGC::EntitySystem::instance()->addComponent("Bullet", xBullet);
+                JGC::EntitySystem::instance()->addComponent(xBulletEntityName, xBullet);
 
                 Ogre::Vector3 xPosObject = xSceneNode->getPosition();
-                GraphBody* xGraphBody = JG::cBulletGraphBody("Bullet", xPosObject, xDestinationDot);
-                JGC::EntitySystem::instance()->addComponent("Bullet", xGraphBody);
+                GraphBody* xGraphBody = JG::cBulletGraphBody(xBulletEntityName, xPosObject, xDestinationDot);
+                JGC::EntitySystem::instance()->addComponent(xBulletEntityName, xGraphBody);
 
                 PhysBody* xPhysBody = JG::cBulletPhysBody(ENEMY_GROUP, JGC::Utils::toBtVector3(xPosObject), JGC::Utils::toBtQuaternion(xGraphBody->mSceneNode->getOrientation()));
-                JGC::EntitySystem::instance()->addComponent("Bullet", xPhysBody);
+                JGC::EntitySystem::instance()->addComponent(xBulletEntityName, xPhysBody);
 
                 //mGameObjectsListener->addBullet(ENEMY_GROUP, xPos, xDestinationDot);
                 //mSoundSource->move(xPosObject.x,xPosObject.y,xPosObject.z);
                 //mSoundSource->play();
                 xWeapon->mTimeSinceLastShot = 0;
             }
-
-            if(xWeapon->mTimeSinceLastShot < xWeapon->mShootDelay)
+            else if(xWeapon->mTimeSinceLastShot < xWeapon->mShootDelay)
                 xWeapon->mTimeSinceLastShot += xTimeSinceLastUpdate;
         }
     }

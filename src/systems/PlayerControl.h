@@ -6,7 +6,12 @@
 
 class PlayerControl: public JGC::ISystem
 {
+private:
+    unsigned int mBulletsEntityCounts;
+
+
 public:
+    PlayerControl(){mBulletsEntityCounts=0;}
     QString getNodeType() { return "PlayerControl"; }
     void proceedEntitys(QVector<JGC::Entity*> xEntitys, const float &xTimeSinceLastUpdate);
 };

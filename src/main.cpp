@@ -33,20 +33,33 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR strCmdLine, INT)
     GraphBody* xBackgroundGraphBody = JG::cBackgroundGraphBody("Background");
     JGC::EntitySystem::instance()->addComponent("Background", xBackgroundGraphBody);
 
-    GraphBody* xGraphBody = JG::cPlayerGraphBody("PlayerGraphBody");
-    JGC::EntitySystem::instance()->addComponent("Player", xGraphBody);
+    {
+        GraphBody* xGraphBody = JG::cPlayerGraphBody("PlayerGraphBody");
+        JGC::EntitySystem::instance()->addComponent("Player", xGraphBody);
 
-    PhysBody* xPhysBody = JG::cPlayerPhysBody();
-    JGC::EntitySystem::instance()->addComponent("Player", xPhysBody);
+        PhysBody* xPhysBody = JG::cPlayerPhysBody();
+        JGC::EntitySystem::instance()->addComponent("Player", xPhysBody);
 
-    PlayerControllable* xPlayerControllable = JG::cPlayerControllable();
-    JGC::EntitySystem::instance()->addComponent("Player", xPlayerControllable);
+        PlayerControllable* xPlayerControllable = JG::cPlayerControllable();
+        JGC::EntitySystem::instance()->addComponent("Player", xPlayerControllable);
 
-    CameraTrackable* xCameraTrackable = JG::cCameraTrackable("MainCamera");
-    JGC::EntitySystem::instance()->addComponent("Player", xCameraTrackable);
+        CameraTrackable* xCameraTrackable = JG::cCameraTrackable("MainCamera");
+        JGC::EntitySystem::instance()->addComponent("Player", xCameraTrackable);
 
-    Weapon* xWeapon = JG::cWeapon(3);
-    JGC::EntitySystem::instance()->addComponent("Player", xWeapon);
+        Weapon* xWeapon = JG::cWeapon(0.5f);
+        JGC::EntitySystem::instance()->addComponent("Player", xWeapon);
+    }
+    {
+        GraphBody* xGraphBody = JG::cEnemyGraphBody("EnemyGraphBody", Ogre::Vector3(13,13,0));
+        JGC::EntitySystem::instance()->addComponent("Enemy", xGraphBody);
+
+        PhysBody* xPhysBody = JG::cEnemyPhysBody(btVector3(13,13,0));
+        JGC::EntitySystem::instance()->addComponent("Enemy", xPhysBody);
+
+        Weapon* xWeapon = JG::cWeapon(3.0f);
+        JGC::EntitySystem::instance()->addComponent("Enemy", xWeapon);
+    }
+
 
 
 

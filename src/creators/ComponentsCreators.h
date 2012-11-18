@@ -26,11 +26,12 @@ namespace JG
     // c prefix -> create
     // d prefix -> delete
 
+    static unsigned int mEnemysCount = 0;
     static unsigned int mBulletsCount = 0;
 
     GraphBody* cBackgroundGraphBody(QString xComponentName);
     GraphBody* cPlayerGraphBody(QString xComponentName);
-    GraphBody* cEnemyGraphBody(QString xComponentName);
+    GraphBody* cEnemyGraphBody(QString xComponentSuffix, Ogre::Vector3 xPosition);
     GraphBody* cBulletGraphBody(QString xComponentSuffix, Ogre::Vector3 xPosition, Ogre::Vector3 xDestination);
     void dBulletGraphBody(GraphBody* xGraphBody);
     void dGraphBody(GraphBody* xGraphBody);
@@ -38,7 +39,7 @@ namespace JG
 
 
     PhysBody* cPlayerPhysBody();
-    PhysBody* cEnemyPhysBody();
+    PhysBody* cEnemyPhysBody(btVector3 xPosition);
     PhysBody* cBulletPhysBody(short xObjectCollideWith, btVector3 xPosition, btQuaternion xOrientation);
     void dPhysBody(PhysBody* xPhysBody);
 

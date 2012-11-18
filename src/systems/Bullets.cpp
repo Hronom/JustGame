@@ -27,6 +27,8 @@ void Bullets::proceedEntitys(QVector<JGC::Entity*> xEntitys, const float &xTimeS
             xPhysBody = static_cast<PhysBody*>(xEntitys.at(i)->getComponent("PhysBody"));
             JGC::EntitySystem::instance()->removeComponent(xEntitys.at(i)->getName(), xPhysBody);
 
+            JGC::EntitySystem::instance()->removeEntity(xEntitys.at(i)->getName());
+
             JG::dBulletGraphBody(xGraphBody);
             JG::dPhysBody(xPhysBody);
             JG::dBullet(xBullet);
