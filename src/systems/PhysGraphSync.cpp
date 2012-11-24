@@ -1,12 +1,18 @@
 #include "PhysGraphSync.h"
 
+#include <EntitySystem.h>
+#include <Entity.h>
+
 #include <Ogre.h>
 
 #include "../components/GraphBody.h"
 #include "../components/PhysBody.h"
 
-void PhysGraphSync::proceedEntitys(QVector<JGC::Entity*> xEntitys, const float &xTimeSinceLastUpdate)
+void PhysGraphSync::injectUpdate(const float &xTimeSinceLastUpdate)
 {
+    QVector<JGC::Entity*> xEntitys;
+    xEntitys = JGC::EntitySystem::instance()->getEntitysInNode("PhysGraphSync");
+
     for(int i = 0; i < xEntitys.size(); ++i)
     {
         GraphBody *xGraphBody;

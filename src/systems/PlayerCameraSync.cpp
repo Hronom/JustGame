@@ -1,12 +1,17 @@
 #include "PlayerCameraSync.h"
 
 #include <GraphicSystem.h>
+#include <EntitySystem.h>
+#include <Entity.h>
 
 #include "../components/GraphBody.h"
 #include "../components/CameraTrackable.h"
 
-void PlayerCameraSync::proceedEntitys(QVector<JGC::Entity*> xEntitys, const float &xTimeSinceLastUpdate)
+void PlayerCameraSync::injectUpdate(const float &xTimeSinceLastUpdate)
 {
+    QVector<JGC::Entity*> xEntitys;
+    xEntitys = JGC::EntitySystem::instance()->getEntitysInNode("PlayerCameraSync");
+
     for(int i = 0; i < xEntitys.size(); ++i)
     {
         GraphBody *xGraphBody;

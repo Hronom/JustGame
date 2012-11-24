@@ -1,13 +1,13 @@
-#ifndef AICONTROLABLE_H
-#define AICONTROLABLE_H
+#ifndef AICONTROLLABLE_H
+#define AICONTROLLABLE_H
 
 #include <Ogre.h>
 #include "IComponent.h"
 
-class AIControlable: public JGC::IComponent
+class AIControllable: public JGC::IComponent
 {
 public:
-    virtual QString getType() { return "AIControlable"; }
+    virtual QString getType() { return "AIControllable"; }
 };
 
 #endif

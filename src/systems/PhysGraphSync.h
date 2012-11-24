@@ -6,8 +6,7 @@
 class PhysGraphSync: public JGC::ISystem
 {
 public:
-    QString getNodeType() { return "PhysGraphSync"; }
-    void proceedEntitys(QVector<JGC::Entity*> xEntitys, const float &xTimeSinceLastUpdate);
+    void injectUpdate(const float &xTimeSinceLastUpdate);
 };
 
 #endif

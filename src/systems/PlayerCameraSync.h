@@ -1,14 +1,12 @@
 #ifndef PLAYERCAMERASYNC_H
 #define PLAYERCAMERASYNC_H
 
-#include "ISystem.h"
-#include "Entity.h"
+#include <ISystem.h>
 
 class PlayerCameraSync: public JGC::ISystem
 {
 public:
-    QString getNodeType() { return "PlayerCameraSync"; }
-    void proceedEntitys(QVector<JGC::Entity*> xEntitys, const float &xTimeSinceLastUpdate);
+    void injectUpdate(const float &xTimeSinceLastUpdate);
 };
 
 #endif

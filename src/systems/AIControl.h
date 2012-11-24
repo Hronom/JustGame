@@ -1,11 +1,13 @@
-#ifndef BULLETS_H
-#define BULLETS_H
+#ifndef AICONTROL_H
+#define AICONTROL_H
 
 #include "ISystem.h"
 
-class Bullets: public JGC::ISystem
+class AIControl: public JGC::ISystem
 {
 public:
+    AIControl();
+
     void injectUpdate(const float &xTimeSinceLastUpdate);
 };
 

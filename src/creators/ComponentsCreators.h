@@ -5,10 +5,11 @@
 #include "../components/PhysBody.h"
 #include "../components/CameraTrackable.h"
 #include "../components/Health.h"
-#include "../components/DoDamage.h"
 #include "../components/PlayerControllable.h"
+#include "../components/AIControllable.h"
 #include "../components/Weapon.h"
 #include "../components/Bullet.h"
+#include "../components/SoundBody.h"
 
 #include "QString"
 
@@ -27,13 +28,11 @@ namespace JG
     // d prefix -> delete
 
     static unsigned int mEnemysCount = 0;
-    static unsigned int mBulletsCount = 0;
 
     GraphBody* cBackgroundGraphBody(QString xComponentName);
     GraphBody* cPlayerGraphBody(QString xComponentName);
     GraphBody* cEnemyGraphBody(QString xComponentSuffix, Ogre::Vector3 xPosition);
-    GraphBody* cBulletGraphBody(QString xComponentSuffix, Ogre::Vector3 xPosition, Ogre::Vector3 xDestination);
-    void dBulletGraphBody(GraphBody* xGraphBody);
+    GraphBody* cBulletGraphBody(QString xComponentName, Ogre::Vector3 xPosition, Ogre::Vector3 xDestination);
     void dGraphBody(GraphBody* xGraphBody);
 
 
@@ -42,6 +41,9 @@ namespace JG
     PhysBody* cEnemyPhysBody(btVector3 xPosition);
     PhysBody* cBulletPhysBody(short xObjectCollideWith, btVector3 xPosition, btQuaternion xOrientation);
     void dPhysBody(PhysBody* xPhysBody);
+
+    SoundBody* cWeaponSoundBody(short xObjectCollideWith, btVector3 xPosition, btQuaternion xOrientation);
+    void dSoundBody(SoundBody* xSoundBody);
 
 
 
@@ -54,11 +56,11 @@ namespace JG
 
 
 
-    DoDamage* cDoDamage(qint32 xDamageCount);
-
-
-
     PlayerControllable* cPlayerControllable();
+
+
+
+    AIControllable *cAIControllable();
 
 
 
@@ -66,7 +68,7 @@ namespace JG
 
 
 
-    Bullet* cBullet(float xTotalLiveTime);
+    Bullet* cBullet(float xTotalLiveTime, qint32 xDamage);
     void dBullet(Bullet* xBullet);
 }
 

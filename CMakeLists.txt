@@ -1,7 +1,7 @@
-cmake_minimum_required (VERSION 2.8)
+CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 
-set(PROJECT JustGame)
-project(${PROJECT})
+SET(PROJECT JustGame)
+PROJECT(${PROJECT})
  
 ######################################################################
 # Setting source files for this project
@@ -10,19 +10,21 @@ set(HEADERS
 ./src/creators/ComponentsCreators.h
 ./src/components/GraphBody.h
 ./src/components/PhysBody.h
+./src/components/SoundBody.h
 ./src/components/Health.h
 ./src/components/PlayerControllable.h
 ./src/components/AIControllable.h
 ./src/components/CameraTrackable.h
 ./src/components/Weapon.h
-./src/components/DoDamage.h
 ./src/components/Bullet.h
 ./src/systems/Bullets.h
 ./src/systems/PlayerControl.h
 ./src/systems/PhysGraphSync.h
 ./src/systems/PlayerCameraSync.h
+./src/systems/AIControl.h
+./src/systems/DamageSys.h
 )
- 
+
 set(SOURCES
 ./src/main.cpp
 ./src/creators/ComponentsCreators.cpp
@@ -30,6 +32,8 @@ set(SOURCES
 ./src/systems/PlayerControl.cpp
 ./src/systems/PhysGraphSync.cpp
 ./src/systems/PlayerCameraSync.cpp
+./src/systems/AIControl.cpp
+./src/systems/DamageSys.cpp
 )
 
 set(CONFIGS

@@ -1,21 +1,24 @@
 #include "Bullets.h"
 
 #include <EntitySystem.h>
+#include <CountersSystem.h>
+#include <Entity.h>
 
 #include "QDebug"
 
-#include "../components/Bullet.h"
-
 #include "../creators/ComponentsCreators.h"
 
-void Bullets::proceedEntitys(QVector<JGC::Entity*> xEntitys, const float &xTimeSinceLastUpdate)
+void Bullets::injectUpdate(const float &xTimeSinceLastUpdate)
 {
+    QVector<JGC::Entity*> xEntitys;
+    xEntitys = JGC::EntitySystem::instance()->getEntitysInNode("Bullets");
+
     for(int i = 0; i < xEntitys.size(); ++i)
     {
         Bullet *xBullet;
         xBullet = static_cast<Bullet*>(xEntitys.at(i)->getComponent("Bullet"));
 
-        if(xBullet->mLiveTime >= xBullet->mTotalLiveTime)
+        if(xBullet->mLiveTime >= xBullet->mTotalLiveTime || xBullet->mDamageCount == 0)
         {
             JGC::EntitySystem::instance()->removeComponent(xEntitys.at(i)->getName(), xBullet);
 
@@ -29,9 +32,11 @@ void Bullets::proceedEntitys(QVector<JGC::Entity*> xEntitys, const float &xTimeS
 
             JGC::EntitySystem::instance()->removeEntity(xEntitys.at(i)->getName());
 
-            JG::dBulletGraphBody(xGraphBody);
+            JG::dGraphBody(xGraphBody);
             JG::dPhysBody(xPhysBody);
             JG::dBullet(xBullet);
+
+            JGC::CountersSystem::instance()->removeName("BulletsCount", xEntitys.at(i)->getName());
         }
         else
         {

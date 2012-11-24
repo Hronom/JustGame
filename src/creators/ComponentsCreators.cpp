@@ -122,7 +122,7 @@ namespace JG
         // The performance also is related to the count of circles.
         xManualObject->begin("BaseWhiteNoLighting", Ogre::RenderOperation::OT_LINE_STRIP);
         const float xObjectRadius  = 7;
-        const float xAccuracy = 35;
+        const float xAccuracy = 1.5;//35
         unsigned xPoint_index = 0;
         for(float xTheta = 0; xTheta <= 2 * Ogre::Math::PI; xTheta += Ogre::Math::PI / xAccuracy)
         {
@@ -158,12 +158,8 @@ namespace JG
         return xGraphBody;
     }
 
-    GraphBody* cBulletGraphBody(QString xComponentSuffix, Ogre::Vector3 xPosition, Ogre::Vector3 xDestination)
+    GraphBody* cBulletGraphBody(QString xComponentName, Ogre::Vector3 xPosition, Ogre::Vector3 xDestination)
     {
-        QString xComponentName;
-        xComponentName = xComponentSuffix + QString::number(mBulletsCount);
-        mBulletsCount++;
-
         Ogre::ColourValue xColor = Ogre::ColourValue(1.0, 0.0, 0.0, 0.0);
         Ogre::ManualObject *xManualObject;
         xManualObject = new Ogre::ManualObject((xComponentName+"_Manual").toStdString());
@@ -208,12 +204,6 @@ namespace JG
         xGraphBody->mSceneNode = xSceneNode;
 
         return xGraphBody;
-    }
-
-    void dBulletGraphBody(GraphBody* xGraphBody)
-    {
-        mBulletsCount--;
-        dGraphBody(xGraphBody);
     }
 
     void dGraphBody(GraphBody* xGraphBody)
@@ -339,6 +329,18 @@ namespace JG
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    SoundBody* cWeaponSoundBody(short xObjectCollideWith, btVector3 xPosition, btQuaternion xOrientation)
+    {
+
+    }
+
+    void dSoundBody(SoundBody* xSoundBody)
+    {
+
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     CameraTrackable* cCameraTrackable(QString xCameraName)
     {
         Ogre::Camera* xCamera;
@@ -370,17 +372,6 @@ namespace JG
         return xHealth;
     }
 
-    DoDamage* cDoDamage(qint32 xDamageCount)
-    {
-        // create component
-        DoDamage* xDoDamage;
-        xDoDamage = new DoDamage();
-
-        xDoDamage->mDamageCount = xDamageCount;
-
-        return xDoDamage;
-    }
-
     PlayerControllable* cPlayerControllable()
     {
         // create component
@@ -388,6 +379,15 @@ namespace JG
         xPlayerControllable = new PlayerControllable();
 
         return xPlayerControllable;
+    }
+
+    AIControllable* cAIControllable()
+    {
+        // create component
+        AIControllable* xAIControllable;
+        xAIControllable = new AIControllable();
+
+        return xAIControllable;
     }
 
     Weapon *cWeapon(float xShootDelay)
@@ -401,13 +401,14 @@ namespace JG
         return xWeapon;
     }
 
-    Bullet* cBullet(float xTotalLiveTime)
+    Bullet* cBullet(float xTotalLiveTime, qint32 xDamage)
     {
         // create component
         Bullet* xBullet;
         xBullet = new Bullet();
         xBullet->mTotalLiveTime = xTotalLiveTime;
         xBullet->mLiveTime = 0;
+        xBullet->mDamageCount = xDamage;
 
         return xBullet;
     }

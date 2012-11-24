@@ -1,4 +1,4 @@
-#include "PlayerControl.h"
+#include "AIControl.h"
 
 #include <InputSystem.h>
 #include <GraphicSystem.h>
@@ -12,63 +12,59 @@
 
 #include "../creators/ComponentsCreators.h"
 
-PlayerControl::PlayerControl()
+AIControl::AIControl()
 {
     JGC::CountersSystem::instance()->addCounter("BulletsCount");
 }
 
-void PlayerControl::injectUpdate(const float &xTimeSinceLastUpdate)
+void AIControl::injectUpdate(const float &xTimeSinceLastUpdate)
 {
-    Ogre::Vector3 xMoveDirection = Ogre::Vector3::ZERO;
+    btVector3 xPlayerPos;
+    xPlayerPos.setZero();
 
-    if(JGC::InputSystem::instance()->isKeyDown(OIS::KC_W))
-        xMoveDirection.x = 1;
+    // Get player pos
+    {
+        QVector<JGC::Entity*> xPlayersEntitys;
+        xPlayersEntitys = JGC::EntitySystem::instance()->getEntitysInNode("PlayerControl");
 
-    if(JGC::InputSystem::instance()->isKeyDown(OIS::KC_S))
-        xMoveDirection.x = -1;
+        if(xPlayersEntitys.size()>0)
+        {
+            PhysBody *xPlayerPhysBody;
+            xPlayerPhysBody = static_cast<PhysBody*>(xPlayersEntitys.at(0)->getComponent("PhysBody"));
 
-    if(JGC::InputSystem::instance()->isKeyDown(OIS::KC_A))
-        xMoveDirection.y = 1;
+            xPlayerPos.setX(xPlayerPhysBody->mRigidBody->getWorldTransform().getOrigin().x());
+            xPlayerPos.setY(xPlayerPhysBody->mRigidBody->getWorldTransform().getOrigin().y());
+            xPlayerPos.setZ(0);
+        }
+    }
 
-    if(JGC::InputSystem::instance()->isKeyDown(OIS::KC_D))
-        xMoveDirection.y = -1;
 
-    bool xShoot = false;
-    if(JGC::InputSystem::instance()->isKeyDown(OIS::MB_Left))
-        xShoot = true;
 
-    QVector<JGC::Entity*> xEntitys;
-    xEntitys = JGC::EntitySystem::instance()->getEntitysInNode("PlayerControl");
+    QVector<JGC::Entity*> xEnemysEntitys;
+    xEnemysEntitys = JGC::EntitySystem::instance()->getEntitysInNode("AIControl");
 
-    for(int i = 0; i < xEntitys.size(); ++i)
+    for(int i = 0; i < xEnemysEntitys.size(); ++i)
     {
         Health *xHealth;
-        xHealth = static_cast<Health*>(xEntitys.at(i)->getComponent("Health"));
-        qDebug()<<"Player"<<xHealth->mHealthCurrent<<xHealth->mHealthTotal;
+        xHealth = static_cast<Health*>(xEnemysEntitys.at(i)->getComponent("Health"));
+        qDebug()<<"Enemy"<<xHealth->mHealthCurrent<<xHealth->mHealthTotal;
 
         GraphBody *xGraphBody;
-        xGraphBody = static_cast<GraphBody*>(xEntitys.at(i)->getComponent("GraphBody"));
+        xGraphBody = static_cast<GraphBody*>(xEnemysEntitys.at(i)->getComponent("GraphBody"));
 
         Ogre::SceneNode *xSceneNode;
         xSceneNode = xGraphBody->mSceneNode;
 
         PhysBody *xPhysBody;
-        xPhysBody = static_cast<PhysBody*>(xEntitys.at(i)->getComponent("PhysBody"));
+        xPhysBody = static_cast<PhysBody*>(xEnemysEntitys.at(i)->getComponent("PhysBody"));
 
         btRigidBody *xRigidBody;
         xRigidBody = xPhysBody->mRigidBody;
 
-        // Get destination dot
-        OIS::MouseState xMouseState;
-        xMouseState = JGC::InputSystem::instance()->getMouseState();
-        Ogre::Ray xMouseRay = JGC::GraphicSystem::instance()->getCamera()->getCameraToViewportRay(xMouseState.X.abs / float(xMouseState.width), xMouseState.Y.abs / float(xMouseState.height));
-        Ogre::Vector3 xDestinationDot = xMouseRay.getPoint(100); //почему 100? Расстояние между камерой и нулевой точкой оси z равно 100
-        xDestinationDot.z = 0;
-
         // Rotate
         {
             // ROTATE Ogre SceneNode
-            Ogre::Vector3 xDirection = xDestinationDot - xSceneNode->getPosition();
+            Ogre::Vector3 xDirection = JGC::Utils::toOgreVector3(xPlayerPos) - xSceneNode->getPosition();
             xDirection.z = 0;
 
             Ogre::Vector3 xSrcDirection = xSceneNode->getOrientation() * Ogre::Vector3::UNIT_X;
@@ -89,8 +85,18 @@ void PlayerControl::injectUpdate(const float &xTimeSinceLastUpdate)
             xRigidBody->setWorldTransform(xRigidBodyTransform);
         }
 
+        btVector3 xEnemyPos;
+        xEnemyPos.setX(xRigidBody->getWorldTransform().getOrigin().x());
+        xEnemyPos.setY(xRigidBody->getWorldTransform().getOrigin().y());
+        xEnemyPos.setZ(0);
+
         // Move
+        if(xEnemyPos.distance(xPlayerPos) > 33.3f)
         {
+            Ogre::Vector3 xMoveDirection;
+            xMoveDirection = Ogre::Vector3::ZERO;
+            xMoveDirection.x = 1;
+
             // Get Ogre::SceneNode orientation
             btScalar xMoveSpeed = 17;
             Ogre::Real xMove = xMoveSpeed * xTimeSinceLastUpdate;
@@ -112,24 +118,26 @@ void PlayerControl::injectUpdate(const float &xTimeSinceLastUpdate)
         }
 
         // Shoot
+        if(xEnemyPos.distance(xPlayerPos) <= 50.0f)
         {
             Weapon *xWeapon;
-            xWeapon = static_cast<Weapon*>(xEntitys.at(i)->getComponent("Weapon"));
+            xWeapon = static_cast<Weapon*>(xEnemysEntitys.at(i)->getComponent("Weapon"));
 
-            if(xShoot == true && xWeapon->mTimeSinceLastShot >= xWeapon->mShootDelay)
-            {
+            if(xWeapon->mTimeSinceLastShot >= xWeapon->mShootDelay)
+            {                
                 QString xBulletName;
-                xBulletName = JGC::CountersSystem::instance()->getNameWithSuffix("BulletsCount", "PlayerBullet");
+                xBulletName = JGC::CountersSystem::instance()->getNameWithSuffix("BulletsCount", "EnemyBullet");
 
                 Bullet *xBullet = JG::cBullet(1, 1);
                 JGC::EntitySystem::instance()->addComponent(xBulletName, xBullet);
 
                 Ogre::Vector3 xPosObject = xSceneNode->getPosition();
+                Ogre::Vector3 xDestinationDot = JGC::Utils::toOgreVector3(xPlayerPos);
 
                 GraphBody* xGraphBody = JG::cBulletGraphBody(xBulletName, xPosObject, xDestinationDot);
                 JGC::EntitySystem::instance()->addComponent(xBulletName, xGraphBody);
 
-                PhysBody* xPhysBody = JG::cBulletPhysBody(ENEMY_GROUP, JGC::Utils::toBtVector3(xPosObject), JGC::Utils::toBtQuaternion(xGraphBody->mSceneNode->getOrientation()));
+                PhysBody* xPhysBody = JG::cBulletPhysBody(PLAYER_GROUP, JGC::Utils::toBtVector3(xPosObject), JGC::Utils::toBtQuaternion(xGraphBody->mSceneNode->getOrientation()));
                 JGC::EntitySystem::instance()->addComponent(xBulletName, xPhysBody);
 
                 //mGameObjectsListener->addBullet(ENEMY_GROUP, xPos, xDestinationDot);
