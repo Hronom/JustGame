@@ -47,7 +47,7 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR strCmdLine, INT)
 
     JGC::EntitySystem::instance()->addComponentToNode("EnemyStat", "Health");
     JGC::EntitySystem::instance()->addComponentToNode("EnemyStat", "AIControllable");
-    JGC::EntitySystem::instance()->addComponentToNode("EnemyStat", "GraphBody");
+    JGC::EntitySystem::instance()->addComponentToNode("EnemyStat", "PhysBody");
 
     JGC::EntitySystem::instance()->addComponentToNode("GUI", "PlayerUI");
 
@@ -70,7 +70,7 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR strCmdLine, INT)
         CameraTrackable* xCameraTrackable = JG::cCameraTrackable("MainCamera");
         JGC::EntitySystem::instance()->addComponent("Player", xCameraTrackable);
 
-        Weapon* xWeapon = JG::cWeapon(1.01f);
+        Weapon* xWeapon = JG::cWeapon(0.7f);
         JGC::EntitySystem::instance()->addComponent("Player", xWeapon);
 
         Health *xHealth = JG::cHealth(100,100);

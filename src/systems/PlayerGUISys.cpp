@@ -1,12 +1,13 @@
 #include "PlayerGUISys.h"
 
-
 #include "PhysicsSystem.h"
 #include "EntitySystem.h"
+#include "InputSystem.h"
 #include "Entity.h"
+#include "Utils.h"
 #include "../components/Health.h"
 #include "../components/PlayerUI.h"
-#include "../components/GraphBody.h"
+#include "../components/PhysBody.h"
 
 #include <QVector>
 #include <QDebug>
@@ -20,6 +21,7 @@ void PlayerGUISys::injectUpdate(const float &xTimeSinceLastUpdate)
     if(xGUIEntitys.size() > 0)
     {
         xGUI = static_cast<PlayerUI*>(xGUIEntitys.at(0)->getComponent("PlayerUI"));
+        MyGUI::PointerManager::getInstancePtr()->setPointer("Arrow");
         xGUI->mEnemyPanel->setVisible(false);
     }
 
@@ -40,61 +42,44 @@ void PlayerGUISys::injectUpdate(const float &xTimeSinceLastUpdate)
 
     // Update enemy stat
     {
-        MyGUI::PointerManager::getInstancePtr()->setPointer("arrow");
-        MyGUI::IntPoint xMousePosition = MyGUI::InputManager::getInstancePtr()->getMousePosition();
-        MyGUI::IntSize xSize = MyGUI::RenderManager::getInstance().getViewSize();
-        Ogre::Ray ray = JGC::GraphicSystem::instance()->getCamera()->getCameraToViewportRay(xMousePosition.left/float(xSize.width), xMousePosition.top/float(xSize.height));
-        Ogre::RaySceneQuery *xRaySceneQuery;
-        xRaySceneQuery = JGC::GraphicSystem::instance()->getSceneManager()->createRayQuery(Ogre::Ray());
-        xRaySceneQuery->setRay(ray);
-        xRaySceneQuery->setSortByDistance(true);
-        xRaySceneQuery->setQueryTypeMask(Ogre::SceneManager::ENTITY_TYPE_MASK);
-        Ogre::RaySceneQueryResult& xResult = xRaySceneQuery->execute();
+        OIS::MouseState xMouseState;
+        xMouseState = JGC::InputSystem::instance()->getMouseState();
+        Ogre::Ray xMouseRay = JGC::GraphicSystem::instance()->getCamera()->getCameraToViewportRay(xMouseState.X.abs / float(xMouseState.width), xMouseState.Y.abs / float(xMouseState.height));
 
-        for(Ogre::RaySceneQueryResult::iterator xIter = xResult.begin(); xIter != xResult.end(); ++xIter)
+        btVector3 xStartDot = JGC::Utils::toBtVector3(xMouseRay.getPoint(0));
+        btVector3 xEndDot = JGC::Utils::toBtVector3(xMouseRay.getPoint(113));// Ѕольше на 13 единиц рассто€ни€ от камеры до 0 по оси Z(чтобы пробило лучом наверн€ка)
+
+        btCollisionWorld::ClosestRayResultCallback xRayCallback(xStartDot, xEndDot);
+
+        // Perform raycast
+        JGC::PhysicsSystem::instance()->getDynamicsWorld()->rayTest(xStartDot, xEndDot, xRayCallback);
+
+        if(xRayCallback.hasHit())
         {
-            if(xIter->movable != 0)
+            PhysBody *xPhysBody = static_cast<PhysBody*>(xRayCallback.m_collisionObject->getUserPointer());
+
+            QVector<JGC::Entity*> xEnemysEntitys;
+            xEnemysEntitys = JGC::EntitySystem::instance()->getEntitysInNode("EnemyStat");
+
+            if(xEnemysEntitys.size() > 0)
             {
-                Ogre::Any xAny = xIter->movable->getUserAny();
-
-                GraphBody *xGraphBody = 0;
-                try
+                for(int i = 0; i < xEnemysEntitys.size(); ++i)
                 {
-                   xGraphBody = Ogre::any_cast<GraphBody*>(xAny);
-                }
-                catch(Ogre::Exception xException)
-                { }
+                    PhysBody *xPhysBodyCandidate;
+                    xPhysBodyCandidate = static_cast<PhysBody*>(xEnemysEntitys.at(i)->getComponent("PhysBody"));
 
-                if(xGraphBody != 0)
-                {
-                    MyGUI::PointerManager::getInstancePtr()->setPointer("hand");
-
-                    QVector<JGC::Entity*> xEnemysEntitys;
-                    xEnemysEntitys = JGC::EntitySystem::instance()->getEntitysInNode("EnemyStat");
-
-                    if(xEnemysEntitys.size() > 0)
+                    if(xPhysBodyCandidate == xPhysBody)
                     {
-                        for(int i = 0; i < xEnemysEntitys.size(); ++i)
-                        {
-                            GraphBody *xGraphBodyCandidate;
-                            xGraphBodyCandidate = static_cast<GraphBody*>(xEnemysEntitys.at(i)->getComponent("GraphBody"));
+                        Health *xHealth;
+                        xHealth = static_cast<Health*>(xEnemysEntitys.at(i)->getComponent("Health"));
 
-                            if(xGraphBodyCandidate == xGraphBody)
-                            {
-                                Health *xHealth;
-                                xHealth = static_cast<Health*>(xEnemysEntitys.at(i)->getComponent("Health"));
-
-                                MyGUI::PointerManager::getInstancePtr()->setPointer("hand");
-                                xGUI->mEnemyPanel->setVisible(true);
-                                xGUI->mEnemyHealthBar->setProgressRange(xHealth->mHealthTotal);
-                                xGUI->mEnemyHealthBar->setProgressPosition(xHealth->mHealthCurrent);
-                            }
-                        }
+                        MyGUI::PointerManager::getInstancePtr()->setPointer("hand");
+                        xGUI->mEnemyPanel->setVisible(true);
+                        xGUI->mEnemyHealthBar->setProgressRange(xHealth->mHealthTotal);
+                        xGUI->mEnemyHealthBar->setProgressPosition(xHealth->mHealthCurrent);
                     }
                 }
             }
         }
-
-        JGC::GraphicSystem::instance()->getSceneManager()->destroyQuery(xRaySceneQuery);
     }
 }
