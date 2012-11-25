@@ -137,7 +137,6 @@ namespace JG
         // create Entity
         Ogre::Entity *xEntity;
         xEntity = JGC::GraphicSystem::instance()->getSceneManager()->createEntity((xComponentName+"_Entity").toStdString(), (xComponentName+"_Mesh").toStdString());
-        xEntity->setUserAny(Ogre::Any(new int(0)));
         // create SceneNode
         Ogre::SceneNode *xSceneNode;
         xSceneNode = JGC::GraphicSystem::instance()->getSceneManager()->getRootSceneNode()->createChildSceneNode((xComponentName+"_Node").toStdString());
@@ -148,12 +147,13 @@ namespace JG
         xSceneNode->attachObject(xEntity);
 
         // create component
-        GraphBody* xGraphBody;
+        GraphBody *xGraphBody;
         xGraphBody = new GraphBody();
-
         xGraphBody->mManualObject = xManualObject;
         xGraphBody->mEntity = xEntity;
         xGraphBody->mSceneNode = xSceneNode;
+
+        xEntity->setUserAny(Ogre::Any(xGraphBody));
 
         return xGraphBody;
     }
@@ -416,6 +416,34 @@ namespace JG
     void dBullet(Bullet *xBullet)
     {
         delete xBullet;
+    }
+
+    PlayerUI* cPlayerUI()
+    {
+        MyGUI::VectorWidgetPtr xCurrentLayoutWidgets;
+        xCurrentLayoutWidgets = MyGUI::LayoutManager::getInstancePtr()->loadLayout("GameUI.layout");
+        MyGUI::LayerManager::getInstancePtr()->resizeView(MyGUI::RenderManager::getInstancePtr()->getViewSize());
+        xCurrentLayoutWidgets[0]->setVisible(true);
+
+        MyGUI::ProgressBar *xPlayerHealthBar;
+        xPlayerHealthBar = JGC::GraphicSystem::instance()->getGui()->findWidget<MyGUI::ProgressBar>("PlayerHealthBar");
+
+        MyGUI::Widget *xEnemyPanel;
+        xEnemyPanel = JGC::GraphicSystem::instance()->getGui()->findWidget<MyGUI::Widget>("EnemyStatPanel");
+        xEnemyPanel->setVisible(false);
+
+        MyGUI::ProgressBar *xEnemyHealthBar;
+        xEnemyHealthBar = JGC::GraphicSystem::instance()->getGui()->findWidget<MyGUI::ProgressBar>("EnemyHealthBar");
+
+        // Create component
+        PlayerUI* xPlayerUI;
+        xPlayerUI = new PlayerUI();
+        xPlayerUI->mLayoutWidgets = xCurrentLayoutWidgets;
+        xPlayerUI->mPlayerHealthBar = xPlayerHealthBar;
+        xPlayerUI->mEnemyPanel = xEnemyPanel;
+        xPlayerUI->mEnemyHealthBar = xEnemyHealthBar;
+
+        return xPlayerUI;
     }
 }
 

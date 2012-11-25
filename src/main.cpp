@@ -8,6 +8,7 @@
 #include "systems/PlayerCameraSync.h"
 #include "systems/Bullets.h"
 #include "systems/DamageSys.h"
+#include "systems/PlayerGUISys.h"
 
 int WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR strCmdLine, INT)
 {
@@ -40,6 +41,15 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR strCmdLine, INT)
 
     JGC::EntitySystem::instance()->addComponentToNode("Damageable", "Health");
     JGC::EntitySystem::instance()->addComponentToNode("Damageable", "PhysBody");
+
+    JGC::EntitySystem::instance()->addComponentToNode("PlayerStat", "Health");
+    JGC::EntitySystem::instance()->addComponentToNode("PlayerStat", "PlayerControllable");
+
+    JGC::EntitySystem::instance()->addComponentToNode("EnemyStat", "Health");
+    JGC::EntitySystem::instance()->addComponentToNode("EnemyStat", "AIControllable");
+    JGC::EntitySystem::instance()->addComponentToNode("EnemyStat", "GraphBody");
+
+    JGC::EntitySystem::instance()->addComponentToNode("GUI", "PlayerUI");
 
 
 
@@ -85,6 +95,12 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR strCmdLine, INT)
         JGC::EntitySystem::instance()->addComponent("Enemy", xHealth);
     }
 
+    // GUI
+    {
+        PlayerUI *xPlayerUI = JG::cPlayerUI();
+        JGC::EntitySystem::instance()->addComponent("GUI", xPlayerUI);
+    }
+
 
 
     {
@@ -106,11 +122,15 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR strCmdLine, INT)
 
         Bullets *xBullets;
         xBullets = new Bullets();
-        JGC::EntitySystem::instance()->addSystem(6, xBullets);
+        JGC::EntitySystem::instance()->addSystem(5, xBullets);
 
         DamageSys *xDamageSys;
         xDamageSys = new DamageSys();
-        JGC::EntitySystem::instance()->addSystem(5, xDamageSys);
+        JGC::EntitySystem::instance()->addSystem(6, xDamageSys);
+
+        PlayerGUISys *xPlayerGUISys;
+        xPlayerGUISys = new PlayerGUISys();
+        JGC::EntitySystem::instance()->addSystem(7, xPlayerGUISys);
     }
 
 

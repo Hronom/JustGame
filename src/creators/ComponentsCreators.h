@@ -10,6 +10,7 @@
 #include "../components/Weapon.h"
 #include "../components/Bullet.h"
 #include "../components/SoundBody.h"
+#include "../components/PlayerUI.h"
 
 #include "QString"
 
@@ -70,6 +71,9 @@ namespace JG
 
     Bullet* cBullet(float xTotalLiveTime, qint32 xDamage);
     void dBullet(Bullet* xBullet);
+
+    PlayerUI* cPlayerUI();
+    //void dPlayerUI(PlayerUI* xPlayerUI);
 }
 
 #endif

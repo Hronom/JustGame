@@ -17,12 +17,14 @@ set(HEADERS
 ./src/components/CameraTrackable.h
 ./src/components/Weapon.h
 ./src/components/Bullet.h
+./src/components/PlayerUI.h
 ./src/systems/Bullets.h
 ./src/systems/PlayerControl.h
 ./src/systems/PhysGraphSync.h
 ./src/systems/PlayerCameraSync.h
 ./src/systems/AIControl.h
 ./src/systems/DamageSys.h
+./src/systems/PlayerGUISys.h
 )
 
 set(SOURCES
@@ -34,6 +36,7 @@ set(SOURCES
 ./src/systems/PlayerCameraSync.cpp
 ./src/systems/AIControl.cpp
 ./src/systems/DamageSys.cpp
+./src/systems/PlayerGUISys.cpp
 )
 
 set(CONFIGS
