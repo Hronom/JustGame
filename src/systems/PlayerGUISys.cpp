@@ -1,8 +1,8 @@
 #include "PlayerGUISys.h"
 
+#include "GraphicSystem.h"
 #include "PhysicsSystem.h"
 #include "EntitySystem.h"
-#include "InputSystem.h"
 #include "Entity.h"
 #include "Utils.h"
 #include "../components/Health.h"
@@ -42,12 +42,8 @@ void PlayerGUISys::injectUpdate(const float &xTimeSinceLastUpdate)
 
     // Update enemy stat
     {
-        OIS::MouseState xMouseState;
-        xMouseState = JGC::InputSystem::instance()->getMouseState();
-        Ogre::Ray xMouseRay = JGC::GraphicSystem::instance()->getCamera()->getCameraToViewportRay(xMouseState.X.abs / float(xMouseState.width), xMouseState.Y.abs / float(xMouseState.height));
-
-        btVector3 xStartDot = JGC::Utils::toBtVector3(xMouseRay.getPoint(0));
-        btVector3 xEndDot = JGC::Utils::toBtVector3(xMouseRay.getPoint(113));// Ѕольше на 13 единиц рассто€ни€ от камеры до 0 по оси Z(чтобы пробило лучом наверн€ка)
+        btVector3 xStartDot = JGC::Utils::toBtVector3(JGC::GraphicSystem::instance()->getMouseWorldCoord(0));
+        btVector3 xEndDot = JGC::Utils::toBtVector3(JGC::GraphicSystem::instance()->getMouseWorldCoord(113));// Ѕольше на 13 единиц рассто€ни€ от камеры до 0 по оси Z(чтобы пробило лучом наверн€ка)
 
         btCollisionWorld::ClosestRayResultCallback xRayCallback(xStartDot, xEndDot);
 

@@ -70,7 +70,7 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR strCmdLine, INT)
         CameraTrackable* xCameraTrackable = JG::cCameraTrackable("MainCamera");
         JGC::EntitySystem::instance()->addComponent("Player", xCameraTrackable);
 
-        Weapon* xWeapon = JG::cWeapon(0.7f);
+        Weapon* xWeapon = JG::cWeapon(0.3f);
         JGC::EntitySystem::instance()->addComponent("Player", xWeapon);
 
         Health *xHealth = JG::cHealth(100,100);

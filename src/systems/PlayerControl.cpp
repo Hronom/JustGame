@@ -59,10 +59,7 @@ void PlayerControl::injectUpdate(const float &xTimeSinceLastUpdate)
         xRigidBody = xPhysBody->mRigidBody;
 
         // Get destination dot
-        OIS::MouseState xMouseState;
-        xMouseState = JGC::InputSystem::instance()->getMouseState();
-        Ogre::Ray xMouseRay = JGC::GraphicSystem::instance()->getCamera()->getCameraToViewportRay(xMouseState.X.abs / float(xMouseState.width), xMouseState.Y.abs / float(xMouseState.height));
-        Ogre::Vector3 xDestinationDot = xMouseRay.getPoint(100); //почему 100? Расстояние между камерой и нулевой точкой оси z равно 100
+        Ogre::Vector3 xDestinationDot = JGC::GraphicSystem::instance()->getMouseWorldCoord(100); //почему 100? Расстояние между камерой и нулевой точкой оси z равно 100
         xDestinationDot.z = 0;
 
         // Rotate
