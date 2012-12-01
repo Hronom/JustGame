@@ -25,6 +25,7 @@ set(HEADERS
 ./src/systems/AIControl.h
 ./src/systems/DamageSys.h
 ./src/systems/PlayerGUISys.h
+./src/PlayWorld.h
 )
 
 set(SOURCES
@@ -37,6 +38,7 @@ set(SOURCES
 ./src/systems/AIControl.cpp
 ./src/systems/DamageSys.cpp
 ./src/systems/PlayerGUISys.cpp
+./src/PlayWorld.cpp
 )
 
 set(CONFIGS

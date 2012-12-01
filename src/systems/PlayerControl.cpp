@@ -2,7 +2,7 @@
 
 #include <InputSystem.h>
 #include <GraphicSystem.h>
-#include <EntitySystem.h>
+#include <WorldsSystem.h>
 #include <CountersSystem.h>
 #include <IComponent.h>
 #include <Utils.h>
@@ -38,7 +38,7 @@ void PlayerControl::injectUpdate(const float &xTimeSinceLastUpdate)
         xShoot = true;
 
     QVector<JGC::Entity*> xEntitys;
-    xEntitys = JGC::EntitySystem::instance()->getEntitysInNode("PlayerControl");
+    xEntitys = JGC::WorldsSystem::instance()->getActiveWorld()->getEntitysInNode("PlayerControl");
 
     for(int i = 0; i < xEntitys.size(); ++i)
     {
@@ -119,15 +119,15 @@ void PlayerControl::injectUpdate(const float &xTimeSinceLastUpdate)
                 xBulletName = JGC::CountersSystem::instance()->getNameWithSuffix("BulletsCount", "PlayerBullet");
 
                 Bullet *xBullet = JG::cBullet(1, 1);
-                JGC::EntitySystem::instance()->addComponent(xBulletName, xBullet);
+                JGC::WorldsSystem::instance()->getActiveWorld()->addComponent(xBulletName, xBullet);
 
                 Ogre::Vector3 xPosObject = xSceneNode->getPosition();
 
-                GraphBody* xGraphBody = JG::cBulletGraphBody(xBulletName, xPosObject, xDestinationDot);
-                JGC::EntitySystem::instance()->addComponent(xBulletName, xGraphBody);
+                GraphBody* xGraphBody = JG::cBulletGraphBody("PlayWorld", xBulletName, xPosObject, xDestinationDot);
+                JGC::WorldsSystem::instance()->getActiveWorld()->addComponent(xBulletName, xGraphBody);
 
                 PhysBody* xPhysBody = JG::cBulletPhysBody(ENEMY_GROUP, JGC::Utils::toBtVector3(xPosObject), JGC::Utils::toBtQuaternion(xGraphBody->mSceneNode->getOrientation()));
-                JGC::EntitySystem::instance()->addComponent(xBulletName, xPhysBody);
+                JGC::WorldsSystem::instance()->getActiveWorld()->addComponent(xBulletName, xPhysBody);
 
                 //mGameObjectsListener->addBullet(ENEMY_GROUP, xPos, xDestinationDot);
                 //mSoundSource->move(xPosObject.x,xPosObject.y,xPosObject.z);

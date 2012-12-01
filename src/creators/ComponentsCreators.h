@@ -30,11 +30,11 @@ namespace JG
 
     static unsigned int mEnemysCount = 0;
 
-    GraphBody* cBackgroundGraphBody(QString xComponentName);
-    GraphBody* cPlayerGraphBody(QString xComponentName);
-    GraphBody* cEnemyGraphBody(QString xComponentSuffix, Ogre::Vector3 xPosition);
-    GraphBody* cBulletGraphBody(QString xComponentName, Ogre::Vector3 xPosition, Ogre::Vector3 xDestination);
-    void dGraphBody(GraphBody* xGraphBody);
+    GraphBody* cBackgroundGraphBody(QString xSceneManagerName, QString xComponentName);
+    GraphBody* cPlayerGraphBody(QString xSceneManagerName, QString xComponentName);
+    GraphBody* cEnemyGraphBody(QString xSceneManagerName, QString xComponentSuffix, Ogre::Vector3 xPosition);
+    GraphBody* cBulletGraphBody(QString xSceneManagerName, QString xComponentName, Ogre::Vector3 xPosition, Ogre::Vector3 xDestination);
+    void dGraphBody(QString xSceneManagerName, GraphBody* xGraphBody);
 
 
 
@@ -48,8 +48,8 @@ namespace JG
 
 
 
-    CameraTrackable* cCameraTrackable(QString xCameraName);
-    void dCameraTrackable();
+    CameraTrackable* cCameraTrackable(QString xSceneManagerName, QString xCameraName);
+    void dCameraTrackable(QString xSceneManagerName);
 
 
 

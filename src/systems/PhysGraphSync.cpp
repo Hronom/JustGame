@@ -1,6 +1,6 @@
 #include "PhysGraphSync.h"
 
-#include <EntitySystem.h>
+#include <WorldsSystem.h>
 #include <Entity.h>
 
 #include <Ogre.h>
@@ -11,7 +11,7 @@
 void PhysGraphSync::injectUpdate(const float &xTimeSinceLastUpdate)
 {
     QVector<JGC::Entity*> xEntitys;
-    xEntitys = JGC::EntitySystem::instance()->getEntitysInNode("PhysGraphSync");
+    xEntitys = JGC::WorldsSystem::instance()->getActiveWorld()->getEntitysInNode("PhysGraphSync");
 
     for(int i = 0; i < xEntitys.size(); ++i)
     {

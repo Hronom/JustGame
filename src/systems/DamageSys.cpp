@@ -1,7 +1,7 @@
 #include "DamageSys.h"
 
-#include "PhysicsSystem.h"
-#include "EntitySystem.h"
+#include <PhysicsSystem.h>
+#include <WorldsSystem.h>
 #include "Entity.h"
 #include "../components/PhysBody.h"
 #include "../components/Health.h"
@@ -13,10 +13,10 @@
 void DamageSys::injectUpdate(const float &xTimeSinceLastUpdate)
 {
     QVector<JGC::Entity*> xDamageableEntitys;
-    xDamageableEntitys = JGC::EntitySystem::instance()->getEntitysInNode("Damageable");
+    xDamageableEntitys = JGC::WorldsSystem::instance()->getActiveWorld()->getEntitysInNode("Damageable");
 
     QVector<JGC::Entity*> xDoDamageEntitys;
-    xDoDamageEntitys = JGC::EntitySystem::instance()->getEntitysInNode("DoDamage");
+    xDoDamageEntitys = JGC::WorldsSystem::instance()->getActiveWorld()->getEntitysInNode("DoDamage");
 
     if(xDamageableEntitys.size() > 0 && xDoDamageEntitys.size() > 0)
     {

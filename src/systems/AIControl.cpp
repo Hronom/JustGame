@@ -2,7 +2,7 @@
 
 #include <InputSystem.h>
 #include <GraphicSystem.h>
-#include <EntitySystem.h>
+#include <WorldsSystem.h>
 #include <CountersSystem.h>
 #include <IComponent.h>
 #include <Utils.h>
@@ -25,7 +25,7 @@ void AIControl::injectUpdate(const float &xTimeSinceLastUpdate)
     // Get player pos
     {
         QVector<JGC::Entity*> xPlayersEntitys;
-        xPlayersEntitys = JGC::EntitySystem::instance()->getEntitysInNode("PlayerControl");
+        xPlayersEntitys = JGC::WorldsSystem::instance()->getActiveWorld()->getEntitysInNode("PlayerControl");
 
         if(xPlayersEntitys.size()>0)
         {
@@ -41,7 +41,7 @@ void AIControl::injectUpdate(const float &xTimeSinceLastUpdate)
 
 
     QVector<JGC::Entity*> xEnemysEntitys;
-    xEnemysEntitys = JGC::EntitySystem::instance()->getEntitysInNode("AIControl");
+    xEnemysEntitys = JGC::WorldsSystem::instance()->getActiveWorld()->getEntitysInNode("AIControl");
 
     for(int i = 0; i < xEnemysEntitys.size(); ++i)
     {
@@ -129,16 +129,16 @@ void AIControl::injectUpdate(const float &xTimeSinceLastUpdate)
                 xBulletName = JGC::CountersSystem::instance()->getNameWithSuffix("BulletsCount", "EnemyBullet");
 
                 Bullet *xBullet = JG::cBullet(1, 1);
-                JGC::EntitySystem::instance()->addComponent(xBulletName, xBullet);
+                JGC::WorldsSystem::instance()->getActiveWorld()->addComponent(xBulletName, xBullet);
 
                 Ogre::Vector3 xPosObject = xSceneNode->getPosition();
                 Ogre::Vector3 xDestinationDot = JGC::Utils::toOgreVector3(xPlayerPos);
 
-                GraphBody* xGraphBody = JG::cBulletGraphBody(xBulletName, xPosObject, xDestinationDot);
-                JGC::EntitySystem::instance()->addComponent(xBulletName, xGraphBody);
+                GraphBody* xGraphBody = JG::cBulletGraphBody("PlayWorld", xBulletName, xPosObject, xDestinationDot);
+                JGC::WorldsSystem::instance()->getActiveWorld()->addComponent(xBulletName, xGraphBody);
 
                 PhysBody* xPhysBody = JG::cBulletPhysBody(PLAYER_GROUP, JGC::Utils::toBtVector3(xPosObject), JGC::Utils::toBtQuaternion(xGraphBody->mSceneNode->getOrientation()));
-                JGC::EntitySystem::instance()->addComponent(xBulletName, xPhysBody);
+                JGC::WorldsSystem::instance()->getActiveWorld()->addComponent(xBulletName, xPhysBody);
 
                 //mGameObjectsListener->addBullet(ENEMY_GROUP, xPos, xDestinationDot);
                 //mSoundSource->move(xPosObject.x,xPosObject.y,xPosObject.z);

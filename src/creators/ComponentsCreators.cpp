@@ -8,7 +8,7 @@
 
 namespace JG
 {
-    GraphBody* cBackgroundGraphBody(QString xComponentName)
+    GraphBody* cBackgroundGraphBody(QString xSceneManagerName, QString xComponentName)
     {
         // create ManualObject
         Ogre::ManualObject *xManualObject;
@@ -37,11 +37,11 @@ namespace JG
 
         // create Entity
         Ogre::Entity *xEntity;
-        xEntity = JGC::GraphicSystem::instance()->getSceneManager()->createEntity((xComponentName+"_Entity").toStdString(), (xComponentName+"_Mesh").toStdString());
+        xEntity = JGC::GraphicSystem::instance()->getSceneManager(xSceneManagerName)->createEntity((xComponentName+"_Entity").toStdString(), (xComponentName+"_Mesh").toStdString());
 
         // create SceneNode
         Ogre::SceneNode *xSceneNode;
-        xSceneNode = JGC::GraphicSystem::instance()->getSceneManager()->getRootSceneNode()->createChildSceneNode((xComponentName+"_Node").toStdString());
+        xSceneNode = JGC::GraphicSystem::instance()->getSceneManager(xSceneManagerName)->getRootSceneNode()->createChildSceneNode((xComponentName+"_Node").toStdString());
         // connect Entity to Node
         xSceneNode->attachObject(xEntity);
 
@@ -56,7 +56,7 @@ namespace JG
         return xGraphBody;
     }
 
-    GraphBody* cPlayerGraphBody(QString xComponentName)
+    GraphBody* cPlayerGraphBody(QString xSceneManagerName, QString xComponentName)
     {
         Ogre::ColourValue xColor = Ogre::ColourValue(1.0, 1.0, 1.0, 0.0);
         // create ManualObject
@@ -81,11 +81,11 @@ namespace JG
 
         // create Entity
         Ogre::Entity *xEntity;
-        xEntity = JGC::GraphicSystem::instance()->getSceneManager()->createEntity((xComponentName+"_Entity").toStdString(), (xComponentName+"_Mesh").toStdString());
+        xEntity = JGC::GraphicSystem::instance()->getSceneManager(xSceneManagerName)->createEntity((xComponentName+"_Entity").toStdString(), (xComponentName+"_Mesh").toStdString());
         xEntity->setUserAny(Ogre::Any(new int(0)));
         // create SceneNode
         Ogre::SceneNode *xSceneNode;
-        xSceneNode = JGC::GraphicSystem::instance()->getSceneManager()->getRootSceneNode()->createChildSceneNode((xComponentName+"_Node").toStdString());
+        xSceneNode = JGC::GraphicSystem::instance()->getSceneManager(xSceneManagerName)->getRootSceneNode()->createChildSceneNode((xComponentName+"_Node").toStdString());
         // connect Entity to Node
         xSceneNode->attachObject(xEntity);
 
@@ -106,7 +106,7 @@ namespace JG
         return xGraphBody;
     }
 
-    GraphBody* cEnemyGraphBody(QString xComponentSuffix, Ogre::Vector3 xPosition)
+    GraphBody* cEnemyGraphBody(QString xSceneManagerName, QString xComponentSuffix, Ogre::Vector3 xPosition)
     {
         QString xComponentName;
         xComponentName = xComponentSuffix;
@@ -136,10 +136,10 @@ namespace JG
 
         // create Entity
         Ogre::Entity *xEntity;
-        xEntity = JGC::GraphicSystem::instance()->getSceneManager()->createEntity((xComponentName+"_Entity").toStdString(), (xComponentName+"_Mesh").toStdString());
+        xEntity = JGC::GraphicSystem::instance()->getSceneManager(xSceneManagerName)->createEntity((xComponentName+"_Entity").toStdString(), (xComponentName+"_Mesh").toStdString());
         // create SceneNode
         Ogre::SceneNode *xSceneNode;
-        xSceneNode = JGC::GraphicSystem::instance()->getSceneManager()->getRootSceneNode()->createChildSceneNode((xComponentName+"_Node").toStdString());
+        xSceneNode = JGC::GraphicSystem::instance()->getSceneManager(xSceneManagerName)->getRootSceneNode()->createChildSceneNode((xComponentName+"_Node").toStdString());
         // Set position of SceneNode
         xSceneNode->setPosition(xPosition);
 
@@ -158,7 +158,7 @@ namespace JG
         return xGraphBody;
     }
 
-    GraphBody* cBulletGraphBody(QString xComponentName, Ogre::Vector3 xPosition, Ogre::Vector3 xDestination)
+    GraphBody* cBulletGraphBody(QString xSceneManagerName, QString xComponentName, Ogre::Vector3 xPosition, Ogre::Vector3 xDestination)
     {
         Ogre::ColourValue xColor = Ogre::ColourValue(1.0, 0.0, 0.0, 0.0);
         Ogre::ManualObject *xManualObject;
@@ -179,11 +179,11 @@ namespace JG
 
         // create Entity
         Ogre::Entity *xEntity;
-        xEntity = JGC::GraphicSystem::instance()->getSceneManager()->createEntity((xComponentName+"_Entity").toStdString(), (xComponentName+"_Mesh").toStdString());
+        xEntity = JGC::GraphicSystem::instance()->getSceneManager(xSceneManagerName)->createEntity((xComponentName+"_Entity").toStdString(), (xComponentName+"_Mesh").toStdString());
         xEntity->setUserAny(Ogre::Any(new int(0)));
         // create SceneNode
         Ogre::SceneNode *xSceneNode;
-        xSceneNode = JGC::GraphicSystem::instance()->getSceneManager()->getRootSceneNode()->createChildSceneNode((xComponentName+"_Node").toStdString());
+        xSceneNode = JGC::GraphicSystem::instance()->getSceneManager(xSceneManagerName)->getRootSceneNode()->createChildSceneNode((xComponentName+"_Node").toStdString());
         // Set position of SceneNode
         xSceneNode->setPosition(xPosition);
         // Rotate SceneNode
@@ -206,12 +206,12 @@ namespace JG
         return xGraphBody;
     }
 
-    void dGraphBody(GraphBody* xGraphBody)
+    void dGraphBody(QString xSceneManagerName, GraphBody* xGraphBody)
     {
-        JGC::GraphicSystem::instance()->getSceneManager()->destroyManualObject(xGraphBody->mManualObject);
-        JGC::GraphicSystem::instance()->getSceneManager()->destroyEntity(xGraphBody->mEntity);
+        JGC::GraphicSystem::instance()->getSceneManager(xSceneManagerName)->destroyManualObject(xGraphBody->mManualObject);
+        JGC::GraphicSystem::instance()->getSceneManager(xSceneManagerName)->destroyEntity(xGraphBody->mEntity);
         xGraphBody->mSceneNode->removeAndDestroyAllChildren();
-        JGC::GraphicSystem::instance()->getSceneManager()->destroySceneNode(xGraphBody->mSceneNode);
+        JGC::GraphicSystem::instance()->getSceneManager(xSceneManagerName)->destroySceneNode(xGraphBody->mSceneNode);
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -341,10 +341,10 @@ namespace JG
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    CameraTrackable* cCameraTrackable(QString xCameraName)
+    CameraTrackable* cCameraTrackable(QString xSceneManagerName, QString xCameraName)
     {
         Ogre::Camera* xCamera;
-        xCamera = JGC::GraphicSystem::instance()->getCamera();
+        xCamera = JGC::GraphicSystem::instance()->getCamera(xSceneManagerName);
 
         // create component
         CameraTrackable* xCameraTrackable;
@@ -355,7 +355,7 @@ namespace JG
         return xCameraTrackable;
     }
 
-    void dCameraTrackable()
+    void dCameraTrackable(QString xSceneManagerName)
     {
 
     }

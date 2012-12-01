@@ -1,7 +1,7 @@
 #include "PlayerCameraSync.h"
 
 #include <GraphicSystem.h>
-#include <EntitySystem.h>
+#include <WorldsSystem.h>
 #include <Entity.h>
 
 #include "../components/GraphBody.h"
@@ -10,7 +10,7 @@
 void PlayerCameraSync::injectUpdate(const float &xTimeSinceLastUpdate)
 {
     QVector<JGC::Entity*> xEntitys;
-    xEntitys = JGC::EntitySystem::instance()->getEntitysInNode("PlayerCameraSync");
+    xEntitys = JGC::WorldsSystem::instance()->getActiveWorld()->getEntitysInNode("PlayerCameraSync");
 
     for(int i = 0; i < xEntitys.size(); ++i)
     {

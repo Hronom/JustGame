@@ -1,8 +1,8 @@
 #include "PlayerGUISys.h"
 
-#include "GraphicSystem.h"
-#include "PhysicsSystem.h"
-#include "EntitySystem.h"
+#include <GraphicSystem.h>
+#include <PhysicsSystem.h>
+#include <WorldsSystem.h>
 #include "Entity.h"
 #include "Utils.h"
 #include "../components/Health.h"
@@ -15,7 +15,7 @@
 void PlayerGUISys::injectUpdate(const float &xTimeSinceLastUpdate)
 {
     QVector<JGC::Entity*> xGUIEntitys;
-    xGUIEntitys = JGC::EntitySystem::instance()->getEntitysInNode("GUI");
+    xGUIEntitys = JGC::WorldsSystem::instance()->getActiveWorld()->getEntitysInNode("GUI");
 
     PlayerUI *xGUI;
     if(xGUIEntitys.size() > 0)
@@ -28,7 +28,7 @@ void PlayerGUISys::injectUpdate(const float &xTimeSinceLastUpdate)
     // Update player stat
     {
         QVector<JGC::Entity*> xPlayerEntitys;
-        xPlayerEntitys = JGC::EntitySystem::instance()->getEntitysInNode("PlayerStat");
+        xPlayerEntitys = JGC::WorldsSystem::instance()->getActiveWorld()->getEntitysInNode("PlayerStat");
 
         if(xPlayerEntitys.size() > 0)
         {
@@ -55,7 +55,7 @@ void PlayerGUISys::injectUpdate(const float &xTimeSinceLastUpdate)
             PhysBody *xPhysBody = static_cast<PhysBody*>(xRayCallback.m_collisionObject->getUserPointer());
 
             QVector<JGC::Entity*> xEnemysEntitys;
-            xEnemysEntitys = JGC::EntitySystem::instance()->getEntitysInNode("EnemyStat");
+            xEnemysEntitys = JGC::WorldsSystem::instance()->getActiveWorld()->getEntitysInNode("EnemyStat");
 
             if(xEnemysEntitys.size() > 0)
             {
