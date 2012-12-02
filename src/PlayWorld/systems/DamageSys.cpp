@@ -3,9 +3,9 @@
 #include <PhysicsSystem.h>
 #include <WorldsSystem.h>
 #include "Entity.h"
-#include "../components/PhysBody.h"
-#include "../components/Health.h"
-#include "../components/Bullet.h"
+#include "../components/PhysBodyCom.h"
+#include "../components/HealthCom.h"
+#include "../components/BulletCom.h"
 
 #include <QVector>
 #include <QDebug>
@@ -27,8 +27,8 @@ void DamageSys::injectUpdate(const float &xTimeSinceLastUpdate)
         xIter = xCollidedObjects.begin();
         while(xIter != xCollidedObjects.end())
         {
-            PhysBody *xPhysBodyA = static_cast<PhysBody*>(xIter->first->getUserPointer());
-            PhysBody *xPhysBodyB = static_cast<PhysBody*>(xIter->second->getUserPointer());
+            PhysBodyCom *xPhysBodyA = static_cast<PhysBodyCom*>(xIter->first->getUserPointer());
+            PhysBodyCom *xPhysBodyB = static_cast<PhysBodyCom*>(xIter->second->getUserPointer());
 
             JGC::Entity *xDamageableEntity = 0;
             JGC::Entity *xDoDamageEntity = 0;
@@ -36,8 +36,8 @@ void DamageSys::injectUpdate(const float &xTimeSinceLastUpdate)
             // Find Damageable entity
             for(int i = 0; i < xDamageableEntitys.size(); ++i)
             {
-                PhysBody *xPhysBodyCandidate;
-                xPhysBodyCandidate = static_cast<PhysBody*>(xDamageableEntitys.at(i)->getComponent("PhysBody"));
+                PhysBodyCom *xPhysBodyCandidate;
+                xPhysBodyCandidate = static_cast<PhysBodyCom*>(xDamageableEntitys.at(i)->getComponent("PhysBodyCom"));
 
                 if (xPhysBodyCandidate == xPhysBodyA ||
                     xPhysBodyCandidate == xPhysBodyB )
@@ -50,8 +50,8 @@ void DamageSys::injectUpdate(const float &xTimeSinceLastUpdate)
             // Find DoDamage entity
             for(int i = 0; i < xDoDamageEntitys.size(); ++i)
             {
-                PhysBody *xPhysBodyCandidate;
-                xPhysBodyCandidate = static_cast<PhysBody*>(xDoDamageEntitys.at(i)->getComponent("PhysBody"));
+                PhysBodyCom *xPhysBodyCandidate;
+                xPhysBodyCandidate = static_cast<PhysBodyCom*>(xDoDamageEntitys.at(i)->getComponent("PhysBodyCom"));
 
                 if (xPhysBodyCandidate == xPhysBodyA ||
                     xPhysBodyCandidate == xPhysBodyB )
@@ -77,14 +77,14 @@ void DamageSys::injectUpdate(const float &xTimeSinceLastUpdate)
                 qDebug()<<xDamageableEntity->getName()<<"-"<<xDoDamageEntity->getName();
 
                 // Make damage to entity A
-                Health *xHealth;
-                xHealth = static_cast<Health*>(xDamageableEntity->getComponent("Health"));
+                HealthCom *xHealthCom;
+                xHealthCom = static_cast<HealthCom*>(xDamageableEntity->getComponent("HealthCom"));
 
-                Bullet *xBullet;
-                xBullet = static_cast<Bullet*>(xDoDamageEntity->getComponent("Bullet"));
+                BulletCom *xBulletCom;
+                xBulletCom = static_cast<BulletCom*>(xDoDamageEntity->getComponent("BulletCom"));
 
-                xHealth->mHealthCurrent -= xBullet->mDamageCount;
-                xBullet->mDamageCount = 0;
+                xHealthCom->mHealthCurrent -= xBulletCom->mDamageCount;
+                xBulletCom->mDamageCount = 0;
             }
 
             ++xIter;

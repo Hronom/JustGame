@@ -1,10 +1,10 @@
-#ifndef PHYSBODY_H
-#define PHYSBODY_H
+#ifndef PHYSBODYCOM_H
+#define PHYSBODYCOM_H
 
 #include <btBulletDynamicsCommon.h>
 #include "IComponent.h"
 
-class PhysBody: public JGC::IComponent
+class PhysBodyCom: public JGC::IComponent
 {
 public:
     btCollisionShape *mCollisionShape;

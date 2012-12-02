@@ -1,10 +1,10 @@
-#ifndef HEALTH_H
-#define HEALTH_H
+#ifndef HEALTHCOM_H
+#define HEALTHCOM_H
 
 #include <Ogre.h>
 #include "IComponent.h"
 
-class Health: public JGC::IComponent
+class HealthCom: public JGC::IComponent
 {
 public:
     qint32 mHealthTotal;

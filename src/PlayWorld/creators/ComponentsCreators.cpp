@@ -8,7 +8,7 @@
 
 namespace JG
 {
-    GraphBody* cBackgroundGraphBody(QString xSceneManagerName, QString xComponentName)
+    GraphBodyCom* cBackgroundGraphBodyCom(QString xSceneManagerName, QString xComponentName)
     {
         // create ManualObject
         Ogre::ManualObject *xManualObject;
@@ -46,17 +46,17 @@ namespace JG
         xSceneNode->attachObject(xEntity);
 
         // create component
-        GraphBody* xGraphBody;
-        xGraphBody = new GraphBody();
+        GraphBodyCom* xGraphBodyCom;
+        xGraphBodyCom = new GraphBodyCom();
 
-        xGraphBody->mManualObject = xManualObject;
-        xGraphBody->mEntity = xEntity;
-        xGraphBody->mSceneNode = xSceneNode;
+        xGraphBodyCom->mManualObject = xManualObject;
+        xGraphBodyCom->mEntity = xEntity;
+        xGraphBodyCom->mSceneNode = xSceneNode;
 
-        return xGraphBody;
+        return xGraphBodyCom;
     }
 
-    GraphBody* cPlayerGraphBody(QString xSceneManagerName, QString xComponentName)
+    GraphBodyCom* cPlayerGraphBodyCom(QString xSceneManagerName, QString xComponentName)
     {
         Ogre::ColourValue xColor = Ogre::ColourValue(1.0, 1.0, 1.0, 0.0);
         // create ManualObject
@@ -96,17 +96,17 @@ namespace JG
         xSceneNode->setOrientation(xOrientation);
 
         // create component
-        GraphBody* xGraphBody;
-        xGraphBody = new GraphBody();
+        GraphBodyCom* xGraphBodyCom;
+        xGraphBodyCom = new GraphBodyCom();
 
-        xGraphBody->mManualObject = xManualObject;
-        xGraphBody->mEntity = xEntity;
-        xGraphBody->mSceneNode = xSceneNode;
+        xGraphBodyCom->mManualObject = xManualObject;
+        xGraphBodyCom->mEntity = xEntity;
+        xGraphBodyCom->mSceneNode = xSceneNode;
 
-        return xGraphBody;
+        return xGraphBodyCom;
     }
 
-    GraphBody* cEnemyGraphBody(QString xSceneManagerName, QString xComponentSuffix, Ogre::Vector3 xPosition)
+    GraphBodyCom* cEnemyGraphBodyCom(QString xSceneManagerName, QString xComponentSuffix, Ogre::Vector3 xPosition)
     {
         QString xComponentName;
         xComponentName = xComponentSuffix;
@@ -147,18 +147,18 @@ namespace JG
         xSceneNode->attachObject(xEntity);
 
         // create component
-        GraphBody *xGraphBody;
-        xGraphBody = new GraphBody();
-        xGraphBody->mManualObject = xManualObject;
-        xGraphBody->mEntity = xEntity;
-        xGraphBody->mSceneNode = xSceneNode;
+        GraphBodyCom *xGraphBodyCom;
+        xGraphBodyCom = new GraphBodyCom();
+        xGraphBodyCom->mManualObject = xManualObject;
+        xGraphBodyCom->mEntity = xEntity;
+        xGraphBodyCom->mSceneNode = xSceneNode;
 
-        xEntity->setUserAny(Ogre::Any(xGraphBody));
+        xEntity->setUserAny(Ogre::Any(xGraphBodyCom));
 
-        return xGraphBody;
+        return xGraphBodyCom;
     }
 
-    GraphBody* cBulletGraphBody(QString xSceneManagerName, QString xComponentName, Ogre::Vector3 xPosition, Ogre::Vector3 xDestination)
+    GraphBodyCom* cBulletGraphBodyCom(QString xSceneManagerName, QString xComponentName, Ogre::Vector3 xPosition, Ogre::Vector3 xDestination)
     {
         Ogre::ColourValue xColor = Ogre::ColourValue(1.0, 0.0, 0.0, 0.0);
         Ogre::ManualObject *xManualObject;
@@ -196,34 +196,34 @@ namespace JG
         xSceneNode->attachObject(xEntity);
 
         // create component
-        GraphBody* xGraphBody;
-        xGraphBody = new GraphBody();
+        GraphBodyCom* xGraphBodyCom;
+        xGraphBodyCom = new GraphBodyCom();
 
-        xGraphBody->mManualObject = xManualObject;
-        xGraphBody->mEntity = xEntity;
-        xGraphBody->mSceneNode = xSceneNode;
+        xGraphBodyCom->mManualObject = xManualObject;
+        xGraphBodyCom->mEntity = xEntity;
+        xGraphBodyCom->mSceneNode = xSceneNode;
 
-        return xGraphBody;
+        return xGraphBodyCom;
     }
 
-    void dGraphBody(QString xSceneManagerName, GraphBody* xGraphBody)
+    void dGraphBodyCom(QString xSceneManagerName, GraphBodyCom* xGraphBodyCom)
     {
-        JGC::GraphicSystem::instance()->getSceneManager(xSceneManagerName)->destroyManualObject(xGraphBody->mManualObject);
-        JGC::GraphicSystem::instance()->getSceneManager(xSceneManagerName)->destroyEntity(xGraphBody->mEntity);
-        xGraphBody->mSceneNode->removeAndDestroyAllChildren();
-        JGC::GraphicSystem::instance()->getSceneManager(xSceneManagerName)->destroySceneNode(xGraphBody->mSceneNode);
+        JGC::GraphicSystem::instance()->getSceneManager(xSceneManagerName)->destroyManualObject(xGraphBodyCom->mManualObject);
+        JGC::GraphicSystem::instance()->getSceneManager(xSceneManagerName)->destroyEntity(xGraphBodyCom->mEntity);
+        xGraphBodyCom->mSceneNode->removeAndDestroyAllChildren();
+        JGC::GraphicSystem::instance()->getSceneManager(xSceneManagerName)->destroySceneNode(xGraphBodyCom->mSceneNode);
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    PhysBody* cPlayerPhysBody()
+    PhysBodyCom* cPlayerPhysBodyCom(QString xDynamicsWorldName)
     {
-        // after that create the Bullet shape with the calculated xSize
+        // after that create the BulletCom shape with the calculated xSize
         float xObjectRadius = 5;
 
         btCollisionShape *xCollisionShape;
         xCollisionShape = new btSphereShape(xObjectRadius);
-        // and the Bullet rigid body
+        // and the BulletCom rigid body
         btDefaultMotionState* xMotionState = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1), btVector3(0,0,0)));
         btRigidBody *xRigidBody;
         xRigidBody = new btRigidBody(0.1f, xMotionState, xCollisionShape, btVector3(0, 0, 0));
@@ -232,28 +232,28 @@ namespace JG
         xRigidBody->setLinearFactor(btVector3(1, 1, 0));
         xRigidBody->setAngularFactor(btVector3(0, 0, 1));
 
-        JGC::PhysicsSystem::instance()->getDynamicsWorld()->addRigidBody(xRigidBody, PLAYER_GROUP, PLAYER_GROUP | ENEMY_GROUP | BULLET_GROUP);
+        JGC::PhysicsSystem::instance()->getDynamicsWorld(xDynamicsWorldName)->addRigidBody(xRigidBody, PLAYER_GROUP, PLAYER_GROUP | ENEMY_GROUP | BulletCom_GROUP);
 
         // create component
-        PhysBody* xPhysBody;
-        xPhysBody = new PhysBody();
+        PhysBodyCom* xPhysBodyCom;
+        xPhysBodyCom = new PhysBodyCom();
 
-        xRigidBody->setUserPointer(xPhysBody);
+        xRigidBody->setUserPointer(xPhysBodyCom);
 
-        xPhysBody->mCollisionShape = xCollisionShape;
-        xPhysBody->mRigidBody = xRigidBody;
+        xPhysBodyCom->mCollisionShape = xCollisionShape;
+        xPhysBodyCom->mRigidBody = xRigidBody;
 
-        return xPhysBody;
+        return xPhysBodyCom;
     }
 
-    PhysBody* cEnemyPhysBody(btVector3 xPosition)
+    PhysBodyCom* cEnemyPhysBodyCom(QString xDynamicsWorldName, btVector3 xPosition)
     {
-        // after that create the Bullet shape with the calculated xSize
+        // after that create the BulletCom shape with the calculated xSize
         float xObjectRadius = 7;
 
         btCollisionShape *xCollisionShape;
         xCollisionShape = new btSphereShape(xObjectRadius);
-        // and the Bullet rigid body
+        // and the BulletCom rigid body
         btDefaultMotionState* xMotionState = new btDefaultMotionState(btTransform(btQuaternion(0,0,0,1), xPosition));
         btRigidBody *xRigidBody;
         xRigidBody = new btRigidBody(0.1f, xMotionState, xCollisionShape, btVector3(0,0,0));
@@ -262,34 +262,34 @@ namespace JG
         xRigidBody->setLinearFactor(btVector3(1,1,0));
         xRigidBody->setAngularFactor(btVector3(0, 0, 1));
 
-        JGC::PhysicsSystem::instance()->getDynamicsWorld()->addRigidBody(xRigidBody, ENEMY_GROUP, PLAYER_GROUP | ENEMY_GROUP | BULLET_GROUP);
+        JGC::PhysicsSystem::instance()->getDynamicsWorld(xDynamicsWorldName)->addRigidBody(xRigidBody, ENEMY_GROUP, PLAYER_GROUP | ENEMY_GROUP | BulletCom_GROUP);
 
         // create component
-        PhysBody* xPhysBody;
-        xPhysBody = new PhysBody();
+        PhysBodyCom* xPhysBodyCom;
+        xPhysBodyCom = new PhysBodyCom();
 
-        xRigidBody->setUserPointer(xPhysBody);
+        xRigidBody->setUserPointer(xPhysBodyCom);
 
-        xPhysBody->mCollisionShape = xCollisionShape;
-        xPhysBody->mRigidBody = xRigidBody;
+        xPhysBodyCom->mCollisionShape = xCollisionShape;
+        xPhysBodyCom->mRigidBody = xRigidBody;
 
-        return xPhysBody;
+        return xPhysBodyCom;
     }
 
-    PhysBody* cBulletPhysBody(short xObjectCollideWith, btVector3 xPosition, btQuaternion xOrientation)
+    PhysBodyCom* cBulletPhysBodyCom(QString xDynamicsWorldName, short xObjectCollideWith, btVector3 xPosition, btQuaternion xOrientation)
     {
         Ogre::Vector3 xBoundingBoxSize = Ogre::Vector3(3.5f, 3.5f, 0);	// xSize of the box
         xBoundingBoxSize.z = 3.0f;
         xBoundingBoxSize /= 2.0f; // only the half needed
-        xBoundingBoxSize *= 0.95f;	// Bullet margin is a bit bigger so we need a smaller xSize
+        xBoundingBoxSize *= 0.95f;	// BulletCom margin is a bit bigger so we need a smaller xSize
 
-        // after that create the Bullet shape with the calculated xSize
+        // after that create the BulletCom shape with the calculated xSize
         btVector3 xSize;
         xSize = JGC::Utils::toBtVector3(xBoundingBoxSize);
 
         btCollisionShape *xCollisionShape;
         xCollisionShape = new btBoxShape(xSize);
-        // and the Bullet rigid body
+        // and the BulletCom rigid body
         btDefaultMotionState* xMotionState = new btDefaultMotionState(btTransform(xOrientation, xPosition));
         btRigidBody *xRigidBody;
         xRigidBody = new btRigidBody(0.1f, xMotionState, xCollisionShape, btVector3(0,0,0));
@@ -298,7 +298,7 @@ namespace JG
         xRigidBody->setLinearFactor(btVector3(1,1,0));
         xRigidBody->setAngularFactor(btVector3(0, 0, 1));
 
-        JGC::PhysicsSystem::instance()->getDynamicsWorld()->addRigidBody(xRigidBody, BULLET_GROUP, xObjectCollideWith | BULLET_GROUP);
+        JGC::PhysicsSystem::instance()->getDynamicsWorld(xDynamicsWorldName)->addRigidBody(xRigidBody, BulletCom_GROUP, xObjectCollideWith | BulletCom_GROUP);
 
         // MOVE
         Ogre::Vector3 xVector;
@@ -308,117 +308,117 @@ namespace JG
         xRigidBody->applyCentralImpulse(JGC::Utils::toBtVector3(xVector));
 
         // create component
-        PhysBody* xPhysBody;
-        xPhysBody = new PhysBody();
+        PhysBodyCom* xPhysBodyCom;
+        xPhysBodyCom = new PhysBodyCom();
 
-        xRigidBody->setUserPointer(xPhysBody);
+        xRigidBody->setUserPointer(xPhysBodyCom);
 
-        xPhysBody->mCollisionShape = xCollisionShape;
-        xPhysBody->mRigidBody = xRigidBody;
+        xPhysBodyCom->mCollisionShape = xCollisionShape;
+        xPhysBodyCom->mRigidBody = xRigidBody;
 
-        return xPhysBody;
+        return xPhysBodyCom;
     }
 
-    void dPhysBody(PhysBody* xPhysBody)
+    void dPhysBodyCom(QString xDynamicsWorldName, PhysBodyCom* xPhysBodyCom)
     {
-        JGC::PhysicsSystem::instance()->getDynamicsWorld()->removeRigidBody(xPhysBody->mRigidBody);
-        delete xPhysBody->mRigidBody->getMotionState();
-        delete xPhysBody->mRigidBody;
-        delete xPhysBody->mCollisionShape;
+        JGC::PhysicsSystem::instance()->getDynamicsWorld(xDynamicsWorldName)->removeRigidBody(xPhysBodyCom->mRigidBody);
+        delete xPhysBodyCom->mRigidBody->getMotionState();
+        delete xPhysBodyCom->mRigidBody;
+        delete xPhysBodyCom->mCollisionShape;
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    SoundBody* cWeaponSoundBody(short xObjectCollideWith, btVector3 xPosition, btQuaternion xOrientation)
+    SoundBodyCom* cWeaponComSoundBodyCom(short xObjectCollideWith, btVector3 xPosition, btQuaternion xOrientation)
     {
 
     }
 
-    void dSoundBody(SoundBody* xSoundBody)
+    void dSoundBodyCom(SoundBodyCom* xSoundBodyCom)
     {
 
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    CameraTrackable* cCameraTrackable(QString xSceneManagerName, QString xCameraName)
+    CameraTrackableCom* cCameraTrackableCom(QString xSceneManagerName, QString xCameraName)
     {
         Ogre::Camera* xCamera;
         xCamera = JGC::GraphicSystem::instance()->getCamera(xSceneManagerName);
 
         // create component
-        CameraTrackable* xCameraTrackable;
-        xCameraTrackable = new CameraTrackable();
+        CameraTrackableCom* xCameraTrackableCom;
+        xCameraTrackableCom = new CameraTrackableCom();
 
-        xCameraTrackable->mCamera = xCamera;
+        xCameraTrackableCom->mCamera = xCamera;
 
-        return xCameraTrackable;
+        return xCameraTrackableCom;
     }
 
-    void dCameraTrackable(QString xSceneManagerName)
+    void dCameraTrackableCom(QString xSceneManagerName)
     {
 
     }
 
-    Health* cHealth(qint32 xHealthCurrent, qint32 xHealthTotal)
-    {
-        // create component
-        Health* xHealth;
-        xHealth = new Health();
-
-        xHealth->mHealthTotal = xHealthTotal;
-        xHealth->mHealthCurrent = xHealthCurrent;
-
-        return xHealth;
-    }
-
-    PlayerControllable* cPlayerControllable()
+    HealthCom* cHealthCom(qint32 xHealthComCurrent, qint32 xHealthComTotal)
     {
         // create component
-        PlayerControllable* xPlayerControllable;
-        xPlayerControllable = new PlayerControllable();
+        HealthCom* xHealthCom;
+        xHealthCom = new HealthCom();
 
-        return xPlayerControllable;
+        xHealthCom->mHealthTotal = xHealthComTotal;
+        xHealthCom->mHealthCurrent = xHealthComCurrent;
+
+        return xHealthCom;
     }
 
-    AIControllable* cAIControllable()
+    PlayerControllableCom* cPlayerControllableCom()
     {
         // create component
-        AIControllable* xAIControllable;
-        xAIControllable = new AIControllable();
+        PlayerControllableCom* xPlayerControllableCom;
+        xPlayerControllableCom = new PlayerControllableCom();
 
-        return xAIControllable;
+        return xPlayerControllableCom;
     }
 
-    Weapon *cWeapon(float xShootDelay)
+    AIControllableCom* cAIControllableCom()
     {
         // create component
-        Weapon* xWeapon;
-        xWeapon = new Weapon();
-        xWeapon->mShootDelay = xShootDelay;
-        xWeapon->mTimeSinceLastShot = xShootDelay;
+        AIControllableCom* xAIControllableCom;
+        xAIControllableCom = new AIControllableCom();
 
-        return xWeapon;
+        return xAIControllableCom;
     }
 
-    Bullet* cBullet(float xTotalLiveTime, qint32 xDamage)
+    WeaponCom *cWeaponCom(float xShootDelay)
     {
         // create component
-        Bullet* xBullet;
-        xBullet = new Bullet();
-        xBullet->mTotalLiveTime = xTotalLiveTime;
-        xBullet->mLiveTime = 0;
-        xBullet->mDamageCount = xDamage;
+        WeaponCom* xWeaponCom;
+        xWeaponCom = new WeaponCom();
+        xWeaponCom->mShootDelay = xShootDelay;
+        xWeaponCom->mTimeSinceLastShot = xShootDelay;
 
-        return xBullet;
+        return xWeaponCom;
     }
 
-    void dBullet(Bullet *xBullet)
+    BulletCom* cBulletCom(float xTotalLiveTime, qint32 xDamage)
     {
-        delete xBullet;
+        // create component
+        BulletCom* xBulletCom;
+        xBulletCom = new BulletCom();
+        xBulletCom->mTotalLiveTime = xTotalLiveTime;
+        xBulletCom->mLiveTime = 0;
+        xBulletCom->mDamageCount = xDamage;
+
+        return xBulletCom;
     }
 
-    PlayerUI* cPlayerUI()
+    void dBulletCom(BulletCom *xBulletCom)
+    {
+        delete xBulletCom;
+    }
+
+    PlayerUICom* cPlayerUICom()
     {
         MyGUI::VectorWidgetPtr xCurrentLayoutWidgets;
         xCurrentLayoutWidgets = MyGUI::LayoutManager::getInstancePtr()->loadLayout("GameUI.layout");
@@ -426,24 +426,24 @@ namespace JG
         xCurrentLayoutWidgets[0]->setVisible(true);
 
         MyGUI::ProgressBar *xPlayerHealthBar;
-        xPlayerHealthBar = JGC::GraphicSystem::instance()->getGui()->findWidget<MyGUI::ProgressBar>("PlayerHealthBar");
+        xPlayerHealthBar = JGC::GraphicSystem::instance()->getGui()->findWidget<MyGUI::ProgressBar>("PlayerHealthComBar");
 
         MyGUI::Widget *xEnemyPanel;
         xEnemyPanel = JGC::GraphicSystem::instance()->getGui()->findWidget<MyGUI::Widget>("EnemyStatPanel");
         xEnemyPanel->setVisible(false);
 
         MyGUI::ProgressBar *xEnemyHealthBar;
-        xEnemyHealthBar = JGC::GraphicSystem::instance()->getGui()->findWidget<MyGUI::ProgressBar>("EnemyHealthBar");
+        xEnemyHealthBar = JGC::GraphicSystem::instance()->getGui()->findWidget<MyGUI::ProgressBar>("EnemyHealthComBar");
 
         // Create component
-        PlayerUI* xPlayerUI;
-        xPlayerUI = new PlayerUI();
-        xPlayerUI->mLayoutWidgets = xCurrentLayoutWidgets;
-        xPlayerUI->mPlayerHealthBar = xPlayerHealthBar;
-        xPlayerUI->mEnemyPanel = xEnemyPanel;
-        xPlayerUI->mEnemyHealthBar = xEnemyHealthBar;
+        PlayerUICom* xPlayerUICom;
+        xPlayerUICom = new PlayerUICom();
+        xPlayerUICom->mLayoutWidgets = xCurrentLayoutWidgets;
+        xPlayerUICom->mPlayerHealthBar = xPlayerHealthBar;
+        xPlayerUICom->mEnemyPanel = xEnemyPanel;
+        xPlayerUICom->mEnemyHealthBar = xEnemyHealthBar;
 
-        return xPlayerUI;
+        return xPlayerUICom;
     }
 }
 

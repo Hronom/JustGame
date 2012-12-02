@@ -1,10 +1,10 @@
-#ifndef SOUNDBODY_H
-#define SOUNDBODY_H
+#ifndef SOUNDBODYCOM_H
+#define SOUNDBODYCOM_H
 
 #include "IComponent.h"
 #include <SoundSource.h>
 
-class SoundBody: public JGC::IComponent
+class SoundBodyCom: public JGC::IComponent
 {
 public:
     JGC::SoundSource *mSoundSource;

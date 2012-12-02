@@ -1,10 +1,10 @@
-#ifndef GRAPHBODY_H
-#define GRAPHBODY_H
+#ifndef GRAPHBODYCOM_H
+#define GRAPHBODYCOM_H
 
 #include <Ogre.h>
 #include "IComponent.h"
 
-class GraphBody: public JGC::IComponent
+class GraphBodyCom: public JGC::IComponent
 {
 public:
     Ogre::ManualObject *mManualObject;

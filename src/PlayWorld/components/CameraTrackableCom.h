@@ -1,10 +1,10 @@
-#ifndef CAMERATRACKABLE_H
-#define CAMERATRACKABLE_H
+#ifndef CAMERATRACKABLECOM_H
+#define CAMERATRACKABLECOM_H
 
 #include <Ogre.h>
 #include "IComponent.h"
 
-class CameraTrackable: public JGC::IComponent
+class CameraTrackableCom: public JGC::IComponent
 {
 public:
     Ogre::Camera* mCamera;

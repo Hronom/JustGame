@@ -1,10 +1,10 @@
-#ifndef PLAYERUI_H
-#define PLAYERUI_H
+#ifndef PLAYERUICOM_H
+#define PLAYERUICOM_H
 
 #include <MyGUI.h>
 #include "IComponent.h"
 
-class PlayerUI: public JGC::IComponent
+class PlayerUICom: public JGC::IComponent
 {
 public:
     MyGUI::VectorWidgetPtr mLayoutWidgets;

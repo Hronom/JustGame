@@ -1,12 +1,12 @@
-#ifndef BULLET_H
-#define BULLET_H
+#ifndef BULLETCOM_H
+#define BULLETCOM_H
 
 #include <Ogre.h>
 #include "IComponent.h"
 
 #include <qglobal.h>
 
-class Bullet: public JGC::IComponent
+class BulletCom: public JGC::IComponent
 {
 public:
     float mLiveTime;

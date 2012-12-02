@@ -5,9 +5,9 @@
 #include <WorldsSystem.h>
 #include "Entity.h"
 #include "Utils.h"
-#include "../components/Health.h"
-#include "../components/PlayerUI.h"
-#include "../components/PhysBody.h"
+#include "../components/HealthCom.h"
+#include "../components/PlayerUICom.h"
+#include "../components/PhysBodyCom.h"
 
 #include <QVector>
 #include <QDebug>
@@ -17,10 +17,10 @@ void PlayerGUISys::injectUpdate(const float &xTimeSinceLastUpdate)
     QVector<JGC::Entity*> xGUIEntitys;
     xGUIEntitys = JGC::WorldsSystem::instance()->getActiveWorld()->getEntitysInNode("GUI");
 
-    PlayerUI *xGUI;
+    PlayerUICom *xGUI;
     if(xGUIEntitys.size() > 0)
     {
-        xGUI = static_cast<PlayerUI*>(xGUIEntitys.at(0)->getComponent("PlayerUI"));
+        xGUI = static_cast<PlayerUICom*>(xGUIEntitys.at(0)->getComponent("PlayerUI"));
         MyGUI::PointerManager::getInstancePtr()->setPointer("Arrow");
         xGUI->mEnemyPanel->setVisible(false);
     }
@@ -32,11 +32,11 @@ void PlayerGUISys::injectUpdate(const float &xTimeSinceLastUpdate)
 
         if(xPlayerEntitys.size() > 0)
         {
-            Health *xHealth;
-            xHealth = static_cast<Health*>(xPlayerEntitys.at(0)->getComponent("Health"));
+            HealthCom *xHealthCom;
+            xHealthCom = static_cast<HealthCom*>(xPlayerEntitys.at(0)->getComponent("HealthCom"));
 
-            xGUI->mPlayerHealthBar->setProgressRange(xHealth->mHealthTotal);
-            xGUI->mPlayerHealthBar->setProgressPosition(xHealth->mHealthCurrent);
+            xGUI->mPlayerHealthBar->setProgressRange(xHealthCom->mHealthTotal);
+            xGUI->mPlayerHealthBar->setProgressPosition(xHealthCom->mHealthCurrent);
         }
     }
 
@@ -48,11 +48,11 @@ void PlayerGUISys::injectUpdate(const float &xTimeSinceLastUpdate)
         btCollisionWorld::ClosestRayResultCallback xRayCallback(xStartDot, xEndDot);
 
         // Perform raycast
-        JGC::PhysicsSystem::instance()->getDynamicsWorld()->rayTest(xStartDot, xEndDot, xRayCallback);
+        JGC::PhysicsSystem::instance()->getDynamicsWorld("PlayWorld")->rayTest(xStartDot, xEndDot, xRayCallback);
 
         if(xRayCallback.hasHit())
         {
-            PhysBody *xPhysBody = static_cast<PhysBody*>(xRayCallback.m_collisionObject->getUserPointer());
+            PhysBodyCom *xPhysBodyCom = static_cast<PhysBodyCom*>(xRayCallback.m_collisionObject->getUserPointer());
 
             QVector<JGC::Entity*> xEnemysEntitys;
             xEnemysEntitys = JGC::WorldsSystem::instance()->getActiveWorld()->getEntitysInNode("EnemyStat");
@@ -61,18 +61,18 @@ void PlayerGUISys::injectUpdate(const float &xTimeSinceLastUpdate)
             {
                 for(int i = 0; i < xEnemysEntitys.size(); ++i)
                 {
-                    PhysBody *xPhysBodyCandidate;
-                    xPhysBodyCandidate = static_cast<PhysBody*>(xEnemysEntitys.at(i)->getComponent("PhysBody"));
+                    PhysBodyCom *xPhysBodyCandidate;
+                    xPhysBodyCandidate = static_cast<PhysBodyCom*>(xEnemysEntitys.at(i)->getComponent("PhysBodyCom"));
 
-                    if(xPhysBodyCandidate == xPhysBody)
+                    if(xPhysBodyCandidate == xPhysBodyCom)
                     {
-                        Health *xHealth;
-                        xHealth = static_cast<Health*>(xEnemysEntitys.at(i)->getComponent("Health"));
+                        HealthCom *xHealthCom;
+                        xHealthCom = static_cast<HealthCom*>(xEnemysEntitys.at(i)->getComponent("HealthCom"));
 
                         MyGUI::PointerManager::getInstancePtr()->setPointer("hand");
                         xGUI->mEnemyPanel->setVisible(true);
-                        xGUI->mEnemyHealthBar->setProgressRange(xHealth->mHealthTotal);
-                        xGUI->mEnemyHealthBar->setProgressPosition(xHealth->mHealthCurrent);
+                        xGUI->mEnemyHealthBar->setProgressRange(xHealthCom->mHealthTotal);
+                        xGUI->mEnemyHealthBar->setProgressPosition(xHealthCom->mHealthCurrent);
                     }
                 }
             }

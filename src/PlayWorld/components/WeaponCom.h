@@ -1,10 +1,10 @@
-#ifndef WEAPON_H
-#define WEAPON_H
+#ifndef WEAPONCOM_H
+#define WEAPONCOM_H
 
 #include <Ogre.h>
 #include "IComponent.h"
 
-class Weapon: public JGC::IComponent
+class WeaponCom: public JGC::IComponent
 {
 public:
     float mShootDelay;
