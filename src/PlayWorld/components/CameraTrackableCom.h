@@ -9,7 +9,7 @@ class CameraTrackableCom: public JGC::IComponent
 public:
     Ogre::Camera* mCamera;
 
-    virtual QString getType() { return "CameraTrackable"; }
+    virtual QString getType() { return "CameraTrackableCom"; }
 };
 
 #endif

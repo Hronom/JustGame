@@ -7,7 +7,7 @@
 class AIControllableCom: public JGC::IComponent
 {
 public:
-    virtual QString getType() { return "AIControllable"; }
+    virtual QString getType() { return "AIControllableCom"; }
 };
 
 #endif

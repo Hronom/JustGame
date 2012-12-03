@@ -14,7 +14,7 @@ public:
 
     qint32 mDamageCount;
 
-    virtual QString getType() { return "Bullet"; }
+    virtual QString getType() { return "BulletCom"; }
 };
 
 #endif

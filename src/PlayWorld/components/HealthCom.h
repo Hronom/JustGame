@@ -10,7 +10,7 @@ public:
     qint32 mHealthTotal;
     qint32 mHealthCurrent;
 
-    virtual QString getType() { return "Health"; }
+    virtual QString getType() { return "HealthCom"; }
 };
 
 #endif

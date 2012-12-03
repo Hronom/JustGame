@@ -7,6 +7,11 @@ PROJECT(${PROJECT})
 # Setting source files for this project
 ######################################################################
 set(HEADERS
+./src/MainMenuWorld/creators/ComponentsCreators.h
+./src/MainMenuWorld/components/MainMenuCom.h
+./src/MainMenuWorld/systems/MainMenuSys.h
+./src/MainMenuWorld/MainMenuWorld.h
+
 ./src/PlayWorld/creators/ComponentsCreators.h
 ./src/PlayWorld/components/GraphBodyCom.h
 ./src/PlayWorld/components/PhysBodyCom.h
@@ -30,6 +35,11 @@ set(HEADERS
 
 set(SOURCES
 ./src/main.cpp
+
+./src/MainMenuWorld/creators/ComponentsCreators.cpp
+./src/MainMenuWorld/systems/MainMenuSys.cpp
+./src/MainMenuWorld/MainMenuWorld.cpp
+
 ./src/PlayWorld/creators/ComponentsCreators.cpp
 ./src/PlayWorld/systems/BulletsSys.cpp
 ./src/PlayWorld/systems/PlayerControlSys.cpp

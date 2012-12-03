@@ -7,7 +7,7 @@
 class PlayerControllableCom: public JGC::IComponent
 {
 public:
-    virtual QString getType() { return "PlayerControllable"; }
+    virtual QString getType() { return "PlayerControllableCom"; }
 };
 
 #endif

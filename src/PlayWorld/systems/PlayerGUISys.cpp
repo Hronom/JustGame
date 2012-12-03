@@ -14,15 +14,15 @@
 
 void PlayerGUISys::injectUpdate(const float &xTimeSinceLastUpdate)
 {
-    QVector<JGC::Entity*> xGUIEntitys;
-    xGUIEntitys = JGC::WorldsSystem::instance()->getActiveWorld()->getEntitysInNode("GUI");
+    QVector<JGC::Entity*> xGameGUIEntitys;
+    xGameGUIEntitys = JGC::WorldsSystem::instance()->getActiveWorld()->getEntitysInNode("GameGUI");
 
-    PlayerUICom *xGUI;
-    if(xGUIEntitys.size() > 0)
+    PlayerUICom *xPlayerUICom;
+    if(xGameGUIEntitys.size() > 0)
     {
-        xGUI = static_cast<PlayerUICom*>(xGUIEntitys.at(0)->getComponent("PlayerUI"));
+        xPlayerUICom = static_cast<PlayerUICom*>(xGameGUIEntitys.at(0)->getComponent("PlayerUICom"));
         MyGUI::PointerManager::getInstancePtr()->setPointer("Arrow");
-        xGUI->mEnemyPanel->setVisible(false);
+        xPlayerUICom->mEnemyPanel->setVisible(false);
     }
 
     // Update player stat
@@ -35,8 +35,8 @@ void PlayerGUISys::injectUpdate(const float &xTimeSinceLastUpdate)
             HealthCom *xHealthCom;
             xHealthCom = static_cast<HealthCom*>(xPlayerEntitys.at(0)->getComponent("HealthCom"));
 
-            xGUI->mPlayerHealthBar->setProgressRange(xHealthCom->mHealthTotal);
-            xGUI->mPlayerHealthBar->setProgressPosition(xHealthCom->mHealthCurrent);
+            xPlayerUICom->mPlayerHealthBar->setProgressRange(xHealthCom->mHealthTotal);
+            xPlayerUICom->mPlayerHealthBar->setProgressPosition(xHealthCom->mHealthCurrent);
         }
     }
 
@@ -70,9 +70,9 @@ void PlayerGUISys::injectUpdate(const float &xTimeSinceLastUpdate)
                         xHealthCom = static_cast<HealthCom*>(xEnemysEntitys.at(i)->getComponent("HealthCom"));
 
                         MyGUI::PointerManager::getInstancePtr()->setPointer("hand");
-                        xGUI->mEnemyPanel->setVisible(true);
-                        xGUI->mEnemyHealthBar->setProgressRange(xHealthCom->mHealthTotal);
-                        xGUI->mEnemyHealthBar->setProgressPosition(xHealthCom->mHealthCurrent);
+                        xPlayerUICom->mEnemyPanel->setVisible(true);
+                        xPlayerUICom->mEnemyHealthBar->setProgressRange(xHealthCom->mHealthTotal);
+                        xPlayerUICom->mEnemyHealthBar->setProgressPosition(xHealthCom->mHealthCurrent);
                     }
                 }
             }

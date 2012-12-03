@@ -10,7 +10,7 @@ public:
     float mShootDelay;
     float mTimeSinceLastShot;
 
-    virtual QString getType() { return "Weapon"; }
+    virtual QString getType() { return "WeaponCom"; }
 };
 
 #endif

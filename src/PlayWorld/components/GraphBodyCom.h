@@ -11,7 +11,7 @@ public:
     Ogre::Entity *mEntity;
     Ogre::SceneNode *mSceneNode;
 
-    virtual QString getType() { return "GraphBody"; }
+    virtual QString getType() { return "GraphBodyCom"; }
 };
 
 #endif

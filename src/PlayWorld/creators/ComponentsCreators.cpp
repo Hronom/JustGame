@@ -426,14 +426,14 @@ namespace JG
         xCurrentLayoutWidgets[0]->setVisible(true);
 
         MyGUI::ProgressBar *xPlayerHealthBar;
-        xPlayerHealthBar = JGC::GraphicSystem::instance()->getGui()->findWidget<MyGUI::ProgressBar>("PlayerHealthComBar");
+        xPlayerHealthBar = JGC::GraphicSystem::instance()->getGui()->findWidget<MyGUI::ProgressBar>("PlayerHealthBar");
 
         MyGUI::Widget *xEnemyPanel;
         xEnemyPanel = JGC::GraphicSystem::instance()->getGui()->findWidget<MyGUI::Widget>("EnemyStatPanel");
         xEnemyPanel->setVisible(false);
 
         MyGUI::ProgressBar *xEnemyHealthBar;
-        xEnemyHealthBar = JGC::GraphicSystem::instance()->getGui()->findWidget<MyGUI::ProgressBar>("EnemyHealthComBar");
+        xEnemyHealthBar = JGC::GraphicSystem::instance()->getGui()->findWidget<MyGUI::ProgressBar>("EnemyHealthBar");
 
         // Create component
         PlayerUICom* xPlayerUICom;

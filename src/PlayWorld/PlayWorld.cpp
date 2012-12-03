@@ -14,40 +14,40 @@
 
 PlayWorld::PlayWorld(QString xWorldName):World(xWorldName)
 {
-    this->addComponentToNode("PlayerControl", "GraphBody");
-    this->addComponentToNode("PlayerControl", "PhysBody");
-    this->addComponentToNode("PlayerControl", "Weapon");
-    this->addComponentToNode("PlayerControl", "PlayerControllable");
+    this->addComponentToNode("PlayerControl", "GraphBodyCom");
+    this->addComponentToNode("PlayerControl", "PhysBodyCom");
+    this->addComponentToNode("PlayerControl", "WeaponCom");
+    this->addComponentToNode("PlayerControl", "PlayerControllableCom");
 
-    this->addComponentToNode("AIControl", "GraphBody");
-    this->addComponentToNode("AIControl", "PhysBody");
-    this->addComponentToNode("AIControl", "Weapon");
-    this->addComponentToNode("AIControl", "AIControllable");
+    this->addComponentToNode("AIControl", "GraphBodyCom");
+    this->addComponentToNode("AIControl", "PhysBodyCom");
+    this->addComponentToNode("AIControl", "WeaponCom");
+    this->addComponentToNode("AIControl", "AIControllableCom");
 
-    this->addComponentToNode("PhysGraphSync", "GraphBody");
-    this->addComponentToNode("PhysGraphSync", "PhysBody");
+    this->addComponentToNode("PhysGraphSync", "GraphBodyCom");
+    this->addComponentToNode("PhysGraphSync", "PhysBodyCom");
 
-    this->addComponentToNode("PlayerCameraSync", "GraphBody");
-    this->addComponentToNode("PlayerCameraSync", "CameraTrackable");
+    this->addComponentToNode("PlayerCameraSync", "GraphBodyCom");
+    this->addComponentToNode("PlayerCameraSync", "CameraTrackableCom");
 
-    this->addComponentToNode("Bullets", "Bullet");
-    this->addComponentToNode("Bullets", "GraphBody");
-    this->addComponentToNode("Bullets", "PhysBody");
+    this->addComponentToNode("Bullets", "BulletCom");
+    this->addComponentToNode("Bullets", "GraphBodyCom");
+    this->addComponentToNode("Bullets", "PhysBodyCom");
 
-    this->addComponentToNode("DoDamage", "Bullet");
-    this->addComponentToNode("DoDamage", "PhysBody");
+    this->addComponentToNode("DoDamage", "BulletCom");
+    this->addComponentToNode("DoDamage", "PhysBodyCom");
 
-    this->addComponentToNode("Damageable", "Health");
-    this->addComponentToNode("Damageable", "PhysBody");
+    this->addComponentToNode("Damageable", "HealthCom");
+    this->addComponentToNode("Damageable", "PhysBodyCom");
 
-    this->addComponentToNode("PlayerStat", "Health");
-    this->addComponentToNode("PlayerStat", "PlayerControllable");
+    this->addComponentToNode("PlayerStat", "HealthCom");
+    this->addComponentToNode("PlayerStat", "PlayerControllableCom");
 
-    this->addComponentToNode("EnemyStat", "Health");
-    this->addComponentToNode("EnemyStat", "AIControllable");
-    this->addComponentToNode("EnemyStat", "PhysBody");
+    this->addComponentToNode("EnemyStat", "HealthCom");
+    this->addComponentToNode("EnemyStat", "AIControllableCom");
+    this->addComponentToNode("EnemyStat", "PhysBodyCom");
 
-    this->addComponentToNode("GUI", "PlayerUI");
+    this->addComponentToNode("GameGUI", "PlayerUICom");
 }
 
 PlayWorld::~PlayWorld()

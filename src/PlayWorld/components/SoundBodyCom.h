@@ -9,7 +9,7 @@ class SoundBodyCom: public JGC::IComponent
 public:
     JGC::SoundSource *mSoundSource;
 
-    virtual QString getType() { return "SoundBody"; }
+    virtual QString getType() { return "SoundBodyCom"; }
 };
 
 #endif

@@ -10,7 +10,7 @@ public:
     btCollisionShape *mCollisionShape;
     btRigidBody *mRigidBody;
 
-    virtual QString getType() { return "PhysBody"; }
+    virtual QString getType() { return "PhysBodyCom"; }
 };
 
 #endif

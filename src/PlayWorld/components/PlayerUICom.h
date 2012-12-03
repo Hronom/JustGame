@@ -12,7 +12,7 @@ public:
     MyGUI::Widget *mEnemyPanel;
     MyGUI::ProgressBar *mEnemyHealthBar;
 
-    virtual QString getType() { return "PlayerUI"; }
+    virtual QString getType() { return "PlayerUICom"; }
 };
 
 #endif
