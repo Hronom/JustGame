@@ -1,6 +1,5 @@
 #include "PlayWorld.h"
 
-#include "creators/ComponentsCreators.h"
 #include "systems/PlayerControlSys.h"
 #include "systems/AIControlSys.h"
 #include "systems/PhysGraphSyncSys.h"
