@@ -10,7 +10,7 @@
 
 #include "QDebug"
 
-#include "../creators/ComponentsCreators.h"
+#include "../PlayWorld.h"
 
 PlayerControlSys::PlayerControlSys()
 {
@@ -118,15 +118,15 @@ void PlayerControlSys::injectUpdate(const float &xTimeSinceLastUpdate)
                 QString xBulletName;
                 xBulletName = JGC::CountersSystem::instance()->getNameWithSuffix("BulletsCount", "PlayerBullet");
 
-                BulletCom *xBulletCom = JG::cBulletCom(1, 1);
+                BulletCom *xBulletCom = PlayWorld::cBulletCom(1, 1);
                 JGC::WorldsSystem::instance()->getActiveWorld()->addComponent(xBulletName, xBulletCom);
 
                 Ogre::Vector3 xPosObject = xSceneNode->getPosition();
 
-                GraphBodyCom* xGraphBodyCom = JG::cBulletGraphBodyCom("PlayWorld", xBulletName, xPosObject, xDestinationDot);
+                GraphBodyCom* xGraphBodyCom = PlayWorld::cBulletGraphBodyCom("PlayWorld", xBulletName, xPosObject, xDestinationDot);
                 JGC::WorldsSystem::instance()->getActiveWorld()->addComponent(xBulletName, xGraphBodyCom);
 
-                PhysBodyCom* xPhysBodyCom = JG::cBulletPhysBodyCom("PlayWorld", ENEMY_GROUP, JGC::Utils::toBtVector3(xPosObject), JGC::Utils::toBtQuaternion(xGraphBodyCom->mSceneNode->getOrientation()));
+                PhysBodyCom* xPhysBodyCom = PlayWorld::cBulletPhysBodyCom("PlayWorld", ENEMY_GROUP, JGC::Utils::toBtVector3(xPosObject), JGC::Utils::toBtQuaternion(xGraphBodyCom->mSceneNode->getOrientation()));
                 JGC::WorldsSystem::instance()->getActiveWorld()->addComponent(xBulletName, xPhysBodyCom);
 
                 //mGameObjectsListener->addBullet(ENEMY_GROUP, xPos, xDestinationDot);

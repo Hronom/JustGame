@@ -4,7 +4,7 @@
 #include <WorldsSystem.h>
 #include <MainSystem.h>
 
-#include "../creators/ComponentsCreators.h"
+#include "../MainMenuWorld.h"
 #include "../components/MainMenuCom.h"
 
 #include "QDebug"
@@ -28,7 +28,7 @@ void MainMenuSys::injectUpdate(const float &xTimeSinceLastUpdate)
         {
             JGC::WorldsSystem::instance()->loadWorld("PlayWorld");
             JGC::WorldsSystem::instance()->getWorld("MainMenuWorld")->removeComponent("MainMenuEntity", xMainMenuCom);
-            JG::dMainMenuCom(xMainMenuCom);
+            MainMenuWorld::dMainMenuCom(xMainMenuCom);
             JGC::WorldsSystem::instance()->setActiveWorld("PlayWorld");
         }
 

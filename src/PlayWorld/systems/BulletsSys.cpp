@@ -6,7 +6,7 @@
 
 #include "QDebug"
 
-#include "../creators/ComponentsCreators.h"
+#include "../PlayWorld.h"
 
 void BulletsSys::injectUpdate(const float &xTimeSinceLastUpdate)
 {
@@ -32,9 +32,9 @@ void BulletsSys::injectUpdate(const float &xTimeSinceLastUpdate)
 
             JGC::WorldsSystem::instance()->getActiveWorld()->removeEntity(xEntitys.at(i)->getName());
 
-            JG::dGraphBodyCom("PlayWorld", xGraphBodyCom);
-            JG::dPhysBodyCom("PlayWorld", xPhysBodyCom);
-            JG::dBulletCom(xBulletCom);
+            PlayWorld::dGraphBodyCom("PlayWorld", xGraphBodyCom);
+            PlayWorld::dPhysBodyCom("PlayWorld", xPhysBodyCom);
+            PlayWorld::dBulletCom(xBulletCom);
 
             JGC::CountersSystem::instance()->removeName("BulletsCount", xEntitys.at(i)->getName());
         }
