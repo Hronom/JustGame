@@ -1,8 +1,10 @@
 #ifndef MAINMENUCOM_H
 #define MAINMENUCOM_H
 
+#include "../../ComponentsTypes.h"
+
+#include <IComponent.h>
 #include <MyGUI.h>
-#include "IComponent.h"
 
 class MainMenuCom: public JGC::IComponent
 {
@@ -12,7 +14,7 @@ public:
     MyGUI::Button *mExitButton;
     MyGUI::Button *mAboutProgram;
 
-    virtual QString getType() { return "MainMenuCom"; }
+    virtual qint32 getType() { return ComponentsTypes::MainMenuCom; }
 };
 
 #endif

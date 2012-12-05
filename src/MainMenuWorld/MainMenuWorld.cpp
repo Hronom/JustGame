@@ -6,7 +6,7 @@
 
 MainMenuWorld::MainMenuWorld(QString xWorldName):World(xWorldName)
 {
-    this->addComponentToNode("MainMenu", "MainMenuCom");
+    this->addComponentToNode(Nodes::MainMenu, ComponentsTypes::MainMenuCom);
 }
 
 MainMenuWorld::~MainMenuWorld()

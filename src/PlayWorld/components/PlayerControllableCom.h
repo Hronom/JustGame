@@ -1,13 +1,15 @@
 #ifndef PLAYERCONTROLLABLECOM_H
 #define PLAYERCONTROLLABLECOM_H
 
+#include "../../ComponentsTypes.h"
+
+#include <IComponent.h>
 #include <Ogre.h>
-#include "IComponent.h"
 
 class PlayerControllableCom: public JGC::IComponent
 {
 public:
-    virtual QString getType() { return "PlayerControllableCom"; }
+    virtual qint32 getType() { return ComponentsTypes::PlayerControllableCom; }
 };
 
 #endif

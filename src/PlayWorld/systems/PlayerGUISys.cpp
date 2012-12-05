@@ -15,12 +15,12 @@
 void PlayerGUISys::injectUpdate(const float &xTimeSinceLastUpdate)
 {
     QVector<JGC::Entity*> xGameGUIEntitys;
-    xGameGUIEntitys = JGC::WorldsSystem::instance()->getActiveWorld()->getEntitysInNode("GameGUI");
+    xGameGUIEntitys = JGC::WorldsSystem::instance()->getActiveWorld()->getEntitysInNode(Nodes::GameGUI);
 
     PlayerUICom *xPlayerUICom;
     if(xGameGUIEntitys.size() > 0)
     {
-        xPlayerUICom = static_cast<PlayerUICom*>(xGameGUIEntitys.at(0)->getComponent("PlayerUICom"));
+        xPlayerUICom = static_cast<PlayerUICom*>(xGameGUIEntitys.at(0)->getComponent(ComponentsTypes::PlayerUICom));
         MyGUI::PointerManager::getInstancePtr()->setPointer("Arrow");
         xPlayerUICom->mEnemyPanel->setVisible(false);
     }
@@ -28,12 +28,12 @@ void PlayerGUISys::injectUpdate(const float &xTimeSinceLastUpdate)
     // Update player stat
     {
         QVector<JGC::Entity*> xPlayerEntitys;
-        xPlayerEntitys = JGC::WorldsSystem::instance()->getActiveWorld()->getEntitysInNode("PlayerStat");
+        xPlayerEntitys = JGC::WorldsSystem::instance()->getActiveWorld()->getEntitysInNode(Nodes::PlayerStat);
 
         if(xPlayerEntitys.size() > 0)
         {
             HealthCom *xHealthCom;
-            xHealthCom = static_cast<HealthCom*>(xPlayerEntitys.at(0)->getComponent("HealthCom"));
+            xHealthCom = static_cast<HealthCom*>(xPlayerEntitys.at(0)->getComponent(ComponentsTypes::HealthCom));
 
             xPlayerUICom->mPlayerHealthBar->setProgressRange(xHealthCom->mHealthTotal);
             xPlayerUICom->mPlayerHealthBar->setProgressPosition(xHealthCom->mHealthCurrent);
@@ -55,19 +55,19 @@ void PlayerGUISys::injectUpdate(const float &xTimeSinceLastUpdate)
             PhysBodyCom *xPhysBodyCom = static_cast<PhysBodyCom*>(xRayCallback.m_collisionObject->getUserPointer());
 
             QVector<JGC::Entity*> xEnemysEntitys;
-            xEnemysEntitys = JGC::WorldsSystem::instance()->getActiveWorld()->getEntitysInNode("EnemyStat");
+            xEnemysEntitys = JGC::WorldsSystem::instance()->getActiveWorld()->getEntitysInNode(Nodes::EnemyStat);
 
             if(xEnemysEntitys.size() > 0)
             {
                 for(int i = 0; i < xEnemysEntitys.size(); ++i)
                 {
                     PhysBodyCom *xPhysBodyCandidate;
-                    xPhysBodyCandidate = static_cast<PhysBodyCom*>(xEnemysEntitys.at(i)->getComponent("PhysBodyCom"));
+                    xPhysBodyCandidate = static_cast<PhysBodyCom*>(xEnemysEntitys.at(i)->getComponent(ComponentsTypes::PhysBodyCom));
 
                     if(xPhysBodyCandidate == xPhysBodyCom)
                     {
                         HealthCom *xHealthCom;
-                        xHealthCom = static_cast<HealthCom*>(xEnemysEntitys.at(i)->getComponent("HealthCom"));
+                        xHealthCom = static_cast<HealthCom*>(xEnemysEntitys.at(i)->getComponent(ComponentsTypes::HealthCom));
 
                         MyGUI::PointerManager::getInstancePtr()->setPointer("hand");
                         xPlayerUICom->mEnemyPanel->setVisible(true);

@@ -1,8 +1,10 @@
 #ifndef PLAYERUICOM_H
 #define PLAYERUICOM_H
 
+#include "../../ComponentsTypes.h"
+
+#include <IComponent.h>
 #include <MyGUI.h>
-#include "IComponent.h"
 
 class PlayerUICom: public JGC::IComponent
 {
@@ -12,7 +14,7 @@ public:
     MyGUI::Widget *mEnemyPanel;
     MyGUI::ProgressBar *mEnemyHealthBar;
 
-    virtual QString getType() { return "PlayerUICom"; }
+    virtual qint32 getType() { return ComponentsTypes::PlayerUICom; }
 };
 
 #endif

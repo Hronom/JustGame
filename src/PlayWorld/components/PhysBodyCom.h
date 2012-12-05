@@ -1,8 +1,10 @@
 #ifndef PHYSBODYCOM_H
 #define PHYSBODYCOM_H
 
+#include "../../ComponentsTypes.h"
+
+#include <IComponent.h>
 #include <btBulletDynamicsCommon.h>
-#include "IComponent.h"
 
 class PhysBodyCom: public JGC::IComponent
 {
@@ -10,7 +12,7 @@ public:
     btCollisionShape *mCollisionShape;
     btRigidBody *mRigidBody;
 
-    virtual QString getType() { return "PhysBodyCom"; }
+    virtual qint32 getType() { return ComponentsTypes::PhysBodyCom; }
 };
 
 #endif

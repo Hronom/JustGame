@@ -1,10 +1,10 @@
 #ifndef BULLETCOM_H
 #define BULLETCOM_H
 
-#include <Ogre.h>
-#include "IComponent.h"
+#include "../../ComponentsTypes.h"
 
-#include <qglobal.h>
+#include <IComponent.h>
+#include <Ogre.h>
 
 class BulletCom: public JGC::IComponent
 {
@@ -14,7 +14,7 @@ public:
 
     qint32 mDamageCount;
 
-    virtual QString getType() { return "BulletCom"; }
+    virtual qint32 getType() { return ComponentsTypes::BulletCom; }
 };
 
 #endif
