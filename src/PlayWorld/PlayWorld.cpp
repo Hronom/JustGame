@@ -16,40 +16,40 @@ unsigned int PlayWorld::mEnemysCount = 0;
 
 PlayWorld::PlayWorld(QString xWorldName):World(xWorldName)
 {
-    this->addComponentToNode(Nodes::PlayerControl, ComponentsTypes::GraphBodyCom);
-    this->addComponentToNode(Nodes::PlayerControl, ComponentsTypes::PhysBodyCom);
-    this->addComponentToNode(Nodes::PlayerControl, ComponentsTypes::WeaponCom);
-    this->addComponentToNode(Nodes::PlayerControl, ComponentsTypes::PlayerControllableCom);
+    this->addComponentToNode(Nodes::PlayerControlNode, Components::GraphBodyCom);
+    this->addComponentToNode(Nodes::PlayerControlNode, Components::PhysBodyCom);
+    this->addComponentToNode(Nodes::PlayerControlNode, Components::WeaponCom);
+    this->addComponentToNode(Nodes::PlayerControlNode, Components::PlayerControllableCom);
 
-    this->addComponentToNode(Nodes::AIControl, ComponentsTypes::GraphBodyCom);
-    this->addComponentToNode(Nodes::AIControl, ComponentsTypes::PhysBodyCom);
-    this->addComponentToNode(Nodes::AIControl, ComponentsTypes::WeaponCom);
-    this->addComponentToNode(Nodes::AIControl, ComponentsTypes::AIControllableCom);
+    this->addComponentToNode(Nodes::AIControlNode, Components::GraphBodyCom);
+    this->addComponentToNode(Nodes::AIControlNode, Components::PhysBodyCom);
+    this->addComponentToNode(Nodes::AIControlNode, Components::WeaponCom);
+    this->addComponentToNode(Nodes::AIControlNode, Components::AIControllableCom);
 
-    this->addComponentToNode(Nodes::PhysGraphSync, ComponentsTypes::GraphBodyCom);
-    this->addComponentToNode(Nodes::PhysGraphSync, ComponentsTypes::PhysBodyCom);
+    this->addComponentToNode(Nodes::PhysGraphSyncNode, Components::GraphBodyCom);
+    this->addComponentToNode(Nodes::PhysGraphSyncNode, Components::PhysBodyCom);
 
-    this->addComponentToNode(Nodes::PlayerCameraSync, ComponentsTypes::GraphBodyCom);
-    this->addComponentToNode(Nodes::PlayerCameraSync, ComponentsTypes::CameraTrackableCom);
+    this->addComponentToNode(Nodes::PlayerCameraSyncNode, Components::GraphBodyCom);
+    this->addComponentToNode(Nodes::PlayerCameraSyncNode, Components::CameraTrackableCom);
 
-    this->addComponentToNode(Nodes::Bullets, ComponentsTypes::BulletCom);
-    this->addComponentToNode(Nodes::Bullets, ComponentsTypes::GraphBodyCom);
-    this->addComponentToNode(Nodes::Bullets, ComponentsTypes::PhysBodyCom);
+    this->addComponentToNode(Nodes::BulletsNode, Components::BulletCom);
+    this->addComponentToNode(Nodes::BulletsNode, Components::GraphBodyCom);
+    this->addComponentToNode(Nodes::BulletsNode, Components::PhysBodyCom);
 
-    this->addComponentToNode(Nodes::DoDamage, ComponentsTypes::BulletCom);
-    this->addComponentToNode(Nodes::DoDamage, ComponentsTypes::PhysBodyCom);
+    this->addComponentToNode(Nodes::DoDamageNode, Components::BulletCom);
+    this->addComponentToNode(Nodes::DoDamageNode, Components::PhysBodyCom);
 
-    this->addComponentToNode(Nodes::Damageable, ComponentsTypes::HealthCom);
-    this->addComponentToNode(Nodes::Damageable, ComponentsTypes::PhysBodyCom);
+    this->addComponentToNode(Nodes::DamageableNode, Components::HealthCom);
+    this->addComponentToNode(Nodes::DamageableNode, Components::PhysBodyCom);
 
-    this->addComponentToNode(Nodes::PlayerStat, ComponentsTypes::HealthCom);
-    this->addComponentToNode(Nodes::PlayerStat, ComponentsTypes::PlayerControllableCom);
+    this->addComponentToNode(Nodes::PlayerStatNode, Components::HealthCom);
+    this->addComponentToNode(Nodes::PlayerStatNode, Components::PlayerControllableCom);
 
-    this->addComponentToNode(Nodes::EnemyStat, ComponentsTypes::HealthCom);
-    this->addComponentToNode(Nodes::EnemyStat, ComponentsTypes::AIControllableCom);
-    this->addComponentToNode(Nodes::EnemyStat, ComponentsTypes::PhysBodyCom);
+    this->addComponentToNode(Nodes::EnemyStatNode, Components::HealthCom);
+    this->addComponentToNode(Nodes::EnemyStatNode, Components::AIControllableCom);
+    this->addComponentToNode(Nodes::EnemyStatNode, Components::PhysBodyCom);
 
-    this->addComponentToNode(Nodes::GameGUI, ComponentsTypes::PlayerUICom);
+    this->addComponentToNode(Nodes::GameGUINode, Components::PlayerUICom);
 }
 
 PlayWorld::~PlayWorld()

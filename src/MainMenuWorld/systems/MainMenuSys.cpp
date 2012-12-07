@@ -17,12 +17,12 @@ MainMenuSys::MainMenuSys()
 void MainMenuSys::injectUpdate(const float &xTimeSinceLastUpdate)
 {
     QVector<JGC::Entity*> xMainMenuEntitys;
-    xMainMenuEntitys = JGC::WorldsSystem::instance()->getActiveWorld()->getEntitysInNode(Nodes::MainMenu);
+    xMainMenuEntitys = JGC::WorldsSystem::instance()->getActiveWorld()->getEntitysInNode(Nodes::MainMenuNode);
 
     if(xMainMenuEntitys.size()>0)
     {
         MainMenuCom *xMainMenuCom;
-        xMainMenuCom = static_cast<MainMenuCom*>(xMainMenuEntitys.at(0)->getComponent(ComponentsTypes::MainMenuCom));
+        xMainMenuCom = static_cast<MainMenuCom*>(xMainMenuEntitys.at(0)->getComponent(Components::MainMenuCom));
 
         if(xMainMenuCom->mNewGameButton->isButtonPressed())
         {

@@ -38,22 +38,21 @@ void PlayerControlSys::injectUpdate(const float &xTimeSinceLastUpdate)
         xShoot = true;
 
     QVector<JGC::Entity*> xEntitys;
-    xEntitys = JGC::WorldsSystem::instance()->getActiveWorld()->getEntitysInNode(Nodes::PlayerControl);
+    xEntitys = JGC::WorldsSystem::instance()->getActiveWorld()->getEntitysInNode(Nodes::PlayerControlNode);
 
     for(int i = 0; i < xEntitys.size(); ++i)
     {
         HealthCom *xHealthCom;
-        xHealthCom = static_cast<HealthCom*>(xEntitys.at(i)->getComponent(ComponentsTypes::HealthCom));
-        qDebug()<<"Player"<<xHealthCom->mHealthCurrent<<xHealthCom->mHealthTotal;
+        xHealthCom = static_cast<HealthCom*>(xEntitys.at(i)->getComponent(Components::HealthCom));
 
         GraphBodyCom *xGraphBodyCom;
-        xGraphBodyCom = static_cast<GraphBodyCom*>(xEntitys.at(i)->getComponent(ComponentsTypes::GraphBodyCom));
+        xGraphBodyCom = static_cast<GraphBodyCom*>(xEntitys.at(i)->getComponent(Components::GraphBodyCom));
 
         Ogre::SceneNode *xSceneNode;
         xSceneNode = xGraphBodyCom->mSceneNode;
 
         PhysBodyCom *xPhysBodyCom;
-        xPhysBodyCom = static_cast<PhysBodyCom*>(xEntitys.at(i)->getComponent(ComponentsTypes::PhysBodyCom));
+        xPhysBodyCom = static_cast<PhysBodyCom*>(xEntitys.at(i)->getComponent(Components::PhysBodyCom));
 
         btRigidBody *xRigidBody;
         xRigidBody = xPhysBodyCom->mRigidBody;
@@ -111,7 +110,7 @@ void PlayerControlSys::injectUpdate(const float &xTimeSinceLastUpdate)
         // Shoot
         {
             WeaponCom *xWeaponCom;
-            xWeaponCom = static_cast<WeaponCom*>(xEntitys.at(i)->getComponent(ComponentsTypes::WeaponCom));
+            xWeaponCom = static_cast<WeaponCom*>(xEntitys.at(i)->getComponent(Components::WeaponCom));
 
             if(xShoot == true && xWeaponCom->mTimeSinceLastShot >= xWeaponCom->mShootDelay)
             {

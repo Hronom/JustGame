@@ -1,7 +1,7 @@
 #ifndef GRAPHBODYCOM_H
 #define GRAPHBODYCOM_H
 
-#include "../../ComponentsTypes.h"
+#include "../../Library.h"
 
 #include <IComponent.h>
 #include <Ogre.h>
@@ -13,7 +13,7 @@ public:
     Ogre::Entity *mEntity;
     Ogre::SceneNode *mSceneNode;
 
-    virtual qint32 getType() { return ComponentsTypes::GraphBodyCom; }
+    virtual qint32 getType() { return Components::GraphBodyCom; }
 };
 
 #endif

@@ -6,12 +6,14 @@
 
 MainMenuWorld::MainMenuWorld(QString xWorldName):World(xWorldName)
 {
-    this->addComponentToNode(Nodes::MainMenu, ComponentsTypes::MainMenuCom);
+    this->addComponentToNode(Nodes::MainMenuNode, Components::MainMenuCom);
 }
 
 MainMenuWorld::~MainMenuWorld()
 {
-
+    MainMenuCom *xMainMenuCom;
+    xMainMenuCom = static_cast<MainMenuCom*>(this->getEntity("MainMenuEntity")->getComponent(Components::MainMenuCom));
+    dMainMenuCom(xMainMenuCom);
 }
 
 void MainMenuWorld::load()
@@ -43,7 +45,6 @@ MainMenuCom* MainMenuWorld::cMainMenuCom()
     MyGUI::VectorWidgetPtr xCurrentLayoutWidgets;
     xCurrentLayoutWidgets = MyGUI::LayoutManager::getInstancePtr()->loadLayout("MainMenu.layout");
     MyGUI::LayerManager::getInstancePtr()->resizeView(MyGUI::RenderManager::getInstancePtr()->getViewSize());
-    //xCurrentLayoutWidgets[0]->setVisible(true);
 
     MyGUI::Button *xNewGameButton;
     xNewGameButton = JGC::GraphicSystem::instance()->getGui()->findWidget<MyGUI::Button>("NewGameButton");

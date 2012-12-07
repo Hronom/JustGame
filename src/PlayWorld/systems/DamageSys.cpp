@@ -13,10 +13,10 @@
 void DamageSys::injectUpdate(const float &xTimeSinceLastUpdate)
 {
     QVector<JGC::Entity*> xDamageableEntitys;
-    xDamageableEntitys = JGC::WorldsSystem::instance()->getActiveWorld()->getEntitysInNode(Nodes::Damageable);
+    xDamageableEntitys = JGC::WorldsSystem::instance()->getActiveWorld()->getEntitysInNode(Nodes::DamageableNode);
 
     QVector<JGC::Entity*> xDoDamageEntitys;
-    xDoDamageEntitys = JGC::WorldsSystem::instance()->getActiveWorld()->getEntitysInNode(Nodes::DoDamage);
+    xDoDamageEntitys = JGC::WorldsSystem::instance()->getActiveWorld()->getEntitysInNode(Nodes::DoDamageNode);
 
     if(xDamageableEntitys.size() > 0 && xDoDamageEntitys.size() > 0)
     {
@@ -33,11 +33,11 @@ void DamageSys::injectUpdate(const float &xTimeSinceLastUpdate)
             JGC::Entity *xDamageableEntity = 0;
             JGC::Entity *xDoDamageEntity = 0;
 
-            // Find Damageable entity
+            // Find DamageableNode entity
             for(int i = 0; i < xDamageableEntitys.size(); ++i)
             {
                 PhysBodyCom *xPhysBodyCandidate;
-                xPhysBodyCandidate = static_cast<PhysBodyCom*>(xDamageableEntitys.at(i)->getComponent(ComponentsTypes::PhysBodyCom));
+                xPhysBodyCandidate = static_cast<PhysBodyCom*>(xDamageableEntitys.at(i)->getComponent(Components::PhysBodyCom));
 
                 if (xPhysBodyCandidate == xPhysBodyA ||
                     xPhysBodyCandidate == xPhysBodyB )
@@ -47,11 +47,11 @@ void DamageSys::injectUpdate(const float &xTimeSinceLastUpdate)
                 }
             }
 
-            // Find DoDamage entity
+            // Find DoDamageNode entity
             for(int i = 0; i < xDoDamageEntitys.size(); ++i)
             {
                 PhysBodyCom *xPhysBodyCandidate;
-                xPhysBodyCandidate = static_cast<PhysBodyCom*>(xDoDamageEntitys.at(i)->getComponent(ComponentsTypes::PhysBodyCom));
+                xPhysBodyCandidate = static_cast<PhysBodyCom*>(xDoDamageEntitys.at(i)->getComponent(Components::PhysBodyCom));
 
                 if (xPhysBodyCandidate == xPhysBodyA ||
                     xPhysBodyCandidate == xPhysBodyB )
@@ -74,14 +74,12 @@ void DamageSys::injectUpdate(const float &xTimeSinceLastUpdate)
             // Make damage
             if(xDamageableEntity != 0 && xDoDamageEntity != 0)
             {
-                qDebug()<<xDamageableEntity->getName()<<"-"<<xDoDamageEntity->getName();
-
                 // Make damage to entity A
                 HealthCom *xHealthCom;
-                xHealthCom = static_cast<HealthCom*>(xDamageableEntity->getComponent(ComponentsTypes::HealthCom));
+                xHealthCom = static_cast<HealthCom*>(xDamageableEntity->getComponent(Components::HealthCom));
 
                 BulletCom *xBulletCom;
-                xBulletCom = static_cast<BulletCom*>(xDoDamageEntity->getComponent(ComponentsTypes::BulletCom));
+                xBulletCom = static_cast<BulletCom*>(xDoDamageEntity->getComponent(Components::BulletCom));
 
                 xHealthCom->mHealthCurrent -= xBulletCom->mDamageCount;
                 xBulletCom->mDamageCount = 0;

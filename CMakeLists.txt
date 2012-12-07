@@ -7,7 +7,7 @@ PROJECT(${PROJECT})
 # Setting source files for this project
 ######################################################################
 set(HEADERS
-./src/ComponentsTypes.h
+./src/Library.h
 
 ./src/MainMenuWorld/components/MainMenuCom.h
 ./src/MainMenuWorld/systems/MainMenuSys.h

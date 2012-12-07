@@ -25,12 +25,12 @@ void AIControlSys::injectUpdate(const float &xTimeSinceLastUpdate)
     // Get player pos
     {
         QVector<JGC::Entity*> xPlayersEntitys;
-        xPlayersEntitys = JGC::WorldsSystem::instance()->getActiveWorld()->getEntitysInNode(Nodes::PlayerControl);
+        xPlayersEntitys = JGC::WorldsSystem::instance()->getActiveWorld()->getEntitysInNode(Nodes::PlayerControlNode);
 
         if(xPlayersEntitys.size()>0)
         {
             PhysBodyCom *xPlayerPhysBody;
-            xPlayerPhysBody = static_cast<PhysBodyCom*>(xPlayersEntitys.at(0)->getComponent(ComponentsTypes::PhysBodyCom));
+            xPlayerPhysBody = static_cast<PhysBodyCom*>(xPlayersEntitys.at(0)->getComponent(Components::PhysBodyCom));
 
             xPlayerPos.setX(xPlayerPhysBody->mRigidBody->getWorldTransform().getOrigin().x());
             xPlayerPos.setY(xPlayerPhysBody->mRigidBody->getWorldTransform().getOrigin().y());
@@ -41,22 +41,21 @@ void AIControlSys::injectUpdate(const float &xTimeSinceLastUpdate)
 
 
     QVector<JGC::Entity*> xEnemysEntitys;
-    xEnemysEntitys = JGC::WorldsSystem::instance()->getActiveWorld()->getEntitysInNode(Nodes::AIControl);
+    xEnemysEntitys = JGC::WorldsSystem::instance()->getActiveWorld()->getEntitysInNode(Nodes::AIControlNode);
 
     for(int i = 0; i < xEnemysEntitys.size(); ++i)
     {
         HealthCom *xHealthCom;
-        xHealthCom = static_cast<HealthCom*>(xEnemysEntitys.at(i)->getComponent(ComponentsTypes::HealthCom));
-        qDebug()<<"Enemy"<<xHealthCom->mHealthCurrent<<xHealthCom->mHealthTotal;
+        xHealthCom = static_cast<HealthCom*>(xEnemysEntitys.at(i)->getComponent(Components::HealthCom));
 
         GraphBodyCom *xGraphBodyCom;
-        xGraphBodyCom = static_cast<GraphBodyCom*>(xEnemysEntitys.at(i)->getComponent(ComponentsTypes::GraphBodyCom));
+        xGraphBodyCom = static_cast<GraphBodyCom*>(xEnemysEntitys.at(i)->getComponent(Components::GraphBodyCom));
 
         Ogre::SceneNode *xSceneNode;
         xSceneNode = xGraphBodyCom->mSceneNode;
 
         PhysBodyCom *xPhysBodyCom;
-        xPhysBodyCom = static_cast<PhysBodyCom*>(xEnemysEntitys.at(i)->getComponent(ComponentsTypes::PhysBodyCom));
+        xPhysBodyCom = static_cast<PhysBodyCom*>(xEnemysEntitys.at(i)->getComponent(Components::PhysBodyCom));
 
         btRigidBody *xRigidBody;
         xRigidBody = xPhysBodyCom->mRigidBody;
@@ -121,7 +120,7 @@ void AIControlSys::injectUpdate(const float &xTimeSinceLastUpdate)
         if(xEnemyPos.distance(xPlayerPos) <= 50.0f)
         {
             WeaponCom *xWeaponCom;
-            xWeaponCom = static_cast<WeaponCom*>(xEnemysEntitys.at(i)->getComponent(ComponentsTypes::WeaponCom));
+            xWeaponCom = static_cast<WeaponCom*>(xEnemysEntitys.at(i)->getComponent(Components::WeaponCom));
 
             if(xWeaponCom->mTimeSinceLastShot >= xWeaponCom->mShootDelay)
             {                

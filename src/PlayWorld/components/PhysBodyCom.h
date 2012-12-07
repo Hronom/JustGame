@@ -1,7 +1,7 @@
 #ifndef PHYSBODYCOM_H
 #define PHYSBODYCOM_H
 
-#include "../../ComponentsTypes.h"
+#include "../../Library.h"
 
 #include <IComponent.h>
 #include <btBulletDynamicsCommon.h>
@@ -12,7 +12,7 @@ public:
     btCollisionShape *mCollisionShape;
     btRigidBody *mRigidBody;
 
-    virtual qint32 getType() { return ComponentsTypes::PhysBodyCom; }
+    virtual qint32 getType() { return Components::PhysBodyCom; }
 };
 
 #endif

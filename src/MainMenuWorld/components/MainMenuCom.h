@@ -1,7 +1,7 @@
 #ifndef MAINMENUCOM_H
 #define MAINMENUCOM_H
 
-#include "../../ComponentsTypes.h"
+#include "../../Library.h"
 
 #include <IComponent.h>
 #include <MyGUI.h>
@@ -14,7 +14,7 @@ public:
     MyGUI::Button *mExitButton;
     MyGUI::Button *mAboutProgram;
 
-    virtual qint32 getType() { return ComponentsTypes::MainMenuCom; }
+    virtual qint32 getType() { return Components::MainMenuCom; }
 };
 
 #endif

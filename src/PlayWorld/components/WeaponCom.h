@@ -1,7 +1,7 @@
 #ifndef WEAPONCOM_H
 #define WEAPONCOM_H
 
-#include "../../ComponentsTypes.h"
+#include "../../Library.h"
 
 #include <IComponent.h>
 #include <Ogre.h>
@@ -12,7 +12,7 @@ public:
     float mShootDelay;
     float mTimeSinceLastShot;
 
-    virtual qint32 getType() { return ComponentsTypes::WeaponCom; }
+    virtual qint32 getType() { return Components::WeaponCom; }
 };
 
 #endif

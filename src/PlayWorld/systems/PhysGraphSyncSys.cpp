@@ -11,15 +11,15 @@
 void PhysGraphSyncSys::injectUpdate(const float &xTimeSinceLastUpdate)
 {
     QVector<JGC::Entity*> xEntitys;
-    xEntitys = JGC::WorldsSystem::instance()->getActiveWorld()->getEntitysInNode(Nodes::PhysGraphSync);
+    xEntitys = JGC::WorldsSystem::instance()->getActiveWorld()->getEntitysInNode(Nodes::PhysGraphSyncNode);
 
     for(int i = 0; i < xEntitys.size(); ++i)
     {
         GraphBodyCom *xGraphBodyCom;
-        xGraphBodyCom = static_cast<GraphBodyCom*>(xEntitys.at(i)->getComponent(ComponentsTypes::GraphBodyCom));
+        xGraphBodyCom = static_cast<GraphBodyCom*>(xEntitys.at(i)->getComponent(Components::GraphBodyCom));
 
         PhysBodyCom *xPhysBodyCom;
-        xPhysBodyCom = static_cast<PhysBodyCom*>(xEntitys.at(i)->getComponent(ComponentsTypes::PhysBodyCom));
+        xPhysBodyCom = static_cast<PhysBodyCom*>(xEntitys.at(i)->getComponent(Components::PhysBodyCom));
 
         const btTransform &xWorldTrans = xPhysBodyCom->mRigidBody->getWorldTransform();
         btQuaternion xRot = xWorldTrans.getRotation();

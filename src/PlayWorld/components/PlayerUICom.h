@@ -1,7 +1,7 @@
 #ifndef PLAYERUICOM_H
 #define PLAYERUICOM_H
 
-#include "../../ComponentsTypes.h"
+#include "../../Library.h"
 
 #include <IComponent.h>
 #include <MyGUI.h>
@@ -14,7 +14,7 @@ public:
     MyGUI::Widget *mEnemyPanel;
     MyGUI::ProgressBar *mEnemyHealthBar;
 
-    virtual qint32 getType() { return ComponentsTypes::PlayerUICom; }
+    virtual qint32 getType() { return Components::PlayerUICom; }
 };
 
 #endif
