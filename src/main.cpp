@@ -4,6 +4,7 @@
 #include "MainMenuWorld/MainMenuWorld.h"
 #include "PlayWorld/PlayWorld.h"
 #include "LoseWorld/LoseWorld.h"
+#include "WinWorld/WinWorld.h"
 
 #include <QDebug>
 
@@ -24,6 +25,10 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR strCmdLine, INT)
     LoseWorld *xLoseWorld;
     xLoseWorld = new LoseWorld("LoseWorld");
     JGC::WorldsSystem::instance()->addWorld(xLoseWorld);
+
+    WinWorld *xWinWorld;
+    xWinWorld = new WinWorld("WinWorld");
+    JGC::WorldsSystem::instance()->addWorld(xWinWorld);
 
 	JGC::MainSystem::instance()->run();
 	JGC::MainSystem::shutdown();

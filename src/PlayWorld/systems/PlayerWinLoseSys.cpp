@@ -18,8 +18,6 @@ void PlayerWinLoseSys::injectUpdate(const float &xTimeSinceLastUpdate)
         if(xEntitys.size() == 0)
         {
             JGC::WorldsSystem::instance()->loadWorld("WinWorld");
-            //JGC::WorldsSystem::instance()->getWorld("MainMenuWorld")->removeComponent("MainMenuEntity", xMainMenuCom);
-            //MainMenuWorld::dMainMenuCom(xMainMenuCom);
             JGC::WorldsSystem::instance()->setActiveWorld("WinWorld");
             return;
         }

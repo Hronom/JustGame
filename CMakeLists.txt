@@ -38,6 +38,10 @@ set(HEADERS
 ./src/LoseWorld/LoseWorld.h
 ./src/LoseWorld/components/LoseMenuCom.h
 ./src/LoseWorld/systems/LoseMenuSys.h
+
+./src/WinWorld/WinWorld.h
+./src/WinWorld/components/WinMenuCom.h
+./src/WinWorld/systems/WinMenuSys.h
 )
 
 set(SOURCES
@@ -60,6 +64,9 @@ set(SOURCES
 
 ./src/LoseWorld/LoseWorld.cpp
 ./src/LoseWorld/systems/LoseMenuSys.cpp
+
+./src/WinWorld/WinWorld.cpp
+./src/WinWorld/systems/WinMenuSys.cpp
 )
 
 set(CONFIGS
