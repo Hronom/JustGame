@@ -7,6 +7,9 @@
 #include "systems/BulletsSys.h"
 #include "systems/DamageSys.h"
 #include "systems/PlayerGUISys.h"
+#include "systems/EnemyDeathSys.h"
+#include "systems/PlayerDeathSys.h"
+#include "systems/PlayerWinLoseSys.h"
 
 #include <GraphicSystem.h>
 #include <PhysicsSystem.h>
@@ -87,7 +90,7 @@ void PlayWorld::load()
             WeaponCom* xWeaponCom = cWeaponCom(0.3f);
             this->addComponent("Player", xWeaponCom);
 
-            HealthCom *xHealthCom = cHealthCom(100,100);
+            HealthCom *xHealthCom = cHealthCom(10, 10);
             this->addComponent("Player", xHealthCom);
         }
 
@@ -105,7 +108,7 @@ void PlayWorld::load()
             WeaponCom* xWeaponCom = cWeaponCom(1.01f);
             this->addComponent("Enemy", xWeaponCom);
 
-            HealthCom *xHealthCom = cHealthCom(100,100);
+            HealthCom *xHealthCom = cHealthCom(10, 10);
             this->addComponent("Enemy", xHealthCom);
         }
 
@@ -135,17 +138,29 @@ void PlayWorld::load()
         xDamageSys = new DamageSys();
         this->addSystem(4, xDamageSys);
 
+        EnemyDeathSys *xEnemyDeathSys;
+        xEnemyDeathSys = new EnemyDeathSys();
+        this->addSystem(5, xEnemyDeathSys);
+
+        PlayerDeathSys *xPlayerDeathSys;
+        xPlayerDeathSys = new PlayerDeathSys();
+        this->addSystem(6, xPlayerDeathSys);
+
+        PlayerWinLoseSys *xPlayerWinLoseSys;
+        xPlayerWinLoseSys = new PlayerWinLoseSys();
+        this->addSystem(7, xPlayerWinLoseSys);
+
         PhysGraphSyncSys *xPhysGraphSyncSys;
         xPhysGraphSyncSys = new PhysGraphSyncSys();
-        this->addSystem(5, xPhysGraphSyncSys);
+        this->addSystem(8, xPhysGraphSyncSys);
 
         PlayerCameraSyncSys *xPlayerCameraSyncSys;
         xPlayerCameraSyncSys = new PlayerCameraSyncSys();
-        this->addSystem(6, xPlayerCameraSyncSys);
+        this->addSystem(9, xPlayerCameraSyncSys);
 
         PlayerGUISys *xPlayerGUISys;
         xPlayerGUISys = new PlayerGUISys();
-        this->addSystem(7, xPlayerGUISys);
+        this->addSystem(10, xPlayerGUISys);
     }
 
     //JGC::GraphicSystem::instance()->resumeRender();
@@ -156,11 +171,12 @@ void PlayWorld::enter()
 {
     JGC::GraphicSystem::instance()->setActiveSceneManager(this->getName());
     JGC::PhysicsSystem::instance()->setActiveDynamicsWorld(this->getName());
+    this->setWorldActive(true);
 }
 
 void PlayWorld::exit()
 {
-
+    this->setWorldActive(false);
 }
 
 GraphBodyCom* PlayWorld::cBackgroundGraphBodyCom(QString xSceneManagerName, QString xComponentName)

@@ -9,10 +9,11 @@ PROJECT(${PROJECT})
 set(HEADERS
 ./src/Library.h
 
+./src/MainMenuWorld/MainMenuWorld.h
 ./src/MainMenuWorld/components/MainMenuCom.h
 ./src/MainMenuWorld/systems/MainMenuSys.h
-./src/MainMenuWorld/MainMenuWorld.h
 
+./src/PlayWorld/PlayWorld.h
 ./src/PlayWorld/components/GraphBodyCom.h
 ./src/PlayWorld/components/PhysBodyCom.h
 ./src/PlayWorld/components/SoundBodyCom.h
@@ -23,6 +24,9 @@ set(HEADERS
 ./src/PlayWorld/components/WeaponCom.h
 ./src/PlayWorld/components/BulletCom.h
 ./src/PlayWorld/components/PlayerUICom.h
+./src/PlayWorld/systems/PlayerWinLoseSys.h
+./src/PlayWorld/systems/EnemyDeathSys.h
+./src/PlayWorld/systems/PlayerDeathSys.h
 ./src/PlayWorld/systems/BulletsSys.h
 ./src/PlayWorld/systems/PlayerControlSys.h
 ./src/PlayWorld/systems/PhysGraphSyncSys.h
@@ -30,15 +34,22 @@ set(HEADERS
 ./src/PlayWorld/systems/AIControlSys.h
 ./src/PlayWorld/systems/DamageSys.h
 ./src/PlayWorld/systems/PlayerGUISys.h
-./src/PlayWorld/PlayWorld.h
+
+./src/LoseWorld/LoseWorld.h
+./src/LoseWorld/components/LoseMenuCom.h
+./src/LoseWorld/systems/LoseMenuSys.h
 )
 
 set(SOURCES
 ./src/main.cpp
 
-./src/MainMenuWorld/systems/MainMenuSys.cpp
 ./src/MainMenuWorld/MainMenuWorld.cpp
+./src/MainMenuWorld/systems/MainMenuSys.cpp
 
+./src/PlayWorld/PlayWorld.cpp
+./src/PlayWorld/systems/PlayerWinLoseSys.cpp
+./src/PlayWorld/systems/EnemyDeathSys.cpp
+./src/PlayWorld/systems/PlayerDeathSys.cpp
 ./src/PlayWorld/systems/BulletsSys.cpp
 ./src/PlayWorld/systems/PlayerControlSys.cpp
 ./src/PlayWorld/systems/PhysGraphSyncSys.cpp
@@ -46,7 +57,9 @@ set(SOURCES
 ./src/PlayWorld/systems/AIControlSys.cpp
 ./src/PlayWorld/systems/DamageSys.cpp
 ./src/PlayWorld/systems/PlayerGUISys.cpp
-./src/PlayWorld/PlayWorld.cpp
+
+./src/LoseWorld/LoseWorld.cpp
+./src/LoseWorld/systems/LoseMenuSys.cpp
 )
 
 set(CONFIGS

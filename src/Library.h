@@ -16,6 +16,8 @@ namespace Components
         BulletCom,
         HealthCom,
         PlayerUICom,
+        LoseMenuCom,
+        WinMenuCom
     };
 }
 
@@ -33,7 +35,9 @@ namespace Nodes
         PlayerStatNode,
         EnemyStatNode,
         GameGUINode,
-        MainMenuNode
+        MainMenuNode,
+        LoseMenuNode,
+        WinMenuNode
     };
 }
 

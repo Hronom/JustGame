@@ -7,6 +7,11 @@
 MainMenuWorld::MainMenuWorld(QString xWorldName):World(xWorldName)
 {
     this->addComponentToNode(Nodes::MainMenuNode, Components::MainMenuCom);
+
+    JGC::GraphicSystem::instance()->createSceneManager(this->getName());
+    MainMenuSys *xMainMenuSys;
+    xMainMenuSys = new MainMenuSys();
+    this->addSystem(1, xMainMenuSys);
 }
 
 MainMenuWorld::~MainMenuWorld()
@@ -18,14 +23,8 @@ MainMenuWorld::~MainMenuWorld()
 
 void MainMenuWorld::load()
 {
-    JGC::GraphicSystem::instance()->createSceneManager(this->getName());
-
     MainMenuCom *xMainMenuCom = cMainMenuCom();
     this->addComponent("MainMenuEntity", xMainMenuCom);
-
-    MainMenuSys *xMainMenuSys;
-    xMainMenuSys = new MainMenuSys();
-    this->addSystem(1, xMainMenuSys);
 
     this->setWorldLoaded(true);
 }
@@ -33,11 +32,12 @@ void MainMenuWorld::load()
 void MainMenuWorld::enter()
 {
     JGC::GraphicSystem::instance()->setActiveSceneManager(this->getName());
+    this->setWorldActive(true);
 }
 
 void MainMenuWorld::exit()
 {
-
+    this->setWorldActive(false);
 }
 
 MainMenuCom* MainMenuWorld::cMainMenuCom()
