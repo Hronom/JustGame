@@ -20,7 +20,7 @@ void PlayerGUISys::injectUpdate(const float &xTimeSinceLastUpdate)
     PlayerUICom *xPlayerUICom;
     if(xGameGUIEntitys.size() > 0)
     {
-        xPlayerUICom = static_cast<PlayerUICom*>(xGameGUIEntitys.at(0)->getComponent(Components::PlayerUICom));
+        xPlayerUICom = xGameGUIEntitys.at(0)->getComponent<PlayerUICom>();
         MyGUI::PointerManager::getInstancePtr()->setPointer("Arrow");
         xPlayerUICom->mEnemyPanel->setVisible(false);
     }
@@ -33,7 +33,7 @@ void PlayerGUISys::injectUpdate(const float &xTimeSinceLastUpdate)
         if(xPlayerEntitys.size() > 0)
         {
             HealthCom *xHealthCom;
-            xHealthCom = static_cast<HealthCom*>(xPlayerEntitys.at(0)->getComponent(Components::HealthCom));
+            xHealthCom = xPlayerEntitys.at(0)->getComponent<HealthCom>();
 
             xPlayerUICom->mPlayerHealthBar->setProgressRange(xHealthCom->mHealthTotal);
             xPlayerUICom->mPlayerHealthBar->setProgressPosition(xHealthCom->mHealthCurrent);
@@ -62,12 +62,12 @@ void PlayerGUISys::injectUpdate(const float &xTimeSinceLastUpdate)
                 for(int i = 0; i < xEnemysEntitys.size(); ++i)
                 {
                     PhysBodyCom *xPhysBodyCandidate;
-                    xPhysBodyCandidate = static_cast<PhysBodyCom*>(xEnemysEntitys.at(i)->getComponent(Components::PhysBodyCom));
+                    xPhysBodyCandidate = xEnemysEntitys.at(i)->getComponent<PhysBodyCom>();
 
                     if(xPhysBodyCandidate == xPhysBodyCom)
                     {
                         HealthCom *xHealthCom;
-                        xHealthCom = static_cast<HealthCom*>(xEnemysEntitys.at(i)->getComponent(Components::HealthCom));
+                        xHealthCom = xEnemysEntitys.at(i)->getComponent<HealthCom>();
 
                         MyGUI::PointerManager::getInstancePtr()->setPointer("hand");
                         xPlayerUICom->mEnemyPanel->setVisible(true);

@@ -1,7 +1,7 @@
 #ifndef LOSEMENUCOM_H
 #define LOSEMENUCOM_H
 
-#include "../../Library.h"
+#include "../../Nodes.h"
 
 #include <IComponent.h>
 #include <MyGUI.h>
@@ -11,8 +11,8 @@ class LoseMenuCom: public JGC::IComponent
 public:
     MyGUI::VectorWidgetPtr mLayoutWidgets;
     MyGUI::Button *mLoseOkButton;
-
-    virtual qint32 getType() { return Components::LoseMenuCom; }
 };
+
+Q_DECLARE_METATYPE(LoseMenuCom)
 
 #endif

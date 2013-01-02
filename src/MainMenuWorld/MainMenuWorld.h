@@ -11,7 +11,6 @@ public:
     MainMenuWorld(QString xWorldName);
     ~MainMenuWorld();
 
-    void load();
     void enter();
     void exit();
 

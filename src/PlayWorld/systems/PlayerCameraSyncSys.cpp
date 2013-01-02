@@ -15,10 +15,10 @@ void PlayerCameraSyncSys::injectUpdate(const float &xTimeSinceLastUpdate)
     for(int i = 0; i < xEntitys.size(); ++i)
     {
         GraphBodyCom *xGraphBodyCom;
-        xGraphBodyCom = static_cast<GraphBodyCom*>(xEntitys.at(i)->getComponent(Components::GraphBodyCom));
+        xGraphBodyCom = xEntitys.at(i)->getComponent<GraphBodyCom>();
 
         CameraTrackableCom *xCameraTrackableCom;
-        xCameraTrackableCom = static_cast<CameraTrackableCom*>(xEntitys.at(i)->getComponent(Components::CameraTrackableCom));
+        xCameraTrackableCom = xEntitys.at(i)->getComponent<CameraTrackableCom>();
 
         Ogre::SceneNode *xSceneNode;
         xSceneNode = xGraphBodyCom->mSceneNode;

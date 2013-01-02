@@ -9,11 +9,6 @@
 
 #include "QDebug"
 
-MainMenuSys::MainMenuSys()
-{
-
-}
-
 void MainMenuSys::injectUpdate(const float &xTimeSinceLastUpdate)
 {
     QVector<JGC::Entity*> xMainMenuEntitys;
@@ -22,17 +17,18 @@ void MainMenuSys::injectUpdate(const float &xTimeSinceLastUpdate)
     if(xMainMenuEntitys.size()>0)
     {
         MainMenuCom *xMainMenuCom;
-        xMainMenuCom = static_cast<MainMenuCom*>(xMainMenuEntitys.at(0)->getComponent(Components::MainMenuCom));
+        xMainMenuCom = xMainMenuEntitys.at(0)->getComponent<MainMenuCom>();
 
         if(xMainMenuCom->mNewGameButton->isButtonPressed())
         {
-            JGC::WorldsSystem::instance()->loadWorld("PlayWorld");
-            JGC::WorldsSystem::instance()->getWorld("MainMenuWorld")->removeComponent("MainMenuEntity", xMainMenuCom);
-            MainMenuWorld::dMainMenuCom(xMainMenuCom);
             JGC::WorldsSystem::instance()->setActiveWorld("PlayWorld");
+            return;
         }
 
         if(xMainMenuCom->mExitButton->isButtonPressed())
+        {
             JGC::MainSystem::instance()->needShutdown();
+            return;
+        }
     }
 }

@@ -1,7 +1,7 @@
 #ifndef PLAYERCONTROLLABLECOM_H
 #define PLAYERCONTROLLABLECOM_H
 
-#include "../../Library.h"
+#include "../../Nodes.h"
 
 #include <IComponent.h>
 #include <Ogre.h>
@@ -9,7 +9,8 @@
 class PlayerControllableCom: public JGC::IComponent
 {
 public:
-    virtual qint32 getType() { return Components::PlayerControllableCom; }
 };
+
+Q_DECLARE_METATYPE(PlayerControllableCom)
 
 #endif

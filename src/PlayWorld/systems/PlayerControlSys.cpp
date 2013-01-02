@@ -43,16 +43,16 @@ void PlayerControlSys::injectUpdate(const float &xTimeSinceLastUpdate)
     for(int i = 0; i < xEntitys.size(); ++i)
     {
         HealthCom *xHealthCom;
-        xHealthCom = static_cast<HealthCom*>(xEntitys.at(i)->getComponent(Components::HealthCom));
+        xHealthCom = xEntitys.at(i)->getComponent<HealthCom>();
 
         GraphBodyCom *xGraphBodyCom;
-        xGraphBodyCom = static_cast<GraphBodyCom*>(xEntitys.at(i)->getComponent(Components::GraphBodyCom));
+        xGraphBodyCom = xEntitys.at(i)->getComponent<GraphBodyCom>();
 
         Ogre::SceneNode *xSceneNode;
         xSceneNode = xGraphBodyCom->mSceneNode;
 
         PhysBodyCom *xPhysBodyCom;
-        xPhysBodyCom = static_cast<PhysBodyCom*>(xEntitys.at(i)->getComponent(Components::PhysBodyCom));
+        xPhysBodyCom = xEntitys.at(i)->getComponent<PhysBodyCom>();
 
         btRigidBody *xRigidBody;
         xRigidBody = xPhysBodyCom->mRigidBody;
@@ -110,7 +110,7 @@ void PlayerControlSys::injectUpdate(const float &xTimeSinceLastUpdate)
         // Shoot
         {
             WeaponCom *xWeaponCom;
-            xWeaponCom = static_cast<WeaponCom*>(xEntitys.at(i)->getComponent(Components::WeaponCom));
+            xWeaponCom = xEntitys.at(i)->getComponent<WeaponCom>();
 
             if(xShoot == true && xWeaponCom->mTimeSinceLastShot >= xWeaponCom->mShootDelay)
             {

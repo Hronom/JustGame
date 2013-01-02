@@ -6,37 +6,71 @@
 
 MainMenuWorld::MainMenuWorld(QString xWorldName):World(xWorldName)
 {
-    this->addComponentToNode(Nodes::MainMenuNode, Components::MainMenuCom);
-
-    JGC::GraphicSystem::instance()->createSceneManager(this->getName());
-    MainMenuSys *xMainMenuSys;
-    xMainMenuSys = new MainMenuSys();
-    this->addSystem(1, xMainMenuSys);
+    this->addComponentToNode<MainMenuCom>(Nodes::MainMenuNode);
 }
 
 MainMenuWorld::~MainMenuWorld()
 {
-    MainMenuCom *xMainMenuCom;
-    xMainMenuCom = static_cast<MainMenuCom*>(this->getEntity("MainMenuEntity")->getComponent(Components::MainMenuCom));
-    dMainMenuCom(xMainMenuCom);
-}
 
-void MainMenuWorld::load()
-{
-    MainMenuCom *xMainMenuCom = cMainMenuCom();
-    this->addComponent("MainMenuEntity", xMainMenuCom);
-
-    this->setWorldLoaded(true);
 }
 
 void MainMenuWorld::enter()
 {
+    {
+        JGC::GraphicSystem::instance()->createSceneManager(this->getName());
+    }
+
+    {
+        MainMenuCom *xMainMenuCom = cMainMenuCom();
+        this->addComponent("MainMenuEntity", xMainMenuCom);
+    }
+
+    {
+        MainMenuSys *xMainMenuSys;
+        xMainMenuSys = new MainMenuSys();
+        this->addSystem(1, xMainMenuSys);
+    }
+
     JGC::GraphicSystem::instance()->setActiveSceneManager(this->getName());
     this->setWorldActive(true);
 }
 
 void MainMenuWorld::exit()
 {
+    {
+        JGC::GraphicSystem::instance()->deleteSceneManager(this->getName());
+    }
+
+    /*
+    // Delete entitys
+    {
+        QList<JGC::Entity*> xEntitys;
+        xEntitys = this->getEntitys();
+        while(!xEntitys.empty())
+        {
+            JGC::Entity *xEntity;
+            xEntity = (*xEntitys.begin());
+
+            QList<JGC::IComponent*> xComponents;
+            while(!xComponents.empty())
+            {
+                JGC::IComponent *xComponent;
+                xComponent = (*xComponents.begin());
+
+                if(xComponent->getType() == Components::MainMenuCom)
+                {
+                    MainMenuCom *xMainMenuCom;
+                    xMainMenuCom = static_cast<MainMenuCom*>(xComponent);
+                    dMainMenuCom(xMainMenuCom);
+                }
+            }
+        }
+    }*/
+
+    MainMenuCom *xMainMenuCom;
+    xMainMenuCom = this->getEntity("MainMenuEntity")->getComponent<MainMenuCom>();
+    dMainMenuCom(xMainMenuCom);
+
     this->setWorldActive(false);
 }
 

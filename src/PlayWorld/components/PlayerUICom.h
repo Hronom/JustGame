@@ -1,7 +1,7 @@
 #ifndef PLAYERUICOM_H
 #define PLAYERUICOM_H
 
-#include "../../Library.h"
+#include "../../Nodes.h"
 
 #include <IComponent.h>
 #include <MyGUI.h>
@@ -13,8 +13,8 @@ public:
     MyGUI::ProgressBar *mPlayerHealthBar;
     MyGUI::Widget *mEnemyPanel;
     MyGUI::ProgressBar *mEnemyHealthBar;
-
-    virtual qint32 getType() { return Components::PlayerUICom; }
 };
+
+Q_DECLARE_METATYPE(PlayerUICom)
 
 #endif

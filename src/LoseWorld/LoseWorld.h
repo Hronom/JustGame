@@ -11,7 +11,6 @@ public:
     LoseWorld(QString xWorldName);
     ~LoseWorld();
 
-    void load();
     void enter();
     void exit();
 

@@ -1,7 +1,7 @@
 #ifndef MAINMENUCOM_H
 #define MAINMENUCOM_H
 
-#include "../../Library.h"
+#include "../../Nodes.h"
 
 #include <IComponent.h>
 #include <MyGUI.h>
@@ -13,8 +13,8 @@ public:
     MyGUI::Button *mNewGameButton;
     MyGUI::Button *mExitButton;
     MyGUI::Button *mAboutProgram;
-
-    virtual qint32 getType() { return Components::MainMenuCom; }
 };
+
+Q_DECLARE_METATYPE(MainMenuCom)
 
 #endif

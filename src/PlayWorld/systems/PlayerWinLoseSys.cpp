@@ -17,7 +17,6 @@ void PlayerWinLoseSys::injectUpdate(const float &xTimeSinceLastUpdate)
 
         if(xEntitys.size() == 0)
         {
-            JGC::WorldsSystem::instance()->loadWorld("WinWorld");
             JGC::WorldsSystem::instance()->setActiveWorld("WinWorld");
             return;
         }
@@ -30,7 +29,6 @@ void PlayerWinLoseSys::injectUpdate(const float &xTimeSinceLastUpdate)
 
         if(xEntitys.size() == 0)
         {
-            JGC::WorldsSystem::instance()->loadWorld("LoseWorld");
             JGC::WorldsSystem::instance()->setActiveWorld("LoseWorld");
             return;
         }

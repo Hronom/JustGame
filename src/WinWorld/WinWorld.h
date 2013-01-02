@@ -11,7 +11,6 @@ public:
     WinWorld(QString xWorldName);
     ~WinWorld();
 
-    void load();
     void enter();
     void exit();
 

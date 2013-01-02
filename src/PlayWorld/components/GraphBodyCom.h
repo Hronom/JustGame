@@ -1,7 +1,7 @@
 #ifndef GRAPHBODYCOM_H
 #define GRAPHBODYCOM_H
 
-#include "../../Library.h"
+#include "../../Nodes.h"
 
 #include <IComponent.h>
 #include <Ogre.h>
@@ -12,8 +12,8 @@ public:
     Ogre::ManualObject *mManualObject;
     Ogre::Entity *mEntity;
     Ogre::SceneNode *mSceneNode;
-
-    virtual qint32 getType() { return Components::GraphBodyCom; }
 };
+
+Q_DECLARE_METATYPE(GraphBodyCom)
 
 #endif

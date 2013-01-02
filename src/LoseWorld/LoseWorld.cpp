@@ -7,7 +7,7 @@
 
 LoseWorld::LoseWorld(QString xWorldName):World(xWorldName)
 {
-    this->addComponentToNode(Nodes::LoseMenuNode, Components::LoseMenuCom);
+    this->addComponentToNode<LoseMenuCom>(Nodes::LoseMenuNode);
 
     JGC::GraphicSystem::instance()->createSceneManager(this->getName());
 
@@ -19,13 +19,8 @@ LoseWorld::LoseWorld(QString xWorldName):World(xWorldName)
 LoseWorld::~LoseWorld()
 {
     LoseMenuCom *xLoseMenuCom;
-    xLoseMenuCom = static_cast<LoseMenuCom*>(this->getEntity("LoseMenuEntity")->getComponent(Components::LoseMenuCom));
+    xLoseMenuCom = this->getEntity("LoseMenuEntity")->getComponent<LoseMenuCom>();
     dLoseMenuCom(xLoseMenuCom);
-}
-
-void LoseWorld::load()
-{
-    this->setWorldLoaded(true);
 }
 
 void LoseWorld::enter()
@@ -44,7 +39,7 @@ void LoseWorld::exit()
     xLoseMenuEntitys = this->getEntitysInNode(Nodes::LoseMenuNode);
 
     LoseMenuCom *xLoseMenuCom;
-    xLoseMenuCom = static_cast<LoseMenuCom*>(xLoseMenuEntitys.at(0)->getComponent(Components::LoseMenuCom));
+    xLoseMenuCom = xLoseMenuEntitys.at(0)->getComponent<LoseMenuCom>();
 
     this->removeComponent("LoseMenuEntity", xLoseMenuCom);
     LoseWorld::dLoseMenuCom(xLoseMenuCom);

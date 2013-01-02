@@ -17,12 +17,9 @@ void LoseMenuSys::injectUpdate(const float &xTimeSinceLastUpdate)
     if(xLoseMenuEntitys.size() > 0)
     {
         LoseMenuCom *xLoseMenuCom;
-        xLoseMenuCom = static_cast<LoseMenuCom*>(xLoseMenuEntitys.at(0)->getComponent(Components::LoseMenuCom));
+        xLoseMenuCom = xLoseMenuEntitys.at(0)->getComponent<LoseMenuCom>();
 
-        if(xLoseMenuCom->mLoseOkButton->isButtonPressed())
-        {                
-            JGC::WorldsSystem::instance()->loadWorld("MainMenuWorld");
+        if(xLoseMenuCom->mLoseOkButton->isButtonPressed())                
             JGC::WorldsSystem::instance()->setActiveWorld("MainMenuWorld");
-        }
     }
 }

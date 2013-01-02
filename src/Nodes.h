@@ -1,26 +1,6 @@
 #ifndef LIBRARY_H
 #define LIBRARY_H
 
-namespace Components
-{
-    enum Components
-    {
-        MainMenuCom,
-        GraphBodyCom,
-        PhysBodyCom,
-        SoundBodyCom,
-        WeaponCom,
-        PlayerControllableCom,
-        AIControllableCom,
-        CameraTrackableCom,
-        BulletCom,
-        HealthCom,
-        PlayerUICom,
-        LoseMenuCom,
-        WinMenuCom
-    };
-}
-
 namespace Nodes
 {
     enum Nodes

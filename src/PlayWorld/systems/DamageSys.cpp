@@ -37,7 +37,7 @@ void DamageSys::injectUpdate(const float &xTimeSinceLastUpdate)
             for(int i = 0; i < xDamageableEntitys.size(); ++i)
             {
                 PhysBodyCom *xPhysBodyCandidate;
-                xPhysBodyCandidate = static_cast<PhysBodyCom*>(xDamageableEntitys.at(i)->getComponent(Components::PhysBodyCom));
+                xPhysBodyCandidate = xDamageableEntitys.at(i)->getComponent<PhysBodyCom>();
 
                 if (xPhysBodyCandidate == xPhysBodyA ||
                     xPhysBodyCandidate == xPhysBodyB )
@@ -51,23 +51,13 @@ void DamageSys::injectUpdate(const float &xTimeSinceLastUpdate)
             for(int i = 0; i < xDoDamageEntitys.size(); ++i)
             {
                 PhysBodyCom *xPhysBodyCandidate;
-                xPhysBodyCandidate = static_cast<PhysBodyCom*>(xDoDamageEntitys.at(i)->getComponent(Components::PhysBodyCom));
+                xPhysBodyCandidate = xDoDamageEntitys.at(i)->getComponent<PhysBodyCom>();
 
                 if (xPhysBodyCandidate == xPhysBodyA ||
                     xPhysBodyCandidate == xPhysBodyB )
                 {
                     if(xDoDamageEntity == 0)
                         xDoDamageEntity = xDoDamageEntitys.at(i);
-                    /*else
-                    {
-                        Damage *xDamage;
-                        xDamage = static_cast<Damage*>(xDoDamageEntitys.at(i)->getComponent("Damage"));
-                        xDamage->mDamageCount = 0;
-
-                        xDamage = static_cast<Damage*>(xDoDamageEntity->getComponent("Damage"));
-                        xDamage->mDamageCount = 0;
-                    }*/
-
                 }
             }
 
@@ -76,10 +66,10 @@ void DamageSys::injectUpdate(const float &xTimeSinceLastUpdate)
             {
                 // Make damage to entity A
                 HealthCom *xHealthCom;
-                xHealthCom = static_cast<HealthCom*>(xDamageableEntity->getComponent(Components::HealthCom));
+                xHealthCom = xDamageableEntity->getComponent<HealthCom>();
 
                 BulletCom *xBulletCom;
-                xBulletCom = static_cast<BulletCom*>(xDoDamageEntity->getComponent(Components::BulletCom));
+                xBulletCom = xDoDamageEntity->getComponent<BulletCom>();
 
                 xHealthCom->mHealthCurrent -= xBulletCom->mDamageCount;
                 xBulletCom->mDamageCount = 0;

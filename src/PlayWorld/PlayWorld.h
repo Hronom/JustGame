@@ -33,7 +33,6 @@ public:
     PlayWorld(QString xWorldName);
     ~PlayWorld();
 
-    void load();
     void enter();
     void exit();
 

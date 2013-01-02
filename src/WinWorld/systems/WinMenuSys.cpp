@@ -17,12 +17,9 @@ void WinMenuSys::injectUpdate(const float &xTimeSinceLastUpdate)
     if(xWinMenuEntitys.size() > 0)
     {
         WinMenuCom *xWinMenuCom;
-        xWinMenuCom = static_cast<WinMenuCom*>(xWinMenuEntitys.at(0)->getComponent(Components::WinMenuCom));
+        xWinMenuCom = xWinMenuEntitys.at(0)->getComponent<WinMenuCom>();
 
-        if(xWinMenuCom->mWinOkButton->isButtonPressed())
-        {                
-            JGC::WorldsSystem::instance()->loadWorld("MainMenuWorld");
+        if(xWinMenuCom->mWinOkButton->isButtonPressed())               
             JGC::WorldsSystem::instance()->setActiveWorld("MainMenuWorld");
-        }
     }
 }

@@ -19,40 +19,40 @@ unsigned int PlayWorld::mEnemysCount = 0;
 
 PlayWorld::PlayWorld(QString xWorldName):World(xWorldName)
 {
-    this->addComponentToNode(Nodes::PlayerControlNode, Components::GraphBodyCom);
-    this->addComponentToNode(Nodes::PlayerControlNode, Components::PhysBodyCom);
-    this->addComponentToNode(Nodes::PlayerControlNode, Components::WeaponCom);
-    this->addComponentToNode(Nodes::PlayerControlNode, Components::PlayerControllableCom);
+    this->addComponentToNode<GraphBodyCom>(Nodes::PlayerControlNode);
+    this->addComponentToNode<PhysBodyCom>(Nodes::PlayerControlNode);
+    this->addComponentToNode<WeaponCom>(Nodes::PlayerControlNode);
+    this->addComponentToNode<PlayerControllableCom>(Nodes::PlayerControlNode);
 
-    this->addComponentToNode(Nodes::AIControlNode, Components::GraphBodyCom);
-    this->addComponentToNode(Nodes::AIControlNode, Components::PhysBodyCom);
-    this->addComponentToNode(Nodes::AIControlNode, Components::WeaponCom);
-    this->addComponentToNode(Nodes::AIControlNode, Components::AIControllableCom);
+    this->addComponentToNode<GraphBodyCom>(Nodes::AIControlNode);
+    this->addComponentToNode<PhysBodyCom>(Nodes::AIControlNode);
+    this->addComponentToNode<WeaponCom>(Nodes::AIControlNode);
+    this->addComponentToNode<AIControllableCom>(Nodes::AIControlNode);
 
-    this->addComponentToNode(Nodes::PhysGraphSyncNode, Components::GraphBodyCom);
-    this->addComponentToNode(Nodes::PhysGraphSyncNode, Components::PhysBodyCom);
+    this->addComponentToNode<GraphBodyCom>(Nodes::PhysGraphSyncNode);
+    this->addComponentToNode<PhysBodyCom>(Nodes::PhysGraphSyncNode);
 
-    this->addComponentToNode(Nodes::PlayerCameraSyncNode, Components::GraphBodyCom);
-    this->addComponentToNode(Nodes::PlayerCameraSyncNode, Components::CameraTrackableCom);
+    this->addComponentToNode<GraphBodyCom>(Nodes::PlayerCameraSyncNode);
+    this->addComponentToNode<CameraTrackableCom>(Nodes::PlayerCameraSyncNode);
 
-    this->addComponentToNode(Nodes::BulletsNode, Components::BulletCom);
-    this->addComponentToNode(Nodes::BulletsNode, Components::GraphBodyCom);
-    this->addComponentToNode(Nodes::BulletsNode, Components::PhysBodyCom);
+    this->addComponentToNode<BulletCom>(Nodes::BulletsNode);
+    this->addComponentToNode<GraphBodyCom>(Nodes::BulletsNode);
+    this->addComponentToNode<PhysBodyCom>(Nodes::BulletsNode);
 
-    this->addComponentToNode(Nodes::DoDamageNode, Components::BulletCom);
-    this->addComponentToNode(Nodes::DoDamageNode, Components::PhysBodyCom);
+    this->addComponentToNode<BulletCom>(Nodes::DoDamageNode);
+    this->addComponentToNode<PhysBodyCom>(Nodes::DoDamageNode);
 
-    this->addComponentToNode(Nodes::DamageableNode, Components::HealthCom);
-    this->addComponentToNode(Nodes::DamageableNode, Components::PhysBodyCom);
+    this->addComponentToNode<HealthCom>(Nodes::DamageableNode);
+    this->addComponentToNode<PhysBodyCom>(Nodes::DamageableNode);
 
-    this->addComponentToNode(Nodes::PlayerStatNode, Components::HealthCom);
-    this->addComponentToNode(Nodes::PlayerStatNode, Components::PlayerControllableCom);
+    this->addComponentToNode<HealthCom>(Nodes::PlayerStatNode);
+    this->addComponentToNode<PlayerControllableCom>(Nodes::PlayerStatNode);
 
-    this->addComponentToNode(Nodes::EnemyStatNode, Components::HealthCom);
-    this->addComponentToNode(Nodes::EnemyStatNode, Components::AIControllableCom);
-    this->addComponentToNode(Nodes::EnemyStatNode, Components::PhysBodyCom);
+    this->addComponentToNode<HealthCom>(Nodes::EnemyStatNode);
+    this->addComponentToNode<AIControllableCom>(Nodes::EnemyStatNode);
+    this->addComponentToNode<PhysBodyCom>(Nodes::EnemyStatNode);
 
-    this->addComponentToNode(Nodes::GameGUINode, Components::PlayerUICom);
+    this->addComponentToNode<PlayerUICom>(Nodes::GameGUINode);
 }
 
 PlayWorld::~PlayWorld()
@@ -60,9 +60,8 @@ PlayWorld::~PlayWorld()
 
 }
 
-void PlayWorld::load()
+void PlayWorld::enter()
 {
-    //JGC::GraphicSystem::instance()->pauseRender();
     {
         JGC::GraphicSystem::instance()->createSceneManager(this->getName());
         JGC::PhysicsSystem::instance()->createDynamicsWorld(this->getName());
@@ -163,19 +162,19 @@ void PlayWorld::load()
         this->addSystem(10, xPlayerGUISys);
     }
 
-    //JGC::GraphicSystem::instance()->resumeRender();
-    this->setWorldLoaded(true);
-}
-
-void PlayWorld::enter()
-{
     JGC::GraphicSystem::instance()->setActiveSceneManager(this->getName());
     JGC::PhysicsSystem::instance()->setActiveDynamicsWorld(this->getName());
+
     this->setWorldActive(true);
 }
 
 void PlayWorld::exit()
 {
+    {
+        JGC::GraphicSystem::instance()->deleteSceneManager(this->getName());
+        JGC::PhysicsSystem::instance()->deleteDynamicsWorld(this->getName());
+    }
+
     this->setWorldActive(false);
 }
 

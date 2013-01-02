@@ -1,7 +1,7 @@
 #ifndef WEAPONCOM_H
 #define WEAPONCOM_H
 
-#include "../../Library.h"
+#include "../../Nodes.h"
 
 #include <IComponent.h>
 #include <Ogre.h>
@@ -11,8 +11,8 @@ class WeaponCom: public JGC::IComponent
 public:
     float mShootDelay;
     float mTimeSinceLastShot;
-
-    virtual qint32 getType() { return Components::WeaponCom; }
 };
+
+Q_DECLARE_METATYPE(WeaponCom)
 
 #endif

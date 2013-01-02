@@ -1,7 +1,7 @@
 #ifndef BULLETCOM_H
 #define BULLETCOM_H
 
-#include "../../Library.h"
+#include "../../Nodes.h"
 
 #include <IComponent.h>
 #include <Ogre.h>
@@ -13,8 +13,8 @@ public:
     float mTotalLiveTime;
 
     qint32 mDamageCount;
-
-    virtual qint32 getType() { return Components::BulletCom; }
 };
+
+Q_DECLARE_METATYPE(BulletCom)
 
 #endif

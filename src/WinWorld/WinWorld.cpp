@@ -7,34 +7,34 @@
 
 WinWorld::WinWorld(QString xWorldName):World(xWorldName)
 {
-    this->addComponentToNode(Nodes::WinMenuNode, Components::WinMenuCom);
-
-    JGC::GraphicSystem::instance()->createSceneManager(this->getName());
-
-    WinMenuSys *xWinMenuSys;
-    xWinMenuSys = new WinMenuSys();
-    this->addSystem(1, xWinMenuSys);
+    this->addComponentToNode<WinMenuCom>(Nodes::WinMenuNode);
 }
 
 WinWorld::~WinWorld()
 {
     WinMenuCom *xWinMenuCom;
-    xWinMenuCom = static_cast<WinMenuCom*>(this->getEntity("WinMenuEntity")->getComponent(Components::WinMenuCom));
+    xWinMenuCom = this->getEntity("WinMenuEntity")->getComponent<WinMenuCom>();
     dWinMenuCom(xWinMenuCom);
-}
-
-void WinWorld::load()
-{
-    this->setWorldLoaded(true);
 }
 
 void WinWorld::enter()
 {
+    {
+        JGC::GraphicSystem::instance()->createSceneManager(this->getName());
+    }
+
+    {
+        WinMenuCom *xWinMenuCom = cWinMenuCom();
+        this->addComponent("WinMenuEntity", xWinMenuCom);
+    }
+
+    {
+        WinMenuSys *xWinMenuSys;
+        xWinMenuSys = new WinMenuSys();
+        this->addSystem(1, xWinMenuSys);
+    }
+
     JGC::GraphicSystem::instance()->setActiveSceneManager(this->getName());
-
-    WinMenuCom *xWinMenuCom = cWinMenuCom();
-    this->addComponent("WinMenuEntity", xWinMenuCom);
-
     this->setWorldActive(true);
 }
 
@@ -44,7 +44,7 @@ void WinWorld::exit()
     xWinMenuEntitys = this->getEntitysInNode(Nodes::WinMenuNode);
 
     WinMenuCom *xWinMenuCom;
-    xWinMenuCom = static_cast<WinMenuCom*>(xWinMenuEntitys.at(0)->getComponent(Components::WinMenuCom));
+    xWinMenuCom = xWinMenuEntitys.at(0)->getComponent<WinMenuCom>();
 
     this->removeComponent("WinMenuEntity", xWinMenuCom);
     WinWorld::dWinMenuCom(xWinMenuCom);

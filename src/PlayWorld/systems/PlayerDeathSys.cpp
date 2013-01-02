@@ -17,18 +17,18 @@ void PlayerDeathSys::injectUpdate(const float &xTimeSinceLastUpdate)
     for(int i = 0; i < xEntitys.size(); ++i)
     {
         HealthCom *xHealthCom;
-        xHealthCom = static_cast<HealthCom*>(xEntitys.at(i)->getComponent(Components::HealthCom));
+        xHealthCom = xEntitys.at(i)->getComponent<HealthCom>();
 
         if(xHealthCom->mHealthCurrent <= 0)
         {
             JGC::WorldsSystem::instance()->getActiveWorld()->removeComponent(xEntitys.at(i)->getName(), xHealthCom);
 
             GraphBodyCom *xGraphBodyCom;
-            xGraphBodyCom = static_cast<GraphBodyCom*>(xEntitys.at(i)->getComponent(Components::GraphBodyCom));
+            xGraphBodyCom = xEntitys.at(i)->getComponent<GraphBodyCom>();
             JGC::WorldsSystem::instance()->getActiveWorld()->removeComponent(xEntitys.at(i)->getName(), xGraphBodyCom);
 
             PhysBodyCom *xPhysBodyCom;
-            xPhysBodyCom = static_cast<PhysBodyCom*>(xEntitys.at(i)->getComponent(Components::PhysBodyCom));
+            xPhysBodyCom = xEntitys.at(i)->getComponent<PhysBodyCom>();
             JGC::WorldsSystem::instance()->getActiveWorld()->removeComponent(xEntitys.at(i)->getName(), xPhysBodyCom);
 
             JGC::WorldsSystem::instance()->getActiveWorld()->removeEntity(xEntitys.at(i)->getName());

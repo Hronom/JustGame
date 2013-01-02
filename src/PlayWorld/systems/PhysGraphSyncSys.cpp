@@ -16,10 +16,10 @@ void PhysGraphSyncSys::injectUpdate(const float &xTimeSinceLastUpdate)
     for(int i = 0; i < xEntitys.size(); ++i)
     {
         GraphBodyCom *xGraphBodyCom;
-        xGraphBodyCom = static_cast<GraphBodyCom*>(xEntitys.at(i)->getComponent(Components::GraphBodyCom));
+        xGraphBodyCom = xEntitys.at(i)->getComponent<GraphBodyCom>();
 
         PhysBodyCom *xPhysBodyCom;
-        xPhysBodyCom = static_cast<PhysBodyCom*>(xEntitys.at(i)->getComponent(Components::PhysBodyCom));
+        xPhysBodyCom = xEntitys.at(i)->getComponent<PhysBodyCom>();
 
         const btTransform &xWorldTrans = xPhysBodyCom->mRigidBody->getWorldTransform();
         btQuaternion xRot = xWorldTrans.getRotation();

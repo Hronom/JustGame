@@ -15,7 +15,6 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR strCmdLine, INT)
     MainMenuWorld *xMainMenuWorld;
     xMainMenuWorld = new MainMenuWorld("MainMenuWorld");
     JGC::WorldsSystem::instance()->addWorld(xMainMenuWorld);
-    JGC::WorldsSystem::instance()->loadWorld("MainMenuWorld");
     JGC::WorldsSystem::instance()->setActiveWorld("MainMenuWorld");
 
     PlayWorld *xPlayWorld;
