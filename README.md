@@ -38,6 +38,9 @@ Windows bash script for building JustGame
     ::set OpenAL_SDK dir
     SET OpenAL_SDK_dir="D:/Dev/JustGameProject/ExternalDependencies/OpenAL_1.1_SDK"
     
+    ::set Qt install dir
+    SET Qt_install_dir="D:/Qt/qt-everywhere-opensource-src-4.8.3"
+    
     if %build_JustGameCore% == "Y" (
     echo =======================================================
     echo ================ Build JustGameCore ===================
@@ -69,7 +72,7 @@ Windows bash script for building JustGame
     MKDIR %JustGame_build_dir% 
     MKDIR %JustGame_install_dir%
     CD %JustGame_build_dir%
-    cmake -G "MinGW Makefiles" -D CMAKE_INSTALL_PREFIX:STRING=%JustGame_install_dir% -D BULLET_INSTALL_DIR:STRING=%Bullet_install_dir% -D FREEALUT_DIR:STRING=%FreeAlut_dir% -D MYGUI_INSTALL_DIR:STRING=%MyGUI_install_dir% -D OGRE_INSTALL_DIR:STRING=%Ogre_install_dir% -D OPENAL_SDK_DIR:STRING=%OpenAL_SDK_dir% -D JUSTGAMECORE_INSTALL_DIR:STRING=%JustGameCore_install_dir% -D JUSTGAMEMEDIA_DIR:STRING=%JustGameMedia_dir% %JustGame_sources_dir%
+    cmake -G "MinGW Makefiles" -D CMAKE_INSTALL_PREFIX:STRING=%JustGame_install_dir% -D BULLET_INSTALL_DIR:STRING=%Bullet_install_dir% -D FREEALUT_DIR:STRING=%FreeAlut_dir% -D MYGUI_INSTALL_DIR:STRING=%MyGUI_install_dir% -D OGRE_INSTALL_DIR:STRING=%Ogre_install_dir% -D OPENAL_SDK_DIR:STRING=%OpenAL_SDK_dir% -D JUSTGAMECORE_INSTALL_DIR:STRING=%JustGameCore_install_dir% -D JUSTGAMEMEDIA_DIR:STRING=%JustGameMedia_dir% -D QT_INSTALL_DIR:STRING=%Qt_install_dir% %JustGame_sources_dir%
     ::building Debug
     cmake -D CMAKE_BUILD_TYPE:STRING=Debug %JustGame_sources_dir%
     mingw32-make.exe
