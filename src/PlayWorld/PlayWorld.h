@@ -2,6 +2,8 @@
 #define PLAYWORLD_H
 
 #include "components/GraphBodyCom.h"
+#include "components/SoundBodyCom.h"
+#include "components/SoundListenerCom.h"
 #include "components/PhysBodyCom.h"
 #include "components/CameraTrackableCom.h"
 #include "components/HealthCom.h"
@@ -9,7 +11,6 @@
 #include "components/AIControllableCom.h"
 #include "components/WeaponCom.h"
 #include "components/BulletCom.h"
-#include "components/SoundBodyCom.h"
 #include "components/PlayerUICom.h"
 
 #include <World.h>
@@ -54,13 +55,15 @@ public:
     static PhysBodyCom* cBulletPhysBodyCom(QString xDynamicsWorldName, short xObjectCollideWith, btVector3 xPosition, btQuaternion xOrientation);
     static void dPhysBodyCom(QString xDynamicsWorldName, PhysBodyCom* xPhysBodyCom);
 
-    static SoundBodyCom* cWeaponComSoundBodyCom(short xObjectCollideWith, btVector3 xPosition, btQuaternion xOrientation);
-    static void dSoundBodyCom(SoundBodyCom* xSoundBodyCom);
+    static SoundBodyCom* cWeaponSoundBodyCom();
+    static void dWeaponSoundBodyCom(SoundBodyCom* xSoundBodyCom);
+
+    static SoundListenerCom* cSoundListenerCom();
+    static void dSoundListenerCom(SoundListenerCom* xSoundListenerCom);
 
 
 
     static CameraTrackableCom* cCameraTrackableCom(QString xSceneManagerName, QString xCameraName);
-    static void dCameraTrackableCom(QString xSceneManagerName);
 
 
 
@@ -84,7 +87,7 @@ public:
     static void dBulletCom(BulletCom* xBulletCom);
 
     static PlayerUICom* cPlayerUICom();
-    //void dPlayerUICom(PlayerUICom* xPlayerUICom);
+    void dPlayerUICom(PlayerUICom* xPlayerUICom);
 };
 
 #endif

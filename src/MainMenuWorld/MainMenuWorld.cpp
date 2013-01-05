@@ -11,7 +11,7 @@ MainMenuWorld::MainMenuWorld(QString xWorldName):World(xWorldName)
 
 MainMenuWorld::~MainMenuWorld()
 {
-
+    this->removeComponentFromNode<MainMenuCom>(Nodes::MainMenuNode);
 }
 
 void MainMenuWorld::enter()
@@ -37,39 +37,43 @@ void MainMenuWorld::enter()
 
 void MainMenuWorld::exit()
 {
+    // Delete systems
     {
-        JGC::GraphicSystem::instance()->deleteSceneManager(this->getName());
+        QList<JGC::ISystem*> xSystems;
+        xSystems = this->getAllSystems();
+        while(!xSystems.empty())
+        {
+            JGC::ISystem *xSystem;
+            xSystem = xSystems.takeFirst();
+            this->removeSystem(xSystem);
+            delete xSystem;
+        }
     }
 
-    /*
     // Delete entitys
     {
         QList<JGC::Entity*> xEntitys;
-        xEntitys = this->getEntitys();
+        xEntitys = this->getAllEntitys();
         while(!xEntitys.empty())
         {
             JGC::Entity *xEntity;
-            xEntity = (*xEntitys.begin());
+            xEntity = xEntitys.takeFirst();
 
-            QList<JGC::IComponent*> xComponents;
-            while(!xComponents.empty())
+            MainMenuCom *xMainMenuCom;
+            xMainMenuCom = xEntity->getComponent<MainMenuCom>();
+            if(xMainMenuCom != NULL)
             {
-                JGC::IComponent *xComponent;
-                xComponent = (*xComponents.begin());
-
-                if(xComponent->getType() == Components::MainMenuCom)
-                {
-                    MainMenuCom *xMainMenuCom;
-                    xMainMenuCom = static_cast<MainMenuCom*>(xComponent);
-                    dMainMenuCom(xMainMenuCom);
-                }
+                dMainMenuCom(xMainMenuCom);
+                this->removeComponent(xEntity->getName(), xMainMenuCom);
             }
-        }
-    }*/
 
-    MainMenuCom *xMainMenuCom;
-    xMainMenuCom = this->getEntity("MainMenuEntity")->getComponent<MainMenuCom>();
-    dMainMenuCom(xMainMenuCom);
+            this->removeEntity(xEntity->getName());
+        }
+    }
+
+    {
+        JGC::GraphicSystem::instance()->deleteSceneManager(this->getName());
+    }
 
     this->setWorldActive(false);
 }

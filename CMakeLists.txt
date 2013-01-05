@@ -7,16 +7,25 @@ PROJECT(${PROJECT})
 # Setting source files for this project
 ######################################################################
 set(HEADERS
+
 ./src/Nodes.h
+
+./src/SplashScreenWorld/SplashScreenWorld.h
+./src/SplashScreenWorld/systems/SplashScreenSys.h
 
 ./src/MainMenuWorld/MainMenuWorld.h
 ./src/MainMenuWorld/components/MainMenuCom.h
 ./src/MainMenuWorld/systems/MainMenuSys.h
 
+./src/AboutGameWorld/AboutGameWorld.h
+./src/AboutGameWorld/components/AboutGameCom.h
+./src/AboutGameWorld/systems/AboutGameSys.h
+
 ./src/PlayWorld/PlayWorld.h
 ./src/PlayWorld/components/GraphBodyCom.h
 ./src/PlayWorld/components/PhysBodyCom.h
 ./src/PlayWorld/components/SoundBodyCom.h
+./src/PlayWorld/components/SoundListenerCom.h
 ./src/PlayWorld/components/HealthCom.h
 ./src/PlayWorld/components/PlayerControllableCom.h
 ./src/PlayWorld/components/AIControllableCom.h
@@ -30,6 +39,7 @@ set(HEADERS
 ./src/PlayWorld/systems/BulletsSys.h
 ./src/PlayWorld/systems/PlayerControlSys.h
 ./src/PlayWorld/systems/PhysGraphSyncSys.h
+./src/PlayWorld/systems/PhysSoundSyncSys.h
 ./src/PlayWorld/systems/PlayerCameraSyncSys.h
 ./src/PlayWorld/systems/AIControlSys.h
 ./src/PlayWorld/systems/DamageSys.h
@@ -45,10 +55,17 @@ set(HEADERS
 )
 
 set(SOURCES
+
 ./src/main.cpp
+
+./src/SplashScreenWorld/SplashScreenWorld.cpp
+./src/SplashScreenWorld/systems/SplashScreenSys.cpp
 
 ./src/MainMenuWorld/MainMenuWorld.cpp
 ./src/MainMenuWorld/systems/MainMenuSys.cpp
+
+./src/AboutGameWorld/AboutGameWorld.cpp
+./src/AboutGameWorld/systems/AboutGameSys.cpp
 
 ./src/PlayWorld/PlayWorld.cpp
 ./src/PlayWorld/systems/PlayerWinLoseSys.cpp
@@ -57,6 +74,7 @@ set(SOURCES
 ./src/PlayWorld/systems/BulletsSys.cpp
 ./src/PlayWorld/systems/PlayerControlSys.cpp
 ./src/PlayWorld/systems/PhysGraphSyncSys.cpp
+./src/PlayWorld/systems/PhysSoundSyncSys.cpp
 ./src/PlayWorld/systems/PlayerCameraSyncSys.cpp
 ./src/PlayWorld/systems/AIControlSys.cpp
 ./src/PlayWorld/systems/DamageSys.cpp

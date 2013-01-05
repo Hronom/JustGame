@@ -1,7 +1,9 @@
 #include <MainSystem.h>
 #include <WorldsSystem.h>
 
+#include "SplashScreenWorld/SplashScreenWorld.h"
 #include "MainMenuWorld/MainMenuWorld.h"
+#include "AboutGameWorld/AboutGameWorld.h"
 #include "PlayWorld/PlayWorld.h"
 #include "LoseWorld/LoseWorld.h"
 #include "WinWorld/WinWorld.h"
@@ -10,12 +12,19 @@
 
 int WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR strCmdLine, INT)
 {
-    JGC::MainSystem::initialize("Ogre.cfg","Plugins.cfg","../Media/Resources.cfg","Ogre.log", "MyGUI.log");
+    JGC::MainSystem::initialize("Ogre.cfg", "Plugins.cfg", "../Media/Resources.cfg", "Ogre.log", "MyGUI.log");
+
+    SplashScreenWorld *xSplashScreenWorld;
+    xSplashScreenWorld = new SplashScreenWorld("SplashScreenWorld");
+    JGC::WorldsSystem::instance()->addWorld(xSplashScreenWorld);
 
     MainMenuWorld *xMainMenuWorld;
     xMainMenuWorld = new MainMenuWorld("MainMenuWorld");
     JGC::WorldsSystem::instance()->addWorld(xMainMenuWorld);
-    JGC::WorldsSystem::instance()->setActiveWorld("MainMenuWorld");
+
+    AboutGameWorld *xAboutGameWorld;
+    xAboutGameWorld = new AboutGameWorld("AboutGameWorld");
+    JGC::WorldsSystem::instance()->addWorld(xAboutGameWorld);
 
     PlayWorld *xPlayWorld;
     xPlayWorld = new PlayWorld("PlayWorld");
@@ -29,8 +38,21 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR strCmdLine, INT)
     xWinWorld = new WinWorld("WinWorld");
     JGC::WorldsSystem::instance()->addWorld(xWinWorld);
 
-	JGC::MainSystem::instance()->run();
-	JGC::MainSystem::shutdown();
+    JGC::WorldsSystem::instance()->setActiveWorld("SplashScreenWorld");
+    JGC::MainSystem::instance()->run();
 
-	return 0;
+    JGC::WorldsSystem::instance()->removeWorld("MainMenuWorld");
+    delete xMainMenuWorld;
+    JGC::WorldsSystem::instance()->removeWorld("AboutGameWorld");
+    delete xAboutGameWorld;
+    JGC::WorldsSystem::instance()->removeWorld("PlayWorld");
+    delete xPlayWorld;
+    JGC::WorldsSystem::instance()->removeWorld("LoseWorld");
+    delete xLoseWorld;
+    JGC::WorldsSystem::instance()->removeWorld("WinWorld");
+    delete xWinWorld;
+
+    JGC::MainSystem::shutdown();
+
+    return 0;
 }

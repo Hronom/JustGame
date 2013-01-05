@@ -8,41 +8,73 @@
 LoseWorld::LoseWorld(QString xWorldName):World(xWorldName)
 {
     this->addComponentToNode<LoseMenuCom>(Nodes::LoseMenuNode);
-
-    JGC::GraphicSystem::instance()->createSceneManager(this->getName());
-
-    LoseMenuSys *xLoseMenuSys;
-    xLoseMenuSys = new LoseMenuSys();
-    this->addSystem(1, xLoseMenuSys);
 }
 
 LoseWorld::~LoseWorld()
 {
-    LoseMenuCom *xLoseMenuCom;
-    xLoseMenuCom = this->getEntity("LoseMenuEntity")->getComponent<LoseMenuCom>();
-    dLoseMenuCom(xLoseMenuCom);
+    this->removeComponentFromNode<LoseMenuCom>(Nodes::LoseMenuNode);
 }
 
 void LoseWorld::enter()
 {
+    {
+        JGC::GraphicSystem::instance()->createSceneManager(this->getName());
+    }
+
+    {
+        LoseMenuCom *xLoseMenuCom = cLoseMenuCom();
+        this->addComponent("LoseMenuEntity", xLoseMenuCom);
+    }
+
+    {
+        LoseMenuSys *xLoseMenuSys;
+        xLoseMenuSys = new LoseMenuSys();
+        this->addSystem(1, xLoseMenuSys);
+    }
+
     JGC::GraphicSystem::instance()->setActiveSceneManager(this->getName());
-
-    LoseMenuCom *xLoseMenuCom = cLoseMenuCom();
-    this->addComponent("LoseMenuEntity", xLoseMenuCom);
-
     this->setWorldActive(true);
 }
 
 void LoseWorld::exit()
 {
-    QVector<JGC::Entity*> xLoseMenuEntitys;
-    xLoseMenuEntitys = this->getEntitysInNode(Nodes::LoseMenuNode);
+    // Delete systems
+    {
+        QList<JGC::ISystem*> xSystems;
+        xSystems = this->getAllSystems();
+        while(!xSystems.empty())
+        {
+            JGC::ISystem *xSystem;
+            xSystem = xSystems.takeFirst();
+            this->removeSystem(xSystem);
+            delete xSystem;
+        }
+    }
 
-    LoseMenuCom *xLoseMenuCom;
-    xLoseMenuCom = xLoseMenuEntitys.at(0)->getComponent<LoseMenuCom>();
+    // Delete entitys
+    {
+        QList<JGC::Entity*> xEntitys;
+        xEntitys = this->getAllEntitys();
+        while(!xEntitys.empty())
+        {
+            JGC::Entity *xEntity;
+            xEntity = xEntitys.takeFirst();
 
-    this->removeComponent("LoseMenuEntity", xLoseMenuCom);
-    LoseWorld::dLoseMenuCom(xLoseMenuCom);
+            LoseMenuCom *xLoseMenuCom;
+            xLoseMenuCom = xEntity->getComponent<LoseMenuCom>();
+            if(xLoseMenuCom != NULL)
+            {
+                dLoseMenuCom(xLoseMenuCom);
+                this->removeComponent(xEntity->getName(), xLoseMenuCom);
+            }
+
+            this->removeEntity(xEntity->getName());
+        }
+    }
+
+    {
+        JGC::GraphicSystem::instance()->deleteSceneManager(this->getName());
+    }
 
     this->setWorldActive(false);
 }

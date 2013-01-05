@@ -3,6 +3,7 @@
 #include "systems/PlayerControlSys.h"
 #include "systems/AIControlSys.h"
 #include "systems/PhysGraphSyncSys.h"
+#include "systems/PhysSoundSyncSys.h"
 #include "systems/PlayerCameraSyncSys.h"
 #include "systems/BulletsSys.h"
 #include "systems/DamageSys.h"
@@ -12,6 +13,7 @@
 #include "systems/PlayerWinLoseSys.h"
 
 #include <GraphicSystem.h>
+#include <SoundSystem.h>
 #include <PhysicsSystem.h>
 #include <Utils.h>
 
@@ -20,17 +22,25 @@ unsigned int PlayWorld::mEnemysCount = 0;
 PlayWorld::PlayWorld(QString xWorldName):World(xWorldName)
 {
     this->addComponentToNode<GraphBodyCom>(Nodes::PlayerControlNode);
+    this->addComponentToNode<SoundBodyCom>(Nodes::PlayerControlNode);
     this->addComponentToNode<PhysBodyCom>(Nodes::PlayerControlNode);
     this->addComponentToNode<WeaponCom>(Nodes::PlayerControlNode);
     this->addComponentToNode<PlayerControllableCom>(Nodes::PlayerControlNode);
 
     this->addComponentToNode<GraphBodyCom>(Nodes::AIControlNode);
+    this->addComponentToNode<SoundBodyCom>(Nodes::AIControlNode);
     this->addComponentToNode<PhysBodyCom>(Nodes::AIControlNode);
     this->addComponentToNode<WeaponCom>(Nodes::AIControlNode);
     this->addComponentToNode<AIControllableCom>(Nodes::AIControlNode);
 
     this->addComponentToNode<GraphBodyCom>(Nodes::PhysGraphSyncNode);
     this->addComponentToNode<PhysBodyCom>(Nodes::PhysGraphSyncNode);
+
+    this->addComponentToNode<SoundBodyCom>(Nodes::PhysSoundSyncNode);
+    this->addComponentToNode<PhysBodyCom>(Nodes::PhysSoundSyncNode);
+
+    this->addComponentToNode<SoundListenerCom>(Nodes::PhysSoundListenerSyncNode);
+    this->addComponentToNode<PhysBodyCom>(Nodes::PhysSoundListenerSyncNode);
 
     this->addComponentToNode<GraphBodyCom>(Nodes::PlayerCameraSyncNode);
     this->addComponentToNode<CameraTrackableCom>(Nodes::PlayerCameraSyncNode);
@@ -57,7 +67,48 @@ PlayWorld::PlayWorld(QString xWorldName):World(xWorldName)
 
 PlayWorld::~PlayWorld()
 {
+    this->removeComponentFromNode<GraphBodyCom>(Nodes::PlayerControlNode);
+    this->removeComponentFromNode<SoundBodyCom>(Nodes::PlayerControlNode);
+    this->removeComponentFromNode<PhysBodyCom>(Nodes::PlayerControlNode);
+    this->removeComponentFromNode<WeaponCom>(Nodes::PlayerControlNode);
+    this->removeComponentFromNode<PlayerControllableCom>(Nodes::PlayerControlNode);
 
+    this->removeComponentFromNode<GraphBodyCom>(Nodes::AIControlNode);
+    this->removeComponentFromNode<SoundBodyCom>(Nodes::AIControlNode);
+    this->removeComponentFromNode<PhysBodyCom>(Nodes::AIControlNode);
+    this->removeComponentFromNode<WeaponCom>(Nodes::AIControlNode);
+    this->removeComponentFromNode<AIControllableCom>(Nodes::AIControlNode);
+
+    this->removeComponentFromNode<GraphBodyCom>(Nodes::PhysGraphSyncNode);
+    this->removeComponentFromNode<PhysBodyCom>(Nodes::PhysGraphSyncNode);
+
+    this->removeComponentFromNode<SoundBodyCom>(Nodes::PhysSoundSyncNode);
+    this->removeComponentFromNode<PhysBodyCom>(Nodes::PhysSoundSyncNode);
+
+    this->removeComponentFromNode<SoundListenerCom>(Nodes::PhysSoundListenerSyncNode);
+    this->removeComponentFromNode<PhysBodyCom>(Nodes::PhysSoundListenerSyncNode);
+
+    this->removeComponentFromNode<GraphBodyCom>(Nodes::PlayerCameraSyncNode);
+    this->removeComponentFromNode<CameraTrackableCom>(Nodes::PlayerCameraSyncNode);
+
+    this->removeComponentFromNode<BulletCom>(Nodes::BulletsNode);
+    this->removeComponentFromNode<GraphBodyCom>(Nodes::BulletsNode);
+    this->removeComponentFromNode<PhysBodyCom>(Nodes::BulletsNode);
+
+    this->removeComponentFromNode<BulletCom>(Nodes::DoDamageNode);
+    this->removeComponentFromNode<PhysBodyCom>(Nodes::DoDamageNode);
+
+    this->removeComponentFromNode<HealthCom>(Nodes::DamageableNode);
+    this->removeComponentFromNode<PhysBodyCom>(Nodes::DamageableNode);
+
+    this->removeComponentFromNode<HealthCom>(Nodes::PlayerStatNode);
+    this->removeComponentFromNode<PlayerControllableCom>(Nodes::PlayerStatNode);
+
+    this->removeComponentFromNode<HealthCom>(Nodes::EnemyStatNode);
+    this->removeComponentFromNode<AIControllableCom>(Nodes::EnemyStatNode);
+    this->removeComponentFromNode<PhysBodyCom>(Nodes::EnemyStatNode);
+
+    this->removeComponentFromNode<PlayerUICom>(Nodes::GameGUINode);
 }
 
 void PlayWorld::enter()
@@ -76,6 +127,12 @@ void PlayWorld::enter()
         {
             GraphBodyCom* xGraphBodyCom = cPlayerGraphBodyCom("PlayWorld", "PlayerGraphBody");
             this->addComponent("Player", xGraphBodyCom);
+
+            SoundBodyCom* xSoundBodyCom = cWeaponSoundBodyCom();
+            this->addComponent("Player", xSoundBodyCom);
+
+            SoundListenerCom* xSoundListenerCom = cSoundListenerCom();
+            this->addComponent("Player", xSoundListenerCom);
 
             PhysBodyCom* xPhysBodyCom = cPlayerPhysBodyCom("PlayWorld");
             this->addComponent("Player", xPhysBodyCom);
@@ -100,6 +157,9 @@ void PlayWorld::enter()
 
             GraphBodyCom* xGraphBodyCom = cEnemyGraphBodyCom("PlayWorld", "EnemyGraphBody", Ogre::Vector3(13,13,0));
             this->addComponent("Enemy", xGraphBodyCom);
+
+            SoundBodyCom* xSoundBodyCom = cWeaponSoundBodyCom();
+            this->addComponent("Enemy", xSoundBodyCom);
 
             PhysBodyCom* xPhysBodyCom = cEnemyPhysBodyCom("PlayWorld", btVector3(13,13,0));
             this->addComponent("Enemy", xPhysBodyCom);
@@ -153,13 +213,17 @@ void PlayWorld::enter()
         xPhysGraphSyncSys = new PhysGraphSyncSys();
         this->addSystem(8, xPhysGraphSyncSys);
 
+        PhysSoundSyncSys *xPhysSoundSyncSys;
+        xPhysSoundSyncSys = new PhysSoundSyncSys();
+        this->addSystem(9, xPhysSoundSyncSys);
+
         PlayerCameraSyncSys *xPlayerCameraSyncSys;
         xPlayerCameraSyncSys = new PlayerCameraSyncSys();
-        this->addSystem(9, xPlayerCameraSyncSys);
+        this->addSystem(10, xPlayerCameraSyncSys);
 
         PlayerGUISys *xPlayerGUISys;
         xPlayerGUISys = new PlayerGUISys();
-        this->addSystem(10, xPlayerGUISys);
+        this->addSystem(11, xPlayerGUISys);
     }
 
     JGC::GraphicSystem::instance()->setActiveSceneManager(this->getName());
@@ -170,6 +234,111 @@ void PlayWorld::enter()
 
 void PlayWorld::exit()
 {
+    // Delete systems
+    {
+        QList<JGC::ISystem*> xSystems;
+        xSystems = this->getAllSystems();
+        while(!xSystems.empty())
+        {
+            JGC::ISystem *xSystem;
+            xSystem = xSystems.takeFirst();
+            this->removeSystem(xSystem);
+            delete xSystem;
+        }
+    }
+
+    // Delete entitys
+    {
+        QList<JGC::Entity*> xEntitys;
+        xEntitys = this->getAllEntitys();
+        while(!xEntitys.empty())
+        {
+            JGC::Entity *xEntity;
+            xEntity = xEntitys.takeFirst();
+
+            GraphBodyCom* xGraphBodyCom;
+            xGraphBodyCom = xEntity->getComponent<GraphBodyCom>();
+            if(xGraphBodyCom != NULL)
+            {
+                dGraphBodyCom(this->getName(), xGraphBodyCom);
+                this->removeComponent(xEntity->getName(), xGraphBodyCom);
+            }
+
+            SoundBodyCom* xSoundBodyCom;
+            xSoundBodyCom = xEntity->getComponent<SoundBodyCom>();
+            if(xSoundBodyCom != NULL)
+            {
+                dWeaponSoundBodyCom(xSoundBodyCom);
+                this->removeComponent(xEntity->getName(), xSoundBodyCom);
+            }
+
+            SoundListenerCom* xSoundListenerCom;
+            xSoundListenerCom = xEntity->getComponent<SoundListenerCom>();
+            if(xSoundListenerCom != NULL)
+            {
+                dSoundListenerCom(xSoundListenerCom);
+                this->removeComponent(xEntity->getName(), xSoundListenerCom);
+            }
+
+            PhysBodyCom* xPhysBodyCom;
+            xPhysBodyCom = xEntity->getComponent<PhysBodyCom>();
+            if(xPhysBodyCom != NULL)
+            {
+                dPhysBodyCom(this->getName(), xPhysBodyCom);
+                this->removeComponent(xEntity->getName(), xPhysBodyCom);
+            }
+
+            PlayerControllableCom* xPlayerControllableCom;
+            xPlayerControllableCom = xEntity->getComponent<PlayerControllableCom>();
+            if(xPlayerControllableCom != NULL)
+            {
+                this->removeComponent(xEntity->getName(), xPlayerControllableCom);
+            }
+
+            CameraTrackableCom* xCameraTrackableCom;
+            xCameraTrackableCom = xEntity->getComponent<CameraTrackableCom>();
+            if(xCameraTrackableCom != NULL)
+            {
+                //dCameraTrackableCom(this->getName(), xCameraTrackableCom);
+                this->removeComponent(xEntity->getName(), xCameraTrackableCom);
+            }
+
+            WeaponCom* xWeaponCom;
+            xWeaponCom = xEntity->getComponent<WeaponCom>();
+            if(xWeaponCom != NULL)
+            {
+                //dWeaponCom(xWeaponCom);
+                this->removeComponent(xEntity->getName(), xWeaponCom);
+            }
+
+            HealthCom* xHealthCom;
+            xHealthCom = xEntity->getComponent<HealthCom>();
+            if(xHealthCom != NULL)
+            {
+                //dHea(xHealthCom);
+                this->removeComponent(xEntity->getName(), xHealthCom);
+            }
+
+            AIControllableCom* xAIControllableCom;
+            xAIControllableCom = xEntity->getComponent<AIControllableCom>();
+            if(xAIControllableCom != NULL)
+            {
+                //dAI(xAIControllableCom);
+                this->removeComponent(xEntity->getName(), xAIControllableCom);
+            }
+
+            PlayerUICom* xPlayerUICom;
+            xPlayerUICom = xEntity->getComponent<PlayerUICom>();
+            if(xPlayerUICom != NULL)
+            {
+                dPlayerUICom(xPlayerUICom);
+                this->removeComponent(xEntity->getName(), xPlayerUICom);
+            }
+
+            this->removeEntity(xEntity->getName());
+        }
+    }
+
     {
         JGC::GraphicSystem::instance()->deleteSceneManager(this->getName());
         JGC::PhysicsSystem::instance()->deleteDynamicsWorld(this->getName());
@@ -499,14 +668,40 @@ void PlayWorld::dPhysBodyCom(QString xDynamicsWorldName, PhysBodyCom* xPhysBodyC
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-SoundBodyCom* PlayWorld::cWeaponComSoundBodyCom(short xObjectCollideWith, btVector3 xPosition, btQuaternion xOrientation)
+SoundBodyCom* PlayWorld::cWeaponSoundBodyCom()
 {
+    JGC::SoundSource *xSoundSource = JGC::SoundSystem::instance()->createSoundSource(0, 0, 0, "../Media/Sound/impulse.wav", false);
 
+    // create component
+    SoundBodyCom* xSoundBodyCom;
+    xSoundBodyCom = new SoundBodyCom();
+    xSoundBodyCom->mSoundSource = xSoundSource;
+
+    return xSoundBodyCom;
 }
 
-void PlayWorld::dSoundBodyCom(SoundBodyCom* xSoundBodyCom)
+void PlayWorld::dWeaponSoundBodyCom(SoundBodyCom* xSoundBodyCom)
 {
+    JGC::SoundSystem::instance()->destroySoundSource(xSoundBodyCom->mSoundSource);
+}
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+SoundListenerCom* PlayWorld::cSoundListenerCom()
+{
+    JGC::SoundListener *xSoundListener = JGC::SoundSystem::instance()->getSoundListener();
+
+    // create component
+    SoundListenerCom* xSoundListenerCom;
+    xSoundListenerCom = new SoundListenerCom();
+    xSoundListenerCom->mSoundListener = xSoundListener;
+
+    return xSoundListenerCom;
+}
+
+void PlayWorld::dSoundListenerCom(SoundListenerCom* xSoundListenerCom)
+{
+    //JGC::SoundSystem::instance()->destroySoundSource(xSoundBodyCom->mSoundSource);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -523,11 +718,6 @@ CameraTrackableCom* PlayWorld::cCameraTrackableCom(QString xSceneManagerName, QS
     xCameraTrackableCom->mCamera = xCamera;
 
     return xCameraTrackableCom;
-}
-
-void PlayWorld::dCameraTrackableCom(QString xSceneManagerName)
-{
-
 }
 
 HealthCom* PlayWorld::cHealthCom(qint32 xHealthComCurrent, qint32 xHealthComTotal)
@@ -614,4 +804,14 @@ PlayerUICom* PlayWorld::cPlayerUICom()
     xPlayerUICom->mEnemyHealthBar = xEnemyHealthBar;
 
     return xPlayerUICom;
+}
+
+void PlayWorld::dPlayerUICom(PlayerUICom* xPlayerUICom)
+{
+    MyGUI::PointerManager::getInstancePtr()->setPointer("Arrow");
+    if(xPlayerUICom->mLayoutWidgets.size() != 0)
+    {
+        MyGUI::LayoutManager::getInstancePtr()->unloadLayout(xPlayerUICom->mLayoutWidgets);
+        xPlayerUICom->mLayoutWidgets.clear();
+    }
 }

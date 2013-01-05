@@ -128,9 +128,10 @@ void PlayerControlSys::injectUpdate(const float &xTimeSinceLastUpdate)
                 PhysBodyCom* xPhysBodyCom = PlayWorld::cBulletPhysBodyCom("PlayWorld", ENEMY_GROUP, JGC::Utils::toBtVector3(xPosObject), JGC::Utils::toBtQuaternion(xGraphBodyCom->mSceneNode->getOrientation()));
                 JGC::WorldsSystem::instance()->getActiveWorld()->addComponent(xBulletName, xPhysBodyCom);
 
-                //mGameObjectsListener->addBullet(ENEMY_GROUP, xPos, xDestinationDot);
-                //mSoundSource->move(xPosObject.x,xPosObject.y,xPosObject.z);
-                //mSoundSource->play();
+                SoundBodyCom *xSoundBodyCom;
+                xSoundBodyCom = xEntitys.at(i)->getComponent<SoundBodyCom>();
+                xSoundBodyCom->mSoundSource->play();
+
                 xWeaponCom->mTimeSinceLastShot = 0;
             }
             else if(xWeaponCom->mTimeSinceLastShot < xWeaponCom->mShootDelay)

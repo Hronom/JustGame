@@ -25,6 +25,12 @@ void MainMenuSys::injectUpdate(const float &xTimeSinceLastUpdate)
             return;
         }
 
+        if(xMainMenuCom->mAboutProgram->isButtonPressed())
+        {
+            JGC::WorldsSystem::instance()->setActiveWorld("AboutGameWorld");
+            return;
+        }
+
         if(xMainMenuCom->mExitButton->isButtonPressed())
         {
             JGC::MainSystem::instance()->needShutdown();

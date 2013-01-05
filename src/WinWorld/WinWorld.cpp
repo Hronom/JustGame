@@ -12,9 +12,7 @@ WinWorld::WinWorld(QString xWorldName):World(xWorldName)
 
 WinWorld::~WinWorld()
 {
-    WinMenuCom *xWinMenuCom;
-    xWinMenuCom = this->getEntity("WinMenuEntity")->getComponent<WinMenuCom>();
-    dWinMenuCom(xWinMenuCom);
+    this->removeComponentFromNode<WinMenuCom>(Nodes::WinMenuNode);
 }
 
 void WinWorld::enter()
@@ -40,14 +38,43 @@ void WinWorld::enter()
 
 void WinWorld::exit()
 {
-    QVector<JGC::Entity*> xWinMenuEntitys;
-    xWinMenuEntitys = this->getEntitysInNode(Nodes::WinMenuNode);
+    // Delete systems
+    {
+        QList<JGC::ISystem*> xSystems;
+        xSystems = this->getAllSystems();
+        while(!xSystems.empty())
+        {
+            JGC::ISystem *xSystem;
+            xSystem = xSystems.takeFirst();
+            this->removeSystem(xSystem);
+            delete xSystem;
+        }
+    }
 
-    WinMenuCom *xWinMenuCom;
-    xWinMenuCom = xWinMenuEntitys.at(0)->getComponent<WinMenuCom>();
+    // Delete entitys
+    {
+        QList<JGC::Entity*> xEntitys;
+        xEntitys = this->getAllEntitys();
+        while(!xEntitys.empty())
+        {
+            JGC::Entity *xEntity;
+            xEntity = xEntitys.takeFirst();
 
-    this->removeComponent("WinMenuEntity", xWinMenuCom);
-    WinWorld::dWinMenuCom(xWinMenuCom);
+            WinMenuCom *xWinMenuCom;
+            xWinMenuCom = xEntity->getComponent<WinMenuCom>();
+            if(xWinMenuCom != NULL)
+            {
+                dWinMenuCom(xWinMenuCom);
+                this->removeComponent(xEntity->getName(), xWinMenuCom);
+            }
+
+            this->removeEntity(xEntity->getName());
+        }
+    }
+
+    {
+        JGC::GraphicSystem::instance()->deleteSceneManager(this->getName());
+    }
 
     this->setWorldActive(false);
 }

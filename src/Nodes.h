@@ -8,6 +8,8 @@ namespace Nodes
         PlayerControlNode,
         AIControlNode,
         PhysGraphSyncNode,
+        PhysSoundSyncNode,
+        PhysSoundListenerSyncNode,
         PlayerCameraSyncNode,
         BulletsNode,
         DoDamageNode,
@@ -16,6 +18,7 @@ namespace Nodes
         EnemyStatNode,
         GameGUINode,
         MainMenuNode,
+        AboutGameNode,
         LoseMenuNode,
         WinMenuNode
     };
