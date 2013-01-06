@@ -36,8 +36,9 @@ void EnemyDeathSys::injectUpdate(const float &xTimeSinceLastUpdate)
             PlayWorld::dGraphBodyCom("PlayWorld", xGraphBodyCom);
             PlayWorld::dPhysBodyCom("PlayWorld", xPhysBodyCom);
 
-            xEntitys.remove(i);
-            qDebug()<<"Enemy removed";
+            JGC::CountersSystem::instance()->removeName("EnemyCount", xEntitys.at(i)->getName());
+            xEntitys.remove(i);            
+            //qDebug()<<"Enemy removed";
         }
     }
 }

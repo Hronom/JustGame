@@ -7,6 +7,7 @@ class PlayerControlSys: public JGC::ISystem
 {
 public:
     PlayerControlSys();
+    ~PlayerControlSys();
 
     void injectUpdate(const float &xTimeSinceLastUpdate);
 };

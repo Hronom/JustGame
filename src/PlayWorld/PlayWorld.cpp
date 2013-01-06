@@ -9,6 +9,7 @@
 #include "systems/DamageSys.h"
 #include "systems/PlayerGUISys.h"
 #include "systems/EnemyDeathSys.h"
+#include "systems/EnemySpawner.h"
 #include "systems/PlayerDeathSys.h"
 #include "systems/PlayerWinLoseSys.h"
 
@@ -181,6 +182,10 @@ void PlayWorld::enter()
 
     // Make systems
     {
+        EnemySpawner *xEnemySpawner;
+        xEnemySpawner = new EnemySpawner();
+        this->addSystem(0, xEnemySpawner);
+
         PlayerControlSys *xPlayerControlSys;
         xPlayerControlSys = new PlayerControlSys();
         this->addSystem(1, xPlayerControlSys);

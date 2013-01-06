@@ -35,6 +35,7 @@ set(HEADERS
 ./src/PlayWorld/components/PlayerUICom.h
 ./src/PlayWorld/systems/PlayerWinLoseSys.h
 ./src/PlayWorld/systems/EnemyDeathSys.h
+./src/PlayWorld/systems/EnemySpawner.h
 ./src/PlayWorld/systems/PlayerDeathSys.h
 ./src/PlayWorld/systems/BulletsSys.h
 ./src/PlayWorld/systems/PlayerControlSys.h
@@ -70,6 +71,7 @@ set(SOURCES
 ./src/PlayWorld/PlayWorld.cpp
 ./src/PlayWorld/systems/PlayerWinLoseSys.cpp
 ./src/PlayWorld/systems/EnemyDeathSys.cpp
+./src/PlayWorld/systems/EnemySpawner.cpp
 ./src/PlayWorld/systems/PlayerDeathSys.cpp
 ./src/PlayWorld/systems/BulletsSys.cpp
 ./src/PlayWorld/systems/PlayerControlSys.cpp

@@ -17,6 +17,11 @@ AIControlSys::AIControlSys()
     JGC::CountersSystem::instance()->addCounter("BulletsCount");
 }
 
+AIControlSys::~AIControlSys()
+{
+    JGC::CountersSystem::instance()->removeCounter("BulletsCount");
+}
+
 void AIControlSys::injectUpdate(const float &xTimeSinceLastUpdate)
 {
     btVector3 xPlayerPos;
@@ -123,7 +128,7 @@ void AIControlSys::injectUpdate(const float &xTimeSinceLastUpdate)
             xWeaponCom = xEnemysEntitys.at(i)->getComponent<WeaponCom>();
 
             if(xWeaponCom->mTimeSinceLastShot >= xWeaponCom->mShootDelay)
-            {                
+            {
                 QString xBulletName;
                 xBulletName = JGC::CountersSystem::instance()->getNameWithSuffix("BulletsCount", "EnemyBullet");
 

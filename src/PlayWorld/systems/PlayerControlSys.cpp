@@ -17,9 +17,17 @@ PlayerControlSys::PlayerControlSys()
     JGC::CountersSystem::instance()->addCounter("BulletsCount");
 }
 
+PlayerControlSys::~PlayerControlSys()
+{
+    JGC::CountersSystem::instance()->removeCounter("BulletsCount");
+}
+
 void PlayerControlSys::injectUpdate(const float &xTimeSinceLastUpdate)
 {
     Ogre::Vector3 xMoveDirection = Ogre::Vector3::ZERO;
+
+    if(JGC::InputSystem::instance()->isKeyDown(OIS::KC_ESCAPE))
+        JGC::WorldsSystem::instance()->setActiveWorld("MainMenuWorld");
 
     if(JGC::InputSystem::instance()->isKeyDown(OIS::KC_W))
         xMoveDirection.x = 1;
@@ -88,7 +96,7 @@ void PlayerControlSys::injectUpdate(const float &xTimeSinceLastUpdate)
         // Move
         {
             // Get Ogre::SceneNode orientation
-            btScalar xMoveSpeed = 17;
+            btScalar xMoveSpeed = 33;
             Ogre::Real xMove = xMoveSpeed * xTimeSinceLastUpdate;
             Ogre::Vector3 xVector;
             xVector = xMoveDirection * xMove;
