@@ -10,37 +10,44 @@
 
 void BulletsSys::injectUpdate(const float &xTimeSinceLastUpdate)
 {
-    QVector<JGC::Entity*> xEntitys;
+    QList<JGC::Entity*> xEntitys;
     xEntitys = JGC::WorldsSystem::instance()->getActiveWorld()->getEntitysInNode(Nodes::BulletsNode);
 
-    for(int i = 0; i < xEntitys.size(); ++i)
+    QList<JGC::Entity*>::Iterator xEntitysIter;
+    xEntitysIter = xEntitys.begin();
+    while(xEntitysIter != xEntitys.end())
     {
+        JGC::Entity *xEntity;
+        xEntity = (*xEntitysIter);
+
         BulletCom *xBulletCom;
-        xBulletCom = xEntitys.at(i)->getComponent<BulletCom>();
+        xBulletCom = xEntity->getComponent<BulletCom>();
 
         if(xBulletCom->mLiveTime >= xBulletCom->mTotalLiveTime || xBulletCom->mDamageCount == 0)
         {
-            JGC::WorldsSystem::instance()->getActiveWorld()->removeComponent(xEntitys.at(i)->getName(), xBulletCom);
+            JGC::WorldsSystem::instance()->getActiveWorld()->removeComponent(xEntity->getName(), xBulletCom);
 
             GraphBodyCom *xGraphBodyCom;
-            xGraphBodyCom = xEntitys.at(i)->getComponent<GraphBodyCom>();
-            JGC::WorldsSystem::instance()->getActiveWorld()->removeComponent(xEntitys.at(i)->getName(), xGraphBodyCom);
+            xGraphBodyCom = xEntity->getComponent<GraphBodyCom>();
+            JGC::WorldsSystem::instance()->getActiveWorld()->removeComponent(xEntity->getName(), xGraphBodyCom);
 
             PhysBodyCom *xPhysBodyCom;
-            xPhysBodyCom = xEntitys.at(i)->getComponent<PhysBodyCom>();
-            JGC::WorldsSystem::instance()->getActiveWorld()->removeComponent(xEntitys.at(i)->getName(), xPhysBodyCom);
+            xPhysBodyCom = xEntity->getComponent<PhysBodyCom>();
+            JGC::WorldsSystem::instance()->getActiveWorld()->removeComponent(xEntity->getName(), xPhysBodyCom);
 
-            JGC::WorldsSystem::instance()->getActiveWorld()->removeEntity(xEntitys.at(i)->getName());
+            JGC::WorldsSystem::instance()->getActiveWorld()->removeEntity(xEntity->getName());
 
             PlayWorld::dGraphBodyCom("PlayWorld", xGraphBodyCom);
             PlayWorld::dPhysBodyCom("PlayWorld", xPhysBodyCom);
             PlayWorld::dBulletCom(xBulletCom);
 
-            JGC::CountersSystem::instance()->removeName("BulletsCount", xEntitys.at(i)->getName());
+            JGC::CountersSystem::instance()->removeName("BulletsCount", xEntity->getName());
         }
         else
         {
             xBulletCom->mLiveTime += xTimeSinceLastUpdate;
         }
+
+        ++xEntitysIter;
     }
 }

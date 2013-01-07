@@ -11,33 +11,46 @@
 
 void PhysSoundSyncSys::injectUpdate(const float &xTimeSinceLastUpdate)
 {
-    QVector<JGC::Entity*> xEntitys;
+    QList<JGC::Entity*> xEntitys;
 
     xEntitys = JGC::WorldsSystem::instance()->getActiveWorld()->getEntitysInNode(Nodes::PhysSoundSyncNode);
-    for(int i = 0; i < xEntitys.size(); ++i)
+    QList<JGC::Entity*>::Iterator xEntitysIter;
+    xEntitysIter = xEntitys.begin();
+    while(xEntitysIter != xEntitys.end())
     {
+        JGC::Entity *xEntity;
+        xEntity = (*xEntitysIter);
+
         SoundBodyCom *xSoundBodyCom;
-        xSoundBodyCom = xEntitys.at(i)->getComponent<SoundBodyCom>();
+        xSoundBodyCom = xEntity->getComponent<SoundBodyCom>();
 
         PhysBodyCom *xPhysBodyCom;
-        xPhysBodyCom = xEntitys.at(i)->getComponent<PhysBodyCom>();
+        xPhysBodyCom = xEntity->getComponent<PhysBodyCom>();
 
         const btTransform &xWorldTrans = xPhysBodyCom->mRigidBody->getWorldTransform();
         btVector3 xPos = xWorldTrans.getOrigin();
         xSoundBodyCom->mSoundSource->move(xPos.x(), xPos.y(), xPos.z());
+
+        ++xEntitysIter;
     }
 
     xEntitys = JGC::WorldsSystem::instance()->getActiveWorld()->getEntitysInNode(Nodes::PhysSoundListenerSyncNode);
-    for(int i = 0; i < xEntitys.size(); ++i)
+    xEntitysIter = xEntitys.begin();
+    while(xEntitysIter != xEntitys.end())
     {
+        JGC::Entity *xEntity;
+        xEntity = (*xEntitysIter);
+
         SoundListenerCom *xSoundListenerCom;
-        xSoundListenerCom = xEntitys.at(i)->getComponent<SoundListenerCom>();
+        xSoundListenerCom = xEntity->getComponent<SoundListenerCom>();
 
         PhysBodyCom *xPhysBodyCom;
-        xPhysBodyCom = xEntitys.at(i)->getComponent<PhysBodyCom>();
+        xPhysBodyCom = xEntity->getComponent<PhysBodyCom>();
 
         const btTransform &xWorldTrans = xPhysBodyCom->mRigidBody->getWorldTransform();
         btVector3 xPos = xWorldTrans.getOrigin();
         xSoundListenerCom->mSoundListener->move(xPos.x(), xPos.y(), xPos.z());
+
+        ++xEntitysIter;
     }
 }

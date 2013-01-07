@@ -29,13 +29,13 @@ void AIControlSys::injectUpdate(const float &xTimeSinceLastUpdate)
 
     // Get player pos
     {
-        QVector<JGC::Entity*> xPlayersEntitys;
+        QList<JGC::Entity*> xPlayersEntitys;
         xPlayersEntitys = JGC::WorldsSystem::instance()->getActiveWorld()->getEntitysInNode(Nodes::PlayerControlNode);
 
         if(xPlayersEntitys.size()>0)
         {
             PhysBodyCom *xPlayerPhysBody;
-            xPlayerPhysBody = xPlayersEntitys.at(0)->getComponent<PhysBodyCom>();
+            xPlayerPhysBody = xPlayersEntitys.first()->getComponent<PhysBodyCom>();
 
             xPlayerPos.setX(xPlayerPhysBody->mRigidBody->getWorldTransform().getOrigin().x());
             xPlayerPos.setY(xPlayerPhysBody->mRigidBody->getWorldTransform().getOrigin().y());
@@ -45,22 +45,27 @@ void AIControlSys::injectUpdate(const float &xTimeSinceLastUpdate)
 
 
 
-    QVector<JGC::Entity*> xEnemysEntitys;
-    xEnemysEntitys = JGC::WorldsSystem::instance()->getActiveWorld()->getEntitysInNode(Nodes::AIControlNode);
+    QList<JGC::Entity*> xEntitys;
+    xEntitys = JGC::WorldsSystem::instance()->getActiveWorld()->getEntitysInNode(Nodes::AIControlNode);
 
-    for(int i = 0; i < xEnemysEntitys.size(); ++i)
+    QList<JGC::Entity*>::Iterator xEntitysIter;
+    xEntitysIter = xEntitys.begin();
+    while(xEntitysIter != xEntitys.end())
     {
+        JGC::Entity *xEntity;
+        xEntity = (*xEntitysIter);
+
         HealthCom *xHealthCom;
-        xHealthCom = xEnemysEntitys.at(i)->getComponent<HealthCom>();
+        xHealthCom = xEntity->getComponent<HealthCom>();
 
         GraphBodyCom *xGraphBodyCom;
-        xGraphBodyCom = xEnemysEntitys.at(i)->getComponent<GraphBodyCom>();
+        xGraphBodyCom = xEntity->getComponent<GraphBodyCom>();
 
         Ogre::SceneNode *xSceneNode;
         xSceneNode = xGraphBodyCom->mSceneNode;
 
         PhysBodyCom *xPhysBodyCom;
-        xPhysBodyCom = xEnemysEntitys.at(i)->getComponent<PhysBodyCom>();
+        xPhysBodyCom = xEntity->getComponent<PhysBodyCom>();
 
         btRigidBody *xRigidBody;
         xRigidBody = xPhysBodyCom->mRigidBody;
@@ -125,7 +130,7 @@ void AIControlSys::injectUpdate(const float &xTimeSinceLastUpdate)
         if(xEnemyPos.distance(xPlayerPos) <= 50.0f)
         {
             WeaponCom *xWeaponCom;
-            xWeaponCom = xEnemysEntitys.at(i)->getComponent<WeaponCom>();
+            xWeaponCom = xEntity->getComponent<WeaponCom>();
 
             if(xWeaponCom->mTimeSinceLastShot >= xWeaponCom->mShootDelay)
             {
@@ -145,7 +150,7 @@ void AIControlSys::injectUpdate(const float &xTimeSinceLastUpdate)
                 JGC::WorldsSystem::instance()->getActiveWorld()->addComponent(xBulletName, xPhysBodyCom);
 
                 SoundBodyCom *xSoundBodyCom;
-                xSoundBodyCom = xEnemysEntitys.at(i)->getComponent<SoundBodyCom>();
+                xSoundBodyCom = xEntity->getComponent<SoundBodyCom>();
                 xSoundBodyCom->mSoundSource->play();
 
                 xWeaponCom->mTimeSinceLastShot = 0;
@@ -153,5 +158,7 @@ void AIControlSys::injectUpdate(const float &xTimeSinceLastUpdate)
             else if(xWeaponCom->mTimeSinceLastShot < xWeaponCom->mShootDelay)
                 xWeaponCom->mTimeSinceLastShot += xTimeSinceLastUpdate;
         }
+
+        ++xEntitysIter;
     }
 }

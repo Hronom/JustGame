@@ -45,22 +45,27 @@ void PlayerControlSys::injectUpdate(const float &xTimeSinceLastUpdate)
     if(JGC::InputSystem::instance()->isKeyDown(OIS::MB_Left))
         xShoot = true;
 
-    QVector<JGC::Entity*> xEntitys;
+    QList<JGC::Entity*> xEntitys;
     xEntitys = JGC::WorldsSystem::instance()->getActiveWorld()->getEntitysInNode(Nodes::PlayerControlNode);
 
-    for(int i = 0; i < xEntitys.size(); ++i)
+    QList<JGC::Entity*>::Iterator xEntitysIter;
+    xEntitysIter = xEntitys.begin();
+    while(xEntitysIter != xEntitys.end())
     {
+        JGC::Entity *xEntity;
+        xEntity = (*xEntitysIter);
+
         HealthCom *xHealthCom;
-        xHealthCom = xEntitys.at(i)->getComponent<HealthCom>();
+        xHealthCom = xEntity->getComponent<HealthCom>();
 
         GraphBodyCom *xGraphBodyCom;
-        xGraphBodyCom = xEntitys.at(i)->getComponent<GraphBodyCom>();
+        xGraphBodyCom = xEntity->getComponent<GraphBodyCom>();
 
         Ogre::SceneNode *xSceneNode;
         xSceneNode = xGraphBodyCom->mSceneNode;
 
         PhysBodyCom *xPhysBodyCom;
-        xPhysBodyCom = xEntitys.at(i)->getComponent<PhysBodyCom>();
+        xPhysBodyCom = xEntity->getComponent<PhysBodyCom>();
 
         btRigidBody *xRigidBody;
         xRigidBody = xPhysBodyCom->mRigidBody;
@@ -118,7 +123,7 @@ void PlayerControlSys::injectUpdate(const float &xTimeSinceLastUpdate)
         // Shoot
         {
             WeaponCom *xWeaponCom;
-            xWeaponCom = xEntitys.at(i)->getComponent<WeaponCom>();
+            xWeaponCom = xEntity->getComponent<WeaponCom>();
 
             if(xShoot == true && xWeaponCom->mTimeSinceLastShot >= xWeaponCom->mShootDelay)
             {
@@ -137,7 +142,7 @@ void PlayerControlSys::injectUpdate(const float &xTimeSinceLastUpdate)
                 JGC::WorldsSystem::instance()->getActiveWorld()->addComponent(xBulletName, xPhysBodyCom);
 
                 SoundBodyCom *xSoundBodyCom;
-                xSoundBodyCom = xEntitys.at(i)->getComponent<SoundBodyCom>();
+                xSoundBodyCom = xEntity->getComponent<SoundBodyCom>();
                 xSoundBodyCom->mSoundSource->play();
 
                 xWeaponCom->mTimeSinceLastShot = 0;
@@ -145,5 +150,7 @@ void PlayerControlSys::injectUpdate(const float &xTimeSinceLastUpdate)
             else if(xWeaponCom->mTimeSinceLastShot < xWeaponCom->mShootDelay)
                 xWeaponCom->mTimeSinceLastShot += xTimeSinceLastUpdate;
         }
+
+        ++xEntitysIter;
     }
 }

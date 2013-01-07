@@ -10,33 +10,38 @@
 
 void PlayerDeathSys::injectUpdate(const float &xTimeSinceLastUpdate)
 {
-    QVector<JGC::Entity*> xEntitys;
+    QList<JGC::Entity*> xEntitys;
     xEntitys = JGC::WorldsSystem::instance()->getActiveWorld()->getEntitysInNode(Nodes::PlayerStatNode);
 
     // Remove enemys that have health <= 0
-    for(int i = 0; i < xEntitys.size(); ++i)
+    QList<JGC::Entity*>::Iterator xEntitysIter;
+    xEntitysIter = xEntitys.begin();
+    while(xEntitysIter != xEntitys.end())
     {
+        JGC::Entity *xEntity;
+        xEntity = (*xEntitysIter);
+
         HealthCom *xHealthCom;
-        xHealthCom = xEntitys.at(i)->getComponent<HealthCom>();
+        xHealthCom = xEntity->getComponent<HealthCom>();
 
         if(xHealthCom->mHealthCurrent <= 0)
         {
-            JGC::WorldsSystem::instance()->getActiveWorld()->removeComponent(xEntitys.at(i)->getName(), xHealthCom);
+            JGC::WorldsSystem::instance()->getActiveWorld()->removeComponent(xEntity->getName(), xHealthCom);
 
             GraphBodyCom *xGraphBodyCom;
-            xGraphBodyCom = xEntitys.at(i)->getComponent<GraphBodyCom>();
-            JGC::WorldsSystem::instance()->getActiveWorld()->removeComponent(xEntitys.at(i)->getName(), xGraphBodyCom);
+            xGraphBodyCom = xEntity->getComponent<GraphBodyCom>();
+            JGC::WorldsSystem::instance()->getActiveWorld()->removeComponent(xEntity->getName(), xGraphBodyCom);
 
             PhysBodyCom *xPhysBodyCom;
-            xPhysBodyCom = xEntitys.at(i)->getComponent<PhysBodyCom>();
-            JGC::WorldsSystem::instance()->getActiveWorld()->removeComponent(xEntitys.at(i)->getName(), xPhysBodyCom);
+            xPhysBodyCom = xEntity->getComponent<PhysBodyCom>();
+            JGC::WorldsSystem::instance()->getActiveWorld()->removeComponent(xEntity->getName(), xPhysBodyCom);
 
-            JGC::WorldsSystem::instance()->getActiveWorld()->removeEntity(xEntitys.at(i)->getName());
+            JGC::WorldsSystem::instance()->getActiveWorld()->removeEntity(xEntity->getName());
 
             PlayWorld::dGraphBodyCom("PlayWorld", xGraphBodyCom);
             PlayWorld::dPhysBodyCom("PlayWorld", xPhysBodyCom);
-
-            xEntitys.remove(i);
         }
+
+        ++xEntitysIter;
     }
 }

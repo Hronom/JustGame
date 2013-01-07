@@ -11,13 +11,13 @@
 
 void WinMenuSys::injectUpdate(const float &xTimeSinceLastUpdate)
 {
-    QVector<JGC::Entity*> xWinMenuEntitys;
+    QList<JGC::Entity*> xWinMenuEntitys;
     xWinMenuEntitys = JGC::WorldsSystem::instance()->getActiveWorld()->getEntitysInNode(Nodes::WinMenuNode);
 
     if(xWinMenuEntitys.size() > 0)
     {
         WinMenuCom *xWinMenuCom;
-        xWinMenuCom = xWinMenuEntitys.at(0)->getComponent<WinMenuCom>();
+        xWinMenuCom = xWinMenuEntitys.first()->getComponent<WinMenuCom>();
 
         if(xWinMenuCom->mWinOkButton->isButtonPressed())               
             JGC::WorldsSystem::instance()->setActiveWorld("MainMenuWorld");

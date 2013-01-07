@@ -12,7 +12,7 @@ void PlayerWinLoseSys::injectUpdate(const float &xTimeSinceLastUpdate)
 {
     // Check is player win game
     {
-        QVector<JGC::Entity*> xEntitys;
+        QList<JGC::Entity*> xEntitys;
         xEntitys = JGC::WorldsSystem::instance()->getActiveWorld()->getEntitysInNode(Nodes::EnemyStatNode);
 
         if(xEntitys.size() == 0)
@@ -24,7 +24,7 @@ void PlayerWinLoseSys::injectUpdate(const float &xTimeSinceLastUpdate)
 
     // Check is enemy lose game
     {
-        QVector<JGC::Entity*> xEntitys;
+        QList<JGC::Entity*> xEntitys;
         xEntitys = JGC::WorldsSystem::instance()->getActiveWorld()->getEntitysInNode(Nodes::PlayerStatNode);
 
         if(xEntitys.size() == 0)

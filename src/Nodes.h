@@ -1,5 +1,5 @@
-#ifndef LIBRARY_H
-#define LIBRARY_H
+#ifndef NODES_H
+#define NODES_H
 
 namespace Nodes
 {

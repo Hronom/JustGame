@@ -11,13 +11,13 @@
 
 void AboutGameSys::injectUpdate(const float &xTimeSinceLastUpdate)
 {
-    QVector<JGC::Entity*> xAboutGameEntitys;
+    QList<JGC::Entity*> xAboutGameEntitys;
     xAboutGameEntitys = JGC::WorldsSystem::instance()->getActiveWorld()->getEntitysInNode(Nodes::AboutGameNode);
 
-    if(xAboutGameEntitys.size()>0)
+    if(xAboutGameEntitys.size() > 0)
     {
         AboutGameCom *xAboutGameCom;
-        xAboutGameCom = xAboutGameEntitys.at(0)->getComponent<AboutGameCom>();
+        xAboutGameCom = xAboutGameEntitys.first()->getComponent<AboutGameCom>();
 
         if(xAboutGameCom->mBackToMainMenu->isButtonPressed())
             JGC::WorldsSystem::instance()->setActiveWorld("MainMenuWorld");

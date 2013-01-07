@@ -11,13 +11,13 @@
 
 void MainMenuSys::injectUpdate(const float &xTimeSinceLastUpdate)
 {
-    QVector<JGC::Entity*> xMainMenuEntitys;
+    QList<JGC::Entity*> xMainMenuEntitys;
     xMainMenuEntitys = JGC::WorldsSystem::instance()->getActiveWorld()->getEntitysInNode(Nodes::MainMenuNode);
 
-    if(xMainMenuEntitys.size()>0)
+    if(xMainMenuEntitys.size() > 0)
     {
         MainMenuCom *xMainMenuCom;
-        xMainMenuCom = xMainMenuEntitys.at(0)->getComponent<MainMenuCom>();
+        xMainMenuCom = xMainMenuEntitys.first()->getComponent<MainMenuCom>();
 
         if(xMainMenuCom->mNewGameButton->isButtonPressed())
         {

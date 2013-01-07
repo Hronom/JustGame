@@ -11,13 +11,13 @@
 
 void LoseMenuSys::injectUpdate(const float &xTimeSinceLastUpdate)
 {
-    QVector<JGC::Entity*> xLoseMenuEntitys;
+    QList<JGC::Entity*> xLoseMenuEntitys;
     xLoseMenuEntitys = JGC::WorldsSystem::instance()->getActiveWorld()->getEntitysInNode(Nodes::LoseMenuNode);
 
     if(xLoseMenuEntitys.size() > 0)
     {
         LoseMenuCom *xLoseMenuCom;
-        xLoseMenuCom = xLoseMenuEntitys.at(0)->getComponent<LoseMenuCom>();
+        xLoseMenuCom = xLoseMenuEntitys.first()->getComponent<LoseMenuCom>();
 
         if(xLoseMenuCom->mLoseOkButton->isButtonPressed())                
             JGC::WorldsSystem::instance()->setActiveWorld("MainMenuWorld");

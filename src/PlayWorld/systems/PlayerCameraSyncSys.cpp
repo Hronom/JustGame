@@ -9,16 +9,21 @@
 
 void PlayerCameraSyncSys::injectUpdate(const float &xTimeSinceLastUpdate)
 {
-    QVector<JGC::Entity*> xEntitys;
+    QList<JGC::Entity*> xEntitys;
     xEntitys = JGC::WorldsSystem::instance()->getActiveWorld()->getEntitysInNode(Nodes::PlayerCameraSyncNode);
 
-    for(int i = 0; i < xEntitys.size(); ++i)
+    QList<JGC::Entity*>::Iterator xEntitysIter;
+    xEntitysIter = xEntitys.begin();
+    while(xEntitysIter != xEntitys.end())
     {
+        JGC::Entity *xEntity;
+        xEntity = (*xEntitysIter);
+
         GraphBodyCom *xGraphBodyCom;
-        xGraphBodyCom = xEntitys.at(i)->getComponent<GraphBodyCom>();
+        xGraphBodyCom = xEntity->getComponent<GraphBodyCom>();
 
         CameraTrackableCom *xCameraTrackableCom;
-        xCameraTrackableCom = xEntitys.at(i)->getComponent<CameraTrackableCom>();
+        xCameraTrackableCom = xEntity->getComponent<CameraTrackableCom>();
 
         Ogre::SceneNode *xSceneNode;
         xSceneNode = xGraphBodyCom->mSceneNode;
@@ -32,5 +37,7 @@ void PlayerCameraSyncSys::injectUpdate(const float &xTimeSinceLastUpdate)
         xNewCameraPos.y = xPlayerPos.y;
 
         xCameraTrackableCom->mCamera->setPosition(xNewCameraPos);
+
+        ++xEntitysIter;
     }
 }
