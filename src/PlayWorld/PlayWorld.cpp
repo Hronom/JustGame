@@ -144,7 +144,7 @@ void PlayWorld::enter()
             CameraTrackableCom* xCameraTrackableCom = cCameraTrackableCom("PlayWorld", "MainCamera");
             this->addComponent("Player", xCameraTrackableCom);
 
-            WeaponCom* xWeaponCom = cWeaponCom(0.3f);
+            WeaponCom* xWeaponCom = cWeaponCom(0.1f);
             this->addComponent("Player", xWeaponCom);
 
             HealthCom *xHealthCom = cHealthCom(10, 10);
