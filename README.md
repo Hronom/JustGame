@@ -153,7 +153,7 @@ Windows bash script for building dependencies
     MKDIR %Ogre_build_dir%
     MKDIR %Ogre_install_dir%
     CD %Ogre_build_dir%
-    cmake -G "MinGW Makefiles" -D OGRE_DEPENDENCIES_DIR:STRING=%OgreDependencies_install_dir% -D CMAKE_INSTALL_PREFIX:STRING=%Ogre_install_dir% -D OGRE_BUILD_RENDERSYSTEM_D3D9:BOOL=false %Ogre_sources_dir%
+    cmake -G "MinGW Makefiles" -D OGRE_DEPENDENCIES_DIR:STRING=%OgreDependencies_install_dir% -D CMAKE_INSTALL_PREFIX:STRING=%Ogre_install_dir% -D OGRE_BUILD_RENDERSYSTEM_D3D9:BOOL=false -D OGRE_BUILD_RENDERSYSTEM_D3D11:BOOL=false -D OGRE_BUILD_RENDERSYSTEM_GL:BOOL=true -D OGRE_BUILD_SAMPLES:BOOL=false -D OGRE_BUILD_TOOLS:BOOL=true -D OGRE_INSTALL_SAMPLES:BOOL=false %Ogre_sources_dir%
     ::building Debug
     cmake -D CMAKE_BUILD_TYPE:STRING=Debug %Ogre_sources_dir%
     mingw32-make.exe
@@ -176,7 +176,7 @@ Windows bash script for building dependencies
     MKDIR %MyGUI_build_dir%
     MKDIR %MyGUI_install_dir%
     CD %MyGUI_build_dir%
-    cmake -G "MinGW Makefiles" -D MYGUI_DEPENDENCIES_DIR:STRING=%OgreDependencies_install_dir% -D OGRE_SOURCE:STRING=%Ogre_sources_dir% -D OGRE_BUILD:STRING=%Ogre_build_dir% -D MYGUI_BUILD_DEMOS:BOOL=false -D MYGUI_BUILD_TOOLS:BOOL=false -D MYGUI_INSTALL_MEDIA:BOOL=true -D MYGUI_INSTALL_SAMPLES:BOOL=true -D MYGUI_INSTALL_TOOLS:BOOL=true -D CMAKE_INSTALL_PREFIX:STRING=%MyGUI_install_dir% %MyGUI_sources_dir%
+    cmake -G "MinGW Makefiles" -D MYGUI_DEPENDENCIES_DIR:STRING=%OgreDependencies_install_dir% -D OGRE_SOURCE:STRING=%Ogre_sources_dir% -D OGRE_BUILD:STRING=%Ogre_install_dir% -D MYGUI_DONT_USE_OBSOLETE:BOOL=true -D MYGUI_BUILD_PLUGINS:BOOL=false -D MYGUI_BUILD_DEMOS:BOOL=false -D MYGUI_BUILD_TOOLS:BOOL=false -D MYGUI_INSTALL_MEDIA:BOOL=true -D MYGUI_INSTALL_SAMPLES:BOOL=false -D MYGUI_INSTALL_TOOLS:BOOL=true -D CMAKE_INSTALL_PREFIX:STRING=%MyGUI_install_dir% %MyGUI_sources_dir%
     ::building Debug
     cmake -D CMAKE_BUILD_TYPE:STRING=Debug %MyGUI_sources_dir%
     mingw32-make.exe
@@ -209,7 +209,5 @@ Windows bash script for building dependencies
     mingw32-make.exe
     mingw32-make.exe install
     )
-    
-    
     
     pause
